@@ -1,0 +1,11 @@
+{
+  "name": "payments-bb-voucher-api-tests",
+  "version": "0.1.0",
+  "scripts": {
+    "test": "cucumber-js"
+  },
+  "devDependencies": {
+    "@cucumber/cucumber": "^8.9.1",
+    "pactum": "^3.3.2"
+  }
+}
