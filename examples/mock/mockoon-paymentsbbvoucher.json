@@ -9,26 +9,404 @@
   "routes": [
     {
       "uuid": "658ca4d8-4e46-4b3c-af0d-eabdd9733dff",
-      "documentation": "",
-      "method": "get",
-      "endpoint": "databases",
+      "documentation": "Requests for voucher number, voucher serial number and expiry date by sending voucher group, amount and currency",
+      "method": "post",
+      "endpoint": "vouchers/voucher_preactivation",
       "responses": [
         {
           "uuid": "40758b1e-2dc5-47b9-b89f-f001dfa33cfa",
-          "body": "{\"ok\"}",
+          "body": "{\n  \"voucher_number\": \"stringstringstri\",\n  \"voucher_serial_number\": \"stringstringstri\",\n  \"expiry_date_time\": \"2023-01-04T16:01:00.619Z\"\n}",
           "latency": 0,
           "statusCode": 200,
-          "label": "",
+          "label": "Successfully pre-activated voucher",
           "headers": [],
           "bodyType": "INLINE",
           "filePath": "",
           "databucketID": "",
           "sendFileAsBody": false,
-          "rules": [],
-          "rulesOperator": "OR",
+          "rules": [
+            {
+              "target": "body",
+              "modifier": "voucher_amount",
+              "value": "",
+              "invert": true,
+              "operator": "null"
+            },
+            {
+              "target": "body",
+              "modifier": "voucher_amount",
+              "value": "^([0]|([1-9][0-9]{0,17}))([.][0-9]{0,3}[0-9])?$",
+              "invert": false,
+              "operator": "regex"
+            },
+            {
+              "target": "body",
+              "modifier": "voucher_currency",
+              "value": "",
+              "invert": true,
+              "operator": "null"
+            },
+            {
+              "target": "body",
+              "modifier": "voucher_currency",
+              "value": "A(ED|FN|LL|MD|NG|OA|RS|UD|WG|ZN)|B(AM|BD|DT|GN|HD|IF|MD|ND|OB|OV|RL|SD|TN|WP|YN|ZD)|C(AD|DF|HE|HF|HW|LF|LP|NY|OP|OU|RC|UC|UP|VE|ZK)|D(KK|OP|ZDJF|)|E(GP|RN|TB|UR)|F(FD|KP)|G(BP|EL|HS|IP|MD|NF|TQ|YD)|H(KD|NL|RK|TG|UF)|I(DR|LS|NR|QD|RR|SK)|J(MD|OD|PY)|K(ES|GS|HR|MF|PW|RW|WD|YD|ZT)|L(AK|BP|KR|RD|SL|YD)|M(AD|DL|GA|KD|MK|NT|OP|RO|UR|VR|WK|XN|XV|YR|ZN)|N(AD|GN|IO|OK|PR|ZD)|OMR|P(AB|EN|GK|HP|KR|LN|YG)|QAR|R(RN|SD|UB|WF)|S(AR|BD|CR|DG|EK|GD|HP|LL|OS|RD|SP|TD|VC|YP|ZL)|T(HB|JS|MT|ND|OP|RY|TD|WD|ZS)|U(GA|KR|MI|RY|SA|ZB)|U(AH|GX|SD|SN|YI|YU|ZS)|V(EF|ND|UV)|WST|X(AF|AG|AU|BA|BB|BC|BD|CD|DR|OF|PD|PF|PT|SU|TS|UA|XX)|YER|Z(AR|MW|WL)",
+              "invert": false,
+              "operator": "regex"
+            },
+            {
+              "target": "body",
+              "modifier": "voucher_group",
+              "value": "",
+              "invert": true,
+              "operator": "null"
+            },
+            {
+              "target": "body",
+              "modifier": "Gov_Stack_BB",
+              "value": "",
+              "invert": true,
+              "operator": "null"
+            },
+            {
+              "target": "body",
+              "modifier": "Gov_Stack_BB",
+              "value": "Gov_Stack_BB",
+              "invert": false,
+              "operator": "equals"
+            },
+            {
+              "target": "body",
+              "modifier": "voucher_comment",
+              "value": "",
+              "invert": true,
+              "operator": "null"
+            }
+          ],
+          "rulesOperator": "AND",
+          "disableTemplating": false,
+          "fallbackTo404": false,
+          "default": false
+        },
+        {
+          "uuid": "a9ba7ad2-5630-468e-906b-ccfb955e66ee",
+          "body": "{\n  \"Invalid payload, voucher_currency is invalid\"\n}",
+          "latency": 0,
+          "statusCode": 453,
+          "label": "Invalid request - invalid currency",
+          "headers": [],
+          "bodyType": "INLINE",
+          "filePath": "",
+          "databucketID": "",
+          "sendFileAsBody": false,
+          "rules": [
+            {
+              "target": "body",
+              "modifier": "voucher_amount",
+              "value": "",
+              "invert": true,
+              "operator": "null"
+            },
+            {
+              "target": "body",
+              "modifier": "voucher_amount",
+              "value": "^([0]|([1-9][0-9]{0,17}))([.][0-9]{0,3}[0-9])?$",
+              "invert": false,
+              "operator": "regex"
+            },
+            {
+              "target": "body",
+              "modifier": "voucher_currency",
+              "value": "",
+              "invert": true,
+              "operator": "null"
+            },
+            {
+              "target": "body",
+              "modifier": "voucher_currency",
+              "value": "A(ED|FN|LL|MD|NG|OA|RS|UD|WG|ZN)|B(AM|BD|DT|GN|HD|IF|MD|ND|OB|OV|RL|SD|TN|WP|YN|ZD)|C(AD|DF|HE|HF|HW|LF|LP|NY|OP|OU|RC|UC|UP|VE|ZK)|D(KK|OP|ZDJF|)|E(GP|RN|TB|UR)|F(FD|KP)|G(BP|EL|HS|IP|MD|NF|TQ|YD)|H(KD|NL|RK|TG|UF)|I(DR|LS|NR|QD|RR|SK)|J(MD|OD|PY)|K(ES|GS|HR|MF|PW|RW|WD|YD|ZT)|L(AK|BP|KR|RD|SL|YD)|M(AD|DL|GA|KD|MK|NT|OP|RO|UR|VR|WK|XN|XV|YR|ZN)|N(AD|GN|IO|OK|PR|ZD)|OMR|P(AB|EN|GK|HP|KR|LN|YG)|QAR|R(RN|SD|UB|WF)|S(AR|BD|CR|DG|EK|GD|HP|LL|OS|RD|SP|TD|VC|YP|ZL)|T(HB|JS|MT|ND|OP|RY|TD|WD|ZS)|U(GA|KR|MI|RY|SA|ZB)|U(AH|GX|SD|SN|YI|YU|ZS)|V(EF|ND|UV)|WST|X(AF|AG|AU|BA|BB|BC|BD|CD|DR|OF|PD|PF|PT|SU|TS|UA|XX)|YER|Z(AR|MW|WL)",
+              "invert": true,
+              "operator": "regex"
+            },
+            {
+              "target": "body",
+              "modifier": "voucher_group",
+              "value": "",
+              "invert": true,
+              "operator": "null"
+            },
+            {
+              "target": "body",
+              "modifier": "Gov_Stack_BB",
+              "value": "",
+              "invert": true,
+              "operator": "null"
+            },
+            {
+              "target": "body",
+              "modifier": "Gov_Stack_BB",
+              "value": "Gov_Stack_BB",
+              "invert": false,
+              "operator": "equals"
+            },
+            {
+              "target": "body",
+              "modifier": "voucher_comment",
+              "value": "",
+              "invert": true,
+              "operator": "null"
+            }
+          ],
+          "rulesOperator": "AND",
+          "disableTemplating": false,
+          "fallbackTo404": false,
+          "default": false
+        },
+        {
+          "uuid": "577baa3c-abf1-4179-a2e3-0769a80720ce",
+          "body": "{\n  \"Invalid payload, voucher_group is invalid\"\n}",
+          "latency": 0,
+          "statusCode": 454,
+          "label": "Invalid request - invalid voucher group",
+          "headers": [],
+          "bodyType": "INLINE",
+          "filePath": "",
+          "databucketID": "",
+          "sendFileAsBody": false,
+          "rules": [
+            {
+              "target": "body",
+              "modifier": "voucher_amount",
+              "value": "",
+              "invert": true,
+              "operator": "null"
+            },
+            {
+              "target": "body",
+              "modifier": "voucher_amount",
+              "value": "^([0]|([1-9][0-9]{0,17}))([.][0-9]{0,3}[0-9])?$",
+              "invert": false,
+              "operator": "regex"
+            },
+            {
+              "target": "body",
+              "modifier": "voucher_currency",
+              "value": "",
+              "invert": true,
+              "operator": "null"
+            },
+            {
+              "target": "body",
+              "modifier": "voucher_currency",
+              "value": "A(ED|FN|LL|MD|NG|OA|RS|UD|WG|ZN)|B(AM|BD|DT|GN|HD|IF|MD|ND|OB|OV|RL|SD|TN|WP|YN|ZD)|C(AD|DF|HE|HF|HW|LF|LP|NY|OP|OU|RC|UC|UP|VE|ZK)|D(KK|OP|ZDJF|)|E(GP|RN|TB|UR)|F(FD|KP)|G(BP|EL|HS|IP|MD|NF|TQ|YD)|H(KD|NL|RK|TG|UF)|I(DR|LS|NR|QD|RR|SK)|J(MD|OD|PY)|K(ES|GS|HR|MF|PW|RW|WD|YD|ZT)|L(AK|BP|KR|RD|SL|YD)|M(AD|DL|GA|KD|MK|NT|OP|RO|UR|VR|WK|XN|XV|YR|ZN)|N(AD|GN|IO|OK|PR|ZD)|OMR|P(AB|EN|GK|HP|KR|LN|YG)|QAR|R(RN|SD|UB|WF)|S(AR|BD|CR|DG|EK|GD|HP|LL|OS|RD|SP|TD|VC|YP|ZL)|T(HB|JS|MT|ND|OP|RY|TD|WD|ZS)|U(GA|KR|MI|RY|SA|ZB)|U(AH|GX|SD|SN|YI|YU|ZS)|V(EF|ND|UV)|WST|X(AF|AG|AU|BA|BB|BC|BD|CD|DR|OF|PD|PF|PT|SU|TS|UA|XX)|YER|Z(AR|MW|WL)",
+              "invert": false,
+              "operator": "regex"
+            },
+            {
+              "target": "body",
+              "modifier": "voucher_group",
+              "value": "",
+              "invert": false,
+              "operator": "null"
+            },
+            {
+              "target": "body",
+              "modifier": "Gov_Stack_BB",
+              "value": "",
+              "invert": true,
+              "operator": "null"
+            },
+            {
+              "target": "body",
+              "modifier": "Gov_Stack_BB",
+              "value": "Gov_Stack_BB",
+              "invert": false,
+              "operator": "equals"
+            },
+            {
+              "target": "body",
+              "modifier": "voucher_comment",
+              "value": "",
+              "invert": true,
+              "operator": "null"
+            }
+          ],
+          "rulesOperator": "AND",
+          "disableTemplating": false,
+          "fallbackTo404": false,
+          "default": false
+        },
+        {
+          "uuid": "eca34d9f-de40-427b-9cc4-1fbed7d98307",
+          "body": "{\n  \"Invalid payload, voucher_amount is invalid\"\n}",
+          "latency": 0,
+          "statusCode": 452,
+          "label": "Invalid request - invalid amount",
+          "headers": [],
+          "bodyType": "INLINE",
+          "filePath": "",
+          "databucketID": "",
+          "sendFileAsBody": false,
+          "rules": [
+            {
+              "target": "body",
+              "modifier": "voucher_amount",
+              "value": "",
+              "invert": false,
+              "operator": "null"
+            },
+            {
+              "target": "body",
+              "modifier": "voucher_amount",
+              "value": "^([0]|([1-9][0-9]{0,17}))([.][0-9]{0,3}[0-9])?$",
+              "invert": true,
+              "operator": "regex"
+            },
+            {
+              "target": "body",
+              "modifier": "voucher_currency",
+              "value": "",
+              "invert": true,
+              "operator": "null"
+            },
+            {
+              "target": "body",
+              "modifier": "voucher_currency",
+              "value": "A(ED|FN|LL|MD|NG|OA|RS|UD|WG|ZN)|B(AM|BD|DT|GN|HD|IF|MD|ND|OB|OV|RL|SD|TN|WP|YN|ZD)|C(AD|DF|HE|HF|HW|LF|LP|NY|OP|OU|RC|UC|UP|VE|ZK)|D(KK|OP|ZDJF|)|E(GP|RN|TB|UR)|F(FD|KP)|G(BP|EL|HS|IP|MD|NF|TQ|YD)|H(KD|NL|RK|TG|UF)|I(DR|LS|NR|QD|RR|SK)|J(MD|OD|PY)|K(ES|GS|HR|MF|PW|RW|WD|YD|ZT)|L(AK|BP|KR|RD|SL|YD)|M(AD|DL|GA|KD|MK|NT|OP|RO|UR|VR|WK|XN|XV|YR|ZN)|N(AD|GN|IO|OK|PR|ZD)|OMR|P(AB|EN|GK|HP|KR|LN|YG)|QAR|R(RN|SD|UB|WF)|S(AR|BD|CR|DG|EK|GD|HP|LL|OS|RD|SP|TD|VC|YP|ZL)|T(HB|JS|MT|ND|OP|RY|TD|WD|ZS)|U(GA|KR|MI|RY|SA|ZB)|U(AH|GX|SD|SN|YI|YU|ZS)|V(EF|ND|UV)|WST|X(AF|AG|AU|BA|BB|BC|BD|CD|DR|OF|PD|PF|PT|SU|TS|UA|XX)|YER|Z(AR|MW|WL)",
+              "invert": false,
+              "operator": "regex"
+            },
+            {
+              "target": "body",
+              "modifier": "voucher_group",
+              "value": "",
+              "invert": true,
+              "operator": "null"
+            },
+            {
+              "target": "body",
+              "modifier": "Gov_Stack_BB",
+              "value": "",
+              "invert": true,
+              "operator": "null"
+            },
+            {
+              "target": "body",
+              "modifier": "Gov_Stack_BB",
+              "value": "Gov_Stack_BB",
+              "invert": false,
+              "operator": "equals"
+            },
+            {
+              "target": "body",
+              "modifier": "voucher_comment",
+              "value": "",
+              "invert": true,
+              "operator": "null"
+            }
+          ],
+          "rulesOperator": "AND",
+          "disableTemplating": false,
+          "fallbackTo404": false,
+          "default": false
+        },
+        {
+          "uuid": "a77a507e-6d10-4e73-aa4f-00c6e8c064d0",
+          "body": "{\n  \"Invalid payload, Gov Stack Building Block does not exist\"\n}",
+          "latency": 0,
+          "statusCode": 460,
+          "label": "Invalid request - Gov Stack Building Block does not exist",
+          "headers": [],
+          "bodyType": "INLINE",
+          "filePath": "",
+          "databucketID": "",
+          "sendFileAsBody": false,
+          "rules": [
+            {
+              "target": "body",
+              "modifier": "voucher_amount",
+              "value": "",
+              "invert": false,
+              "operator": "null"
+            },
+            {
+              "target": "body",
+              "modifier": "voucher_amount",
+              "value": "^([0]|([1-9][0-9]{0,17}))([.][0-9]{0,3}[0-9])?$",
+              "invert": false,
+              "operator": "regex"
+            },
+            {
+              "target": "body",
+              "modifier": "voucher_currency",
+              "value": "",
+              "invert": true,
+              "operator": "null"
+            },
+            {
+              "target": "body",
+              "modifier": "voucher_currency",
+              "value": "A(ED|FN|LL|MD|NG|OA|RS|UD|WG|ZN)|B(AM|BD|DT|GN|HD|IF|MD|ND|OB|OV|RL|SD|TN|WP|YN|ZD)|C(AD|DF|HE|HF|HW|LF|LP|NY|OP|OU|RC|UC|UP|VE|ZK)|D(KK|OP|ZDJF|)|E(GP|RN|TB|UR)|F(FD|KP)|G(BP|EL|HS|IP|MD|NF|TQ|YD)|H(KD|NL|RK|TG|UF)|I(DR|LS|NR|QD|RR|SK)|J(MD|OD|PY)|K(ES|GS|HR|MF|PW|RW|WD|YD|ZT)|L(AK|BP|KR|RD|SL|YD)|M(AD|DL|GA|KD|MK|NT|OP|RO|UR|VR|WK|XN|XV|YR|ZN)|N(AD|GN|IO|OK|PR|ZD)|OMR|P(AB|EN|GK|HP|KR|LN|YG)|QAR|R(RN|SD|UB|WF)|S(AR|BD|CR|DG|EK|GD|HP|LL|OS|RD|SP|TD|VC|YP|ZL)|T(HB|JS|MT|ND|OP|RY|TD|WD|ZS)|U(GA|KR|MI|RY|SA|ZB)|U(AH|GX|SD|SN|YI|YU|ZS)|V(EF|ND|UV)|WST|X(AF|AG|AU|BA|BB|BC|BD|CD|DR|OF|PD|PF|PT|SU|TS|UA|XX)|YER|Z(AR|MW|WL)",
+              "invert": false,
+              "operator": "regex"
+            },
+            {
+              "target": "body",
+              "modifier": "voucher_group",
+              "value": "",
+              "invert": true,
+              "operator": "null"
+            },
+            {
+              "target": "body",
+              "modifier": "Gov_Stack_BB",
+              "value": "",
+              "invert": true,
+              "operator": "null"
+            },
+            {
+              "target": "body",
+              "modifier": "Gov_Stack_BB",
+              "value": "Gov_Stack_BB",
+              "invert": true,
+              "operator": "equals"
+            },
+            {
+              "target": "body",
+              "modifier": "voucher_comment",
+              "value": "",
+              "invert": true,
+              "operator": "null"
+            }
+          ],
+          "rulesOperator": "AND",
           "disableTemplating": false,
           "fallbackTo404": false,
           "default": true
+        },
+        {
+          "uuid": "4e01c1d6-1d3b-47ab-a8f4-007edc927bc0",
+          "body": "{\n  \"Invalid request - body can not be empty\"\n}",
+          "latency": 0,
+          "statusCode": 400,
+          "label": "Invalid request - body is empty",
+          "headers": [],
+          "bodyType": "INLINE",
+          "filePath": "",
+          "databucketID": "",
+          "sendFileAsBody": false,
+          "rules": [
+            {
+              "target": "body",
+              "modifier": "",
+              "value": "",
+              "invert": false,
+              "operator": "null"
+            }
+          ],
+          "rulesOperator": "AND",
+          "disableTemplating": false,
+          "fallbackTo404": false,
+          "default": false
         }
       ],
       "enabled": true,
