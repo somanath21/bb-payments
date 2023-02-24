@@ -10,6 +10,5 @@
 * [8 Data Structures](8-data-structures.md)
 * [9 Service APIs](9-service-apis.md)
 * [10 Workflows](10-workflows.md)
-* [11 Other Resources](11-other-resources.md)
-* [12 Key Decision Log](12-key-decision-log.md)
-* [13 Future Considerations](13-future-considerations.md)
+* [11 Key Decision Log](12-key-decision-log.md)
+* [12 Future Considerations](13-future-considerations.md)
