@@ -72,7 +72,34 @@ The sequence diagram shows the flow of data between building blocks for bulk pay
 
 Bulk payment service system does reconciliation on accounts paid/not paid and communicates that back to the beneficiary system as well.
 
-![https://www.websequencediagrams.com/#open=768631](.gitbook/assets/image29.png)
+```mermaid
+sequenceDiagram
+title Payment- Bulk payment and payment gateway within the bulk payment use cases
+
+note right of Beneficiary System: CompileList
+Beneficiary System-->>Bulk Payment: transit w timing
+Bulk Payment-->>ActtLookup:Lookup alias
+ActtLookup-->>Payment Gateway:Lookup
+Payment Gateway-->>FSP:Lookup. validate Account
+FSP-->>ActtLookup: Return status
+ActtLookup-->>Bulk Payment: Return Lookup Status
+note right of Bulk Payment: Validate
+Bulk Payment-->>Bulk Payment:schedule & queue
+Bulk payment-->>Payment Gateway:Request Fee Quote
+Payment Gateway-->>FSP: Request Fee Quote
+FSP-->>Payment Gateway: Quote Fee
+note right of Bulk Payment: Batch Readied
+Bulk Payment-->>Payment Gateway: Transfer Batch
+Payment Gateway-->>FSP: Transfer
+FSP-->>Beneficiary:Get Notification
+Beneficiary-->>FSP:Access Funds
+FSP-->>Payment Gateway: Notification
+Payment Gateway-->>Bulk Payment:Success | failure notification
+Bulk Payment-->>Beneficiary System: Success| Failure
+Bulk Payment-->>Bulk Payment: Reconciliation
+note right of Bulk Payment: Reconcilied
+Bulk Payment-->>Beneficiary System:Reconciliation file
+```
 
 #### 9.1.2 Disbursement to Beneficiary Using Mobile Money <a href="#docs-internal-guid-30610214-7fff-b023-24dd-ddf9a6ed5ea9" id="docs-internal-guid-30610214-7fff-b023-24dd-ddf9a6ed5ea9"></a>
 
