@@ -1,22 +1,22 @@
 # 4 Key Digital Functionalities
 
-The payments building block provides functionalities to cater for the following payment types:
+The payments building block provides functionalities to cater to the following payment types:
 
-* Government to person (G2P) payments such as:
+* Government-to-person (G2P) payments such as:
   * periodic bulk payments such as salary payments,
-  * unconditional social cash transfer: Cash payments provided to financially disadvantaged or vulnerable people or households without requiring anything in return. The unconditional cash transfer should support different modes/channels for payments: bank payments, voucher payments, mobile money payments and other electronic channels.
+  * unconditional social cash transfer: Cash payments provided to financially disadvantaged or vulnerable people or households without requiring anything in return. The unconditional cash transfer should support different modes/channels for payments: bank payments, voucher payments, mobile money payments, and other electronic channels.
   * conditional cash transfer: Cash payments provided to financially disadvantaged or vulnerable people or households aimed at changing behaviors. The payments are conditional depending upon the recipient's actions.
-* Person to Government (P2G) payments: support payments for government services e.g payment of government fees, driving licenses, utility payments.
+* Person to Government (P2G) payments: support payments for government services e.g payment of government fees, driving licenses, and utility payments.
 
 The following requirements below would be implemented by the payments BB:
 
 * Cater for the distribution of social service transfers electronically and cash safely to end users (in the case where the user does not want to use electronic payments, it is recommended that vouchers are used).
 * Creates eVouchers to disburse financial subsidies in a controlled and safe manner.
-* Responds to payers to provide information about the status of the payments (e.g confirmation of payment, insufficient balance or a mismatch in credentials, transfer failure, etc,). based on status in the backend applications.
+* Responds to payers to provide information about the status of the payments (e.g confirmation of payment, insufficient balance or a mismatch in credentials, transfer failure, etc.)., based on the status in the backend applications.
 * Posts status of transactions with traceability information into transaction logs.
 * Tracks due payment and sent payment notifications through alerting mechanisms, along with associated information.
-* Receives triggers for payment collection, posts the amount with relevant disclaimers to payer and obtains payer approval.
-* Securely posts the approval, user ID and associated payment information to appropriate backend (eg mobile, debit/credit card, Internet banking entities) of relevant financial applications from banks, employers, insurance; awaits transfer confirmation from those applications.
+* Receives triggers for payment collection, posts the amount with relevant disclaimers to the payer, and obtains payer approval.
+* Securely posts the approval, user ID, and associated payment information to the appropriate backend (e.g. mobile, debit/credit card, internet banking entities) of relevant financial applications from banks, employers, and insurance; awaits transfer confirmation from those applications.
 * Searches and provides a logged information-based query of other applications.
 * Able to handle operations in remote and inaccessible locations
 
@@ -29,29 +29,29 @@ G2P payments architecture should strive to achieve the following principles:
 * Beneficiaries can receive their payment through a fully functional account that allows them to save and make payments using an associated payment instrument with general acceptance.
 * They can choose the payment service provider and payment instrument through which they receive their payments based on their informed choice; they can use the same account for multiple G2P payments, make P2G payments and easily switch if desired.
 * Onboarding to their payment method is low cost and easy with account opening requirements that are available to recipients and with no opening fees; a payment instrument is provided to the recipient at no cost.
-* The integrated Financial Management Information System (IFMIS) is used to process government payments against the budgetary allocations. It supports (1) the Treasury Single Account (TSA) that aggregates all incoming government receipts and disburses all government payments and (2) budget management to ensure budget compliance, tracking, and reporting. The Integrated Financial Management Information System (IFMIS) provides the Ministry of Finance with a unified view of the government’s budget execution.
+* The integrated Financial Management Information System (IFMIS) is used to process government payments against budgetary allocations. It supports (1) the Treasury Single Account (TSA) that aggregates all incoming government receipts and disburses all government payments and (2) budget management to ensure budget compliance, tracking and reporting. The Integrated Financial Management Information System (IFMIS) provides the Ministry of Finance with a unified view of the government’s budget execution.
 * The payment instrument is easy-to-use and generally accepted and the overall costs for using it do not result in increased costs for the beneficiary in comparison to other forms of payment.
-* Beneficiaries are well informed, their accounts/data is protected and have access to redress. They know when, where, and how much payments will be made and understand how their payment method works, its costs, how to use their payment instrument and how to access their payment. They can access and know how to access effective grievance redressal mechanisms, their funds are secured, and their data privacy is ensured.
-* Beneficiaries can easily access their funds. They are able to cash-out their funds at any time at a wide range of conveniently close financial access points. at a reasonable and clearly communicated withdrawal fee or at no cost.
-* Beneficiaries are included regardless of gender, race or other immutable characteristic, through at least one of the payment methods used; Gender gaps are considered in the design.
+* Beneficiaries are well informed, their accounts/data is protected and have access to redress. They know when, where, and how many payments will be made and understand how their payment method works, its costs, how to use their payment instrument, and how to access their payment. They can access and know how to access effective grievance redressal mechanisms, their funds are secured, and their data privacy is ensured.
+* Beneficiaries can easily access their funds. They are able to cash out their funds at any time at a wide range of conveniently close financial access points. At a reasonable and clearly communicated withdrawal fee or at no cost.
+* Beneficiaries are included regardless of gender, race, or other immutable characteristics, through at least one of the payment methods used; Gender gaps are considered in the design.
 
 ### 4.1.2 Infrastructure and Systems-related Principles
 
 * The leveraged infrastructures and systems are shared across G2P programs and payment streams, as well as other use cases, avoiding the implementation of systems to exclusively deliver G2P payments. They are scalable and have cyber security arrangements in place.
 * Common ID provides access to multiple programs; the national ID system has high coverage and quality; it allows government agencies and payment service providers to validate recipients’ identities; it enables data sharing across government agencies.
-* Payment processing systems unlike social protection management information systems, pension and payroll systems will not include gender disaggregated data.
-* The payments systems are interoperable to maximize the potential of the available infrastructure to recipients; interoperability arrangements exist for Integrated Financial Management Information System (IFMIS), Treasury Single Account (TSA), banks and non-banks covering most channels and instruments.
-* There is no manual intervention on the disbursement process and the entire payments flow is Straight-Through-Processing, including reconciliation of payments. Payments are made without delays.
+* Payment processing systems unlike social protection management information systems, pension, and payroll systems will not include gender-disaggregated data.
+* The payment systems are interoperable to maximize the potential of the available infrastructure to recipients; interoperability arrangements exist for Integrated Financial Management Information System (IFMIS), Treasury Single Account (TSA), banks, and non-banks covering most channels and instruments.
+* There is no manual intervention in the disbursement process and the entire payments flow is Straight-Through-Processing, including the reconciliation of payments. Payments are made without delays.
 
 ### 4.1.3 Payment Services Provider- related Principles
 
 * Payment service providers have a strong and long-term, predictable business case or incentives to deliver payments and provide choice.
-* Large variety of bank and non-bank financial institutions operating in a competitive market are used to deliver G2P payments.
+* A large variety of bank and non-bank financial institutions operating in a competitive market are used to deliver G2P payments.
 * Agents of bank and non-bank financial institutions are accessible to G2P payment recipients.
 
 ### 4.2 General Key Functionalities of the Payments Building Block
 
-In general the functions below describe the activities/actions that are performed in the payments building block:
+In general, the functions below describe the activities/actions that are performed in the payments building block.
 
 The payment BB architecture should:
 
@@ -62,9 +62,9 @@ The payment BB architecture should:
   * Get the confirmation of the payee on the details submitted or looked up via external id-account mapping.
   * Verify the destination account for the beneficiary to be in good standing - e.g. the bank has not noted a suspicious account, or suspended the account for another reason.
 * Return information from external systems on fees to be charged by providers.
-* Handle automated bulk transactions (e.g. payroll, social benefits disbursement)
+* Handle automated bulk transactions (e.g. payroll, social benefits disbursement).
 * Send automated requests to the FSP/bank to effect payment to the person in the case of unconditional social cash transfers.
-* Keep records of transactions history for audit purposes
+* Keep records of transaction history for audit purposes.
 * Auditability refers to the ability of the Payment’s Building Block to have its controls evaluated for effectiveness, efficiency and security. Looking at auditability from an effectiveness standpoint, transactions must be capable of being traced to ensure that all transactions (100%) initiated within the systems have been completed, irrespective of whether the transaction was successful or not. This also requires the Payment Building Block to degrade gracefully under conditions of high traffic or node failure so that such conditions are captured in the audit trail. From an effectiveness point of view, auditors must be able to trace the flow of transactions through the system in a logical flow and be able to determine the duration of each part of a transaction to determine if the optimal route is being followed or if there are bottlenecks that need to be addressed. From a security standpoint, external auditors should be able identify users who access the system and what actions they may perform in the system. In addition, the auditability function will also require the system controls to be clearly defined and access to evidence of their effectiveness either through prevention or escalation and an appreciation of the residual risk. Lastly, the system will need to be able to show compliance to local regulations and standards which will depend on the country in which it is implemented. If at some point PII or payment data is stored the system should show compliance to global best practices such as PCI-DSS v3 (or the prevailing standard at the time).
 * Schedule and aggregate payments to individuals (scheduling, tracking and triggering will be done in scheduling BB if it receives a schedule of payment via an API request, any specific attributes accessible by the scheduler in addition to date/time to access and verify before triggering).
 * Payment confirmation: Send receipts, notifications and acknowledgement of receipts in a secure manner such that payers and other external applications (e.g other building blocks) receive confirmation of payment made . It should also include the safekeeping of a record of the receipt that was sent.
