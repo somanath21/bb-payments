@@ -32,7 +32,7 @@ There are three options for the disbursement,
 
 ![Payments building block diagrams.drawio - diagrams.net](.gitbook/assets/image20.png)
 
-**Option 2**: Retail payments are accessed via a payment web portal by the Payment Service Provider the advice/electronic fund transfer request, or paper-based check is issued from the Financial Management Information System to the TSA-holding Bank.\
+**Option 2**: Retail payments are accessed via a payment web portal by the Payment Service Provider. The advice/electronic fund transfer request, or paper-based check is issued from the Financial Management Information System to the TSA-holding Bank.\
 Based on this advice, the Bank disburses funds from the Trusted Single Account (TSA) into the digital payments system of the FSP which transfers the corresponding funds to the recipient’s account. For the retail payment scrolls, where each agency is responsible for running the payment system - payroll, social welfare payments, etc - the payment details are not stored in those systems. Instead, the beneficiary’s payment token is retrieved from the Centralised Account Lookup Directory Service and kept in the government payment portal.. The payment lists are only shared with the program account holder institution/FSP, PSP, via the government payment portal. The FSP/PSP can log in on the government web portal to access the directory for payments that the FSP needs to effect for each G2P Program.
 
 ![Payments building block diagrams.drawio - diagrams.net](<.gitbook/assets/image8 (1).png>)
