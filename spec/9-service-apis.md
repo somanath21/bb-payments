@@ -1,10 +1,10 @@
-# 9 Service APIs
+# 8 Service APIs
 
-## 9.1 Incoming Payments to Government (P2G) <a href="#docs-internal-guid-83db42bd-7fff-3768-b76a-9586be4ab890" id="docs-internal-guid-83db42bd-7fff-3768-b76a-9586be4ab890"></a>
+## 8.1 Incoming Payments to Government (P2G) <a href="#docs-internal-guid-83db42bd-7fff-3768-b76a-9586be4ab890" id="docs-internal-guid-83db42bd-7fff-3768-b76a-9586be4ab890"></a>
 
 The implementation will be such that a “Request to Pay” APIs is exposed and the Gov't Ministry (entity) is treated as a type of Biller. Refer to the [GSMA API](https://developer.mobilemoneyapi.io/1.2/content/merchant-payments)
 
-### 9.1.1 Payee-Initiated Merchant Payment
+### 8.1.1 Payee-Initiated Merchant Payment
 
 The government entity initiates the request to the FSP and will be credited when the payer approves the request. This API covers the use case where the mother pays for registration payment.
 
@@ -28,7 +28,7 @@ The government entity initiates the request to the FSP and will be credited when
 }
 ```
 
-### 9.1.2 Payer-Initiated Merchant Payment <a href="#docs-internal-guid-bfb99f40-7fff-cdda-fef1-dd6367f348ff" id="docs-internal-guid-bfb99f40-7fff-cdda-fef1-dd6367f348ff"></a>
+### 8.1.2 Payer-Initiated Merchant Payment <a href="#docs-internal-guid-bfb99f40-7fff-cdda-fef1-dd6367f348ff" id="docs-internal-guid-bfb99f40-7fff-cdda-fef1-dd6367f348ff"></a>
 
 The payer initiates the request and will be debited upon successful completion of the request.
 
@@ -51,7 +51,7 @@ The payer initiates the request and will be debited upon successful completion o
 }
 ```
 
-## 9.2 Bulk Payment APIs (Outgoing) <a href="#docs-internal-guid-f78d8d0a-7fff-33bf-2d15-aced73dc0f65" id="docs-internal-guid-f78d8d0a-7fff-33bf-2d15-aced73dc0f65"></a>
+## 8.2 Bulk Payment APIs (Outgoing) <a href="#docs-internal-guid-f78d8d0a-7fff-33bf-2d15-aced73dc0f65" id="docs-internal-guid-f78d8d0a-7fff-33bf-2d15-aced73dc0f65"></a>
 
 There are APIs:
 
@@ -60,9 +60,9 @@ There are APIs:
 * APIs for doing lookup of identity and maps to valid bank or wallet accounts. As noted previously, third party providers, depending on the topography of the payments landscape in the country may bring additional APIs to connect to the FSPs. Those are out of scope.
 * APIs for querying the payments building block for information about a batch job, payments made under a specific program over time, and specific payment enquiries for a specific date, beneficiary, or any combination.
 
-## 9.3 From Source Beneficiary System to Payments Building Block
+## 8.3 From Source Beneficiary System to Payments Building Block
 
-### 9.3.1 Programs
+### 8.3.1 Programs
 
 (noun, meaning a program that sends funds to beneficiaries)
 
@@ -75,7 +75,7 @@ GET/program/{program_id}
 Get Program by id
 ```
 
-### 9.3.2 Beneficiaries <a href="#docs-internal-guid-cde102bb-7fff-c41c-15d5-24f7a917aa16" id="docs-internal-guid-cde102bb-7fff-c41c-15d5-24f7a917aa16"></a>
+### 8.3.2 Beneficiaries <a href="#docs-internal-guid-cde102bb-7fff-c41c-15d5-24f7a917aa16" id="docs-internal-guid-cde102bb-7fff-c41c-15d5-24f7a917aa16"></a>
 
 (noun, meaning a payee of a program)
 
@@ -121,7 +121,7 @@ Enroll into a Program
                 De-enroll beneficiary from a program 
 ```
 
-### 9.3.3 Disbursement <a href="#docs-internal-guid-907cf93b-7fff-35b1-fa01-cc96cad61e4f" id="docs-internal-guid-907cf93b-7fff-35b1-fa01-cc96cad61e4f"></a>
+### 8.3.3 Disbursement <a href="#docs-internal-guid-907cf93b-7fff-35b1-fa01-cc96cad61e4f" id="docs-internal-guid-907cf93b-7fff-35b1-fa01-cc96cad61e4f"></a>
 
 (verb, relating to sending funds in a batch)
 
@@ -163,11 +163,11 @@ Create Scheduled Batch "params": {
 
 see this: ([https://app.swaggerhub.com/apis/rrkas/open-g\_2\_p\_erp/1.0#/](https://app.swaggerhub.com/apis/rrkas/open-g\_2\_p\_erp/1.0%23/))
 
-## 9.4 From Payments Building Block to Lookup Directories (or Similar)
+## 8.4 From Payments Building Block to Lookup Directories (or Similar)
 
 [Account-Lookup Service · GitBook (mojaloop.io)](https://docs.mojaloop.io/documentation/mojaloop-technical-overview/account-lookup-service/)
 
-## 9.5 From Payments Building Block: Bulk Payment to FSPs
+## 8.5 From Payments Building Block: Bulk Payment to FSPs
 
 ```
 GET /batch
@@ -179,7 +179,7 @@ POST/transfer…
 see https://app.swaggerhub.com/apis/myapi943/payment-hub_ap_is/1.0#/ 
 ```
 
-## 9.6 Voucher APIs (Outgoing) <a href="#docs-internal-guid-9cf2815f-7fff-7e39-e7ed-207134468ff3" id="docs-internal-guid-9cf2815f-7fff-7e39-e7ed-207134468ff3"></a>
+## 8.6 Voucher APIs (Outgoing) <a href="#docs-internal-guid-9cf2815f-7fff-7e39-e7ed-207134468ff3" id="docs-internal-guid-9cf2815f-7fff-7e39-e7ed-207134468ff3"></a>
 
 The first API call (pre-activation) is a request for a voucher of a specific value in a specific currency. The API call may also include a voucher group indicating that the voucher is to be used for a specific purpose. The voucher management server will respond with a voucher number - typically a 16-digit code, a voucher serial number and the expiry date, The voucher would be marked in a pre-activated state.
 
@@ -191,19 +191,19 @@ A fourth API allows for batch activation of vouchers through an encrypted file. 
 
 A last set of APIs are available for checking the status of a voucher as well as canceling a voucher.
 
-### 9.6.1 VoucherPreActivation API
+### 8.6.1 VoucherPreActivation API
 
 The VoucherPreActivation API is used by non-Payment Building Blocks in the GovStack Framework to request for a voucher to be used. This call reserves the voucher (for a period, which is to be implemented). This API requests a single voucher from the voucher server that can be used for a future redemption process. The caller sends an amount, a voucher group (depending on the use case), the currency and the name of the calling GovStack Building Block. If the API call is successful, the Payment Building Block will respond with a voucher number, a voucher serial number and an expiry date.
 
 ![](<.gitbook/assets/image9 (1).png>)
 
-### 9.6.2 VoucherActivation API <a href="#docs-internal-guid-53943e9f-7fff-ee8a-93a6-10bc57857bd7" id="docs-internal-guid-53943e9f-7fff-ee8a-93a6-10bc57857bd7"></a>
+### 8.6.2 VoucherActivation API <a href="#docs-internal-guid-53943e9f-7fff-ee8a-93a6-10bc57857bd7" id="docs-internal-guid-53943e9f-7fff-ee8a-93a6-10bc57857bd7"></a>
 
 The VoucherActivation API is used by non-Payment Building Blocks in the GovStack Framework to activate a pre-activated voucher. This second function call is intended to ensure that the voucher is only activated when it is disbursed. This API requests for the activation of a voucher when the caller sends the voucher number to be activated. If the API call is successful, the activation is confirmed, and the voucher can now be used by the beneficiary.
 
 ![](<.gitbook/assets/image4 (1).png>)
 
-### 9.6.3 BatchVoucherActivation API <a href="#docs-internal-guid-97c3ee48-7fff-63bc-1eda-a2af444b93bb" id="docs-internal-guid-97c3ee48-7fff-63bc-1eda-a2af444b93bb"></a>
+### 8.6.3 BatchVoucherActivation API <a href="#docs-internal-guid-97c3ee48-7fff-63bc-1eda-a2af444b93bb" id="docs-internal-guid-97c3ee48-7fff-63bc-1eda-a2af444b93bb"></a>
 
 The BatchVoucherActivation API is used by a calling BB to activate vouchers in bulk. This may be used for bulk social cash transfers where the recipients receive benefits by vouchers. The calling BB is responsible for generating the beneficiary file as well as dispensing of the vouchers. The Payment BB is responsible for generating and redeeming the vouchers codes. Both BBs will have had to have exchanged encryption keys at the implementation phase.
 
@@ -215,22 +215,20 @@ The calling building block will dispense the vouchers as needed using an appropr
 
 ![](<.gitbook/assets/image3 (1).png>)
 
-### 9.6.4 VoucherRedemption <a href="#docs-internal-guid-df8c2024-7fff-e374-7456-23db45c11b57" id="docs-internal-guid-df8c2024-7fff-e374-7456-23db45c11b57"></a>
+### 8.6.4 VoucherRedemption <a href="#docs-internal-guid-df8c2024-7fff-e374-7456-23db45c11b57" id="docs-internal-guid-df8c2024-7fff-e374-7456-23db45c11b57"></a>
 
 The VoucherRedemption API is used by non-Payment Building Blocks in the GovStack Framework to redeem a voucher. The calling Building Block will capture the voucher number and the voucher serial number from the merchant point. The external Building Block will also acquire the merchant name and payment details from the merchant registry. The calling Building Block will then send the voucher number, the voucher serial number, the merchant’s name and payment details. The Payment Building Block will verify that the voucher has been activated and has not been used or blocked or cancelled. If so, the Payment Building Block will then send a payment request to the funding agency / FSP. The Payment Gateway of the Payments Building Block will facilitate the debit of the funding account, and the credit of the merchant as well as handle any intermediary fees. Once the payment has been successfully done the Payment Building Block will mark the voucher as consumed and notify the merchant (and beneficiary if possible).
 
 ![](.gitbook/assets/image25.png)
 
-### 9.6.5 VoucherStatus API <a href="#docs-internal-guid-14288f23-7fff-3b24-f10e-6fb6e3200147" id="docs-internal-guid-14288f23-7fff-3b24-f10e-6fb6e3200147"></a>
+### 8.6.5 VoucherStatus API <a href="#docs-internal-guid-14288f23-7fff-3b24-f10e-6fb6e3200147" id="docs-internal-guid-14288f23-7fff-3b24-f10e-6fb6e3200147"></a>
 
 The VoucherStatus API is used by non-Payment Building Blocks in the GovStack Framework to check the status of a voucher. The calling Building Block will capture the voucher number and send it to the Payments Building Block to determine the status of a voucher. The Payments Building will respond with one of the statuses of Pre-Activated, Activated, Suspended, Blocked or Not Existing.
 
 ![](.gitbook/assets/image16.png)
 
-### 9.6.6 VoucherCancellation API <a href="#docs-internal-guid-ceb6fd44-7fff-a34f-207b-6fc5be1638fa" id="docs-internal-guid-ceb6fd44-7fff-a34f-207b-6fc5be1638fa"></a>
+### 8.6.6 VoucherCancellation API <a href="#docs-internal-guid-ceb6fd44-7fff-a34f-207b-6fc5be1638fa" id="docs-internal-guid-ceb6fd44-7fff-a34f-207b-6fc5be1638fa"></a>
 
 The VoucherCancellation API is used by non-Payment Building Blocks in the GovStack Framework to cancel a voucher. The calling Building Block will capture the voucher number and send it to the Payments Building Block to cancel the voucher. The Payments Building Block will respond with a status of Cancelled, Already Cancelled or Not existing. The VoucherCancellation will override the Blocked status and render the voucher permanently unusable.
-
-#### ****
 
 ****

@@ -1,14 +1,14 @@
-# 7 Functional Requirements
+# 6 Functional Requirements
 
 This section lists the technical capabilities of the payments building block.
 
-## 7.1 Payments Building Block Components
+## 6.1 Payments Building Block Components
 
 The following components are needed to achieve the technical functionalities of the payments building block.
 
 ![Payments building block diagrams.drawio - diagrams.net](.gitbook/assets/image22.png)
 
-### 7.1.1 API Management Gateway <a href="#docs-internal-guid-ccd3b00d-7fff-3413-9366-be54b42a4a46" id="docs-internal-guid-ccd3b00d-7fff-3413-9366-be54b42a4a46"></a>
+### 6.1.1 API Management Gateway <a href="#docs-internal-guid-ccd3b00d-7fff-3413-9366-be54b42a4a46" id="docs-internal-guid-ccd3b00d-7fff-3413-9366-be54b42a4a46"></a>
 
 Handles all the API messaging calls and API access control verification from other BBs to the Payment BB and vice versa as well as within the Payment BB. All requests from other BBs first go through the API gateway. The gateway then routes requests to the appropriate application/service. The API Management gateway will:
 
@@ -20,7 +20,7 @@ Handles all the API messaging calls and API access control verification from oth
 * Allow API providers to limit the rate of consumption for all API users.
 * Transform backend error messages into standardized messages so that all error messages look similar; this also eliminates exposing the backend code structure.
 
-### 7.1.2 Payment Orchestration
+### 6.1.2 Payment Orchestration
 
 Payments orchestration provides for end-to-end workflow across different sub-subsystems, enables asynchronous processing, and covers different payment types, use cases, account systems, and channels.
 
@@ -32,11 +32,11 @@ The orchestration relates different sub-components or microservices whereby it:
 
 Payments orchestration is used to configure the payments building block functionalities to be exercised during a specific workflow.
 
-### 7.1.3 Voucher Management System
+### 6.1.3 Voucher Management System
 
 The voucher management system is responsible for provisioning, storage, issuance, activation, redemption, validation, suspension, unsuspension, purging and reporting on vouchers.
 
-#### **7.1.3.1 Voucher Provisioning**
+#### **6.1.3.1 Voucher Provisioning**
 
 This process traditionally involves the generation of group vouchers against some authorized value (budget release or allotment).
 
@@ -44,7 +44,7 @@ This process traditionally involves the generation of group vouchers against som
 * The vouchers should be created with an expiry date and MUST be stored securely. All vouchers will be expected to have the same duration of expiry and this expiry period will be from the moment the voucher is activated.
 * Alternative design options include dynamically creating a voucher at transaction time and creating variable amounts, but this increases complexity and requires tighter operational controls
 
-#### **7.1.3.2 Voucher Issuance**
+#### **6.1.3.2 Voucher Issuance**
 
 This process involves the Registration BB (or any other BB for that matter) requesting a voucher number from the voucher management system through an API.
 
@@ -52,13 +52,13 @@ Once confirmation is received that the voucher has been released it flags the vo
 
 Once a voucher has been issued by the calling building block (registration bb) it will be presented to the beneficiary in a form that is determined by the calling Building Block (refer to voucher workflow). The format of the final voucher presentation will be determined by the function of the calling Building Block. At a minimum this presentation should have the voucher number as well as the voucher serial number. it could also have the details of the beneficiary. The details of the beneficiary on the voucher presentation will also help the merchant authenticate the beneficiary at the point of redemption.
 
-#### **7.1.3.3 Voucher Redemption**
+#### **6.1.3.3 Voucher Redemption**
 
 In the redemption process, the merchant will authenticate the beneficiary and use a predefined technology (USSD, Mobile App, web browser) to extract the voucher number and call a redemption API through the relevant calling Building Block. The calling Building Block may also validate the beneficiary details if so required. The Building Block will also be able to validate the merchant and determine the voucher group which the merchant belongs to . Lastly, the calling Building Block will invoke the Payment Building Block Redeem API, through the Payment Building Block API Management gateway, to validate the voucher and if valid to redeem it.
 
 Once the voucher is validated, the Voucher Management System should invoke an API on the Payment Gateway to effect the payment in the merchant or agent wallet or bank account (depending on what was set up at merchant / agent registration. The payment gateway/switch will debit a prefunded account / wallet and credit the merchant / agent account / wallet. The successful execution will result in the voucher being flagged as consumed/used.
 
-#### 7.1.4 VMS API interface
+#### 6.1.4 VMS API interface
 
 The details of the VMS APIs are described in the Service API section.
 
@@ -78,7 +78,7 @@ The API interface should provide a minimum of five internal API calls.
   * A call to check the validity of the voucher by voucher number and group
 * Voucher consumption: A call to consume the voucher by voucher number
 
-#### 7.1.5 Voucher Storage
+#### 6.1.5 Voucher Storage
 
 The voucher management server shall have a storage subsystem to store the vouchers.
 
@@ -88,7 +88,7 @@ The voucher management server shall have a storage subsystem to store the vouche
 * All access to the voucher database MUST be logged.
 * Segregation of duty must be done with respect to privileged access to the database and key management of the encryption of the voucher. (Level of key management may need to be determined).
 
-#### 7.1.6 Account Lookup Directory Service (Mapper)
+#### 6.1.6 Account Lookup Directory Service (Mapper)
 
 The account lookup directory service identifies the FSP where the merchant/agent/payee’s account is located.
 
@@ -98,13 +98,13 @@ The account lookup directory service provides a directory that maps the benefici
 
 In the case where there is a national payment switch, the account lookup directory service will be maintained by the FSPs, In the scenario, where there is no payment switch, the government would need to manage the account lookup directory service and provide a mechanism for linking it to the FSPs.
 
-### 7.1.7 Payment Request Initiation
+### 6.1.7 Payment Request Initiation
 
 This request could come from two sources: external or internal. An external source could be another GovStack Building Block (e.g. the Registration BB or Social Benefits Registry BB or Payroll ). Either source must be appropriately authenticated and authorized to initiate the request. The initiation could be synchronous (typically for a single payment) or asynchronous (typically for batch payments). The request should contain at a minimum: the payer identifier, the payee identifier, the amount, the currency, the policy, and the initiating source’s unique transaction ID. In the case of the internal payment request it should also contain an ID provided by the payment orchestration module.
 
 Certain processes in the transaction flow might require proof of intent from the user, for example, entering the PIN/Password or pressing an ’accept‘ key to initiate the payment process. Such events and their outcomes should be recorded for audit trail purposes. However, the PINs and passwords should not be stored in logs or if they have to, PINs and passwords should be hashed out.
 
-#### 7.1.8 Payment Gateway
+#### 6.1.8 Payment Gateway
 
 Payment gateway allows different (digital) financial service providers (FSPs) to:
 
@@ -112,7 +112,7 @@ Payment gateway allows different (digital) financial service providers (FSPs) to
 * initiate and receive transactions.
 * Accept or reject transactions and debit or credit end user accounts.
 
-#### 7.1.9 Payment Portal
+#### 6.1.9 Payment Portal
 
 The payment portal will:
 
@@ -127,13 +127,13 @@ The payment portal will:
 * Automate reconciliation.
 * Provide data analytics on payments processed and their status, whether successful or not.
 
-### 7.1.10 Notifications Service
+### 6.1.10 Notifications Service
 
 Support different events related to triggering specific actions on payment outcomes such as issuing receipt upon successful payment, automating payments in case of bulk transactions, passing information to other building blocks as necessary and handling of exceptional cases for instance user/system errors amongst others.
 
 All notification events shall have a timestamp associated with it and kept as part of the audit log.
 
-### 7.1.11 Reconciliation
+### 6.1.11 Reconciliation
 
 This should happen at two levels: internally and externally.
 
@@ -144,7 +144,7 @@ This should happen at two levels: internally and externally.
   * IDs should be unique, if possible contain the timestamp, and should not rollover across short ranges.\\
 * Transactions are expected to be irrevocable. Transaction reversals are subject to local regulations. In some countries, a transaction is revoked/clawed back if the beneficiary has not withdrawn the payment within a certain time period. Good practice, from a financial inclusion perspective, is to not claw back. Beneficiary could use this money as savings when he/she needs it. The system should allow both configurations.
 
-### 7.1.12 Validation and Verification
+### 6.1.12 Validation and Verification
 
 Batch files go through a final check to be clean of defects and inconsistencies, to check with external systems as necessary:
 
@@ -154,14 +154,14 @@ Batch files go through a final check to be clean of defects and inconsistencies,
 * Auto correct items as possible - consistency logic can be applied to fill in missing formatting if required by recipient banks and telecoms.
 * Errors are kicked back to program level or to an internal data review process.
 
-### 7.1.13 Batch Logic and Queuing
+### 6.1.13 Batch Logic and Queuing
 
 * Prepares the batch breakdown on the basis of rulesets governing which FSPs shall receive which payments and other considerations.
 * Combines payments with other payments to the same beneficiary.
 * At high volumes, batches are queued for processing.
 * Detects batch failure rates.
 
-### 7.1.14 Workflow and Scheduling
+### 6.1.14 Workflow and Scheduling
 
 * In relation to batch logic, Payments are scheduled against the availability of systems, throughput limitations, and rules set by programs.
 * Regular and repeat payments are scheduled.
@@ -170,7 +170,7 @@ Batch files go through a final check to be clean of defects and inconsistencies,
 * Availability of funds in different budget accounts may be incorporated into this process.
 * Additional workflow checks as required, including resending of failed transactions.
 
-### 7.1.15 Event Log
+### 6.1.15 Event Log
 
 Each component of the payment block should be capable of producing both application and transaction logs. This is important to ensure that the system can be adequately monitored and troubleshooting can be performed efficiently and effectively.
 
@@ -189,7 +189,7 @@ Each component of the payment block should be capable of producing both applicat
 * The event logs and the transaction logs should NOT capture any sensitive data such as voucher numbers, passwords, etc.
 * There should be an individual transaction record for every payment transaction. For example, if a batch payment process is executed there should be a transaction record for each individual transaction and a separate event log for the entire batch.
 
-### 7.1.16 Audit Logging
+### 6.1.16 Audit Logging
 
 Audit trails are required to provide assurance on the integrity of the requests received and actions taken on these requests. An audit trail is a chronological record of system activities that is sufficient to enable the reconstruction and examination of the sequence of environments and activities surrounding or leading to an operation, procedure, or event in a transaction from inception to final results. The audit trail shall comply with the following requirements:
 
@@ -208,13 +208,13 @@ Audit trails are required to provide assurance on the integrity of the requests 
   * Auditor should be able to request the decryption of encrypted data to an operator.
 * Access to the audit store must be securable, so whatever tech is chosen must implement access control mechanisms (ideally that can connect to our IAM provider/connector).
 
-### 7.1.17 Reporting
+### 6.1.17 Reporting
 
 * The data store will be write-only from the core service and should be read-only by external components.
 * The data model on the reporting data store can be different from the internal operational data models that the switch uses.
 * The component provided by the switch will be translating internal events and internal data models to the external data store models - This component can be replaced.
 
-### 7.1.18 Security layer
+### 6.1.18 Security layer
 
 Protects the system at the transport and application levels. It provides the necessary APIs for encrypting the data in transit and when stored as well as the digital signatures used for API authentication. The digital signatures are based on public key cryptography using X.509 digital certificates.
 
@@ -227,11 +227,11 @@ At the transport layer:
 * Acknowledgement receipt - This will result in creating a trusted communication path for all transactions between each party, be they end users, telecommunication companies, merchants or banks.
 * The messages concerning the payment transaction shall be authenticated.
 
-### 7.1.19 Data Protection
+### 6.1.19 Data Protection
 
 Use of a hardware security module (HSM) or equivalent to provide cryptographic keys for critical functions such as encryption, decryption and authentication for the use of applications, identities and databases.
 
-## 7.2 Payments Building Block Technical Requirements
+## 6.2 Payments Building Block Technical Requirements
 
 | **Requirement**                                                                                                                                                                                                                                                                                                                             | **Type (Must/Should/May)** |
 | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | -------------------------- |
