@@ -230,3 +230,7 @@ The VoucherStatus API is used by non-Payment Building Blocks in the GovStack Fra
 ### 9.6.6 VoucherCancellation API <a href="#docs-internal-guid-ceb6fd44-7fff-a34f-207b-6fc5be1638fa" id="docs-internal-guid-ceb6fd44-7fff-a34f-207b-6fc5be1638fa"></a>
 
 The VoucherCancellation API is used by non-Payment Building Blocks in the GovStack Framework to cancel a voucher. The calling Building Block will capture the voucher number and send it to the Payments Building Block to cancel the voucher. The Payments Building Block will respond with a status of Cancelled, Already Cancelled or Not existing. The VoucherCancellation will override the Blocked status and render the voucher permanently unusable.
+
+#### ****
+
+****
