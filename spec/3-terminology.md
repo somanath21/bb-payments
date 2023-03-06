@@ -15,10 +15,10 @@ Non referring to a payee of a program.
 A Payment from a single Payer to multiple Payees, for example, cash transfer programs from a government or NGO to a set of beneficiaries.
 
 **End User**\
-The customer of a digital financial services provider. the customer may be a consumer, a merchant, a government, or another form of enterprise.
+The customer of a digital financial services provider. The customer may be a consumer, a merchant, a government, or another form of enterprise.
 
 **Financial Management Information System**:\
-FMIS is the budget management system of the government treasury, which ensures that government (Ministries, Department, Agencies) payments are processed within the approved budget and releases.
+FMIS is the budget management system of the government treasury, which ensures that government (Ministries, Departments, Agencies) payments are processed within the approved budget and releases.
 
 **Financial Services Providers (FSPs)**\
 A financial services provider refers to one that is licensed by a regulatory authority to provide transaction accounts that hold customer funds and are used to make and receive payments. DFSPs have relationships with consumers, merchants, and other enterprises, and provide digital financial services to End Users.
@@ -57,10 +57,10 @@ The process by which a route to a payment address is determined. The mechanism o
 A reference to the entirety of the exchange, including a Payment but may also include information between the Payer’s DFSP and the Payee’s DFSP.
 
 **Treasury Single Account**\
-A TSA is a unified structure of government bank accounts that gives a consolidated view of government cash resources. Based on the principle of unity of cash and the unity of treasury, a TSA is a bank account or a set of linked accounts through which the government transacts all its receipts and payments. The principle of unity follows from the fungibility of all cash irrespective of its end use. While it is necessary to distinguish individual cash transactions for control and reporting purposes, this purpose is achieved through the accounting system and not by holding/depositing cash in transaction-specific bank accounts. [This enables the treasury to delink management of cash from control at a transaction level](https://www.imf.org/external/pubs/ft/wp/2010/wp10143.pdf#%3A\~%3Atext%3DA%20treasury%20single%20account%20%28TSA%29%20is%20an%20essential%2Cpriority%20in%20the%20public%20financial%20management%20reform%20agenda).
+A Treasury Single Account (TSA) is a unified structure of government bank accounts that gives a consolidated view of government cash resources. Based on the principle of unity of cash and the unity of treasury, a TSA is a bank account or a set of linked accounts through which the government transacts all its receipts and payments. The principle of unity follows from the fungibility of all cash irrespective of its end use. While it is necessary to distinguish individual cash transactions for control and reporting purposes, this purpose is achieved through the accounting system and not by holding/depositing cash in transaction-specific bank accounts. [This enables the treasury to delink management of cash from control at a transaction level](https://www.imf.org/external/pubs/ft/wp/2010/wp10143.pdf#%3A\~%3Atext%3DA%20treasury%20single%20account%20%28TSA%29%20is%20an%20essential%2Cpriority%20in%20the%20public%20financial%20management%20reform%20agenda).
 
 **Voucher**\
-A token that entitles the holder to a discount or that may be exchanged for goods or services
+A token that entitles the holder to a discount or that may be exchanged for goods or services.
 
 **Voucher Group**\
 A voucher group is a characteristic of a voucher that restricts the function or use case that a voucher can be used for. It can also be used as a dimension for reporting on.
