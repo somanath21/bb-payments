@@ -21,7 +21,7 @@ The customer of a digital financial services provider. The customer may be a con
 FMIS is the budget management system of the government treasury, which ensures that government (Ministries, Departments, Agencies) payments are processed within the approved budget and releases.
 
 **Financial Services Providers (FSPs)**\
-A financial services provider refers to one that is licensed by a regulatory authority to provide transaction accounts that hold customer funds and are used to make and receive payments. DFSPs have relationships with consumers, merchants, and other enterprises, and provide digital financial services to End Users.
+A financial services provider refers to one that is licensed by a regulatory authority to provide transaction accounts that hold customer funds and are used to make and receive payments. Digital Financial Services Providers (DFSPs) have relationships with consumers, merchants, and other enterprises, and provide digital financial services to End Users.
 
 **Interoperability**\
 The ability of DFSPs participating in a payment Scheme to exchange Transactions with each other. The term may also be used when two systems interconnect.
@@ -58,6 +58,8 @@ A reference to the entirety of the exchange, including a Payment but may also in
 
 **Treasury Single Account**\
 A Treasury Single Account (TSA) is a unified structure of government bank accounts that gives a consolidated view of government cash resources. Based on the principle of unity of cash and the unity of treasury, a TSA is a bank account or a set of linked accounts through which the government transacts all its receipts and payments. The principle of unity follows from the fungibility of all cash irrespective of its end use. While it is necessary to distinguish individual cash transactions for control and reporting purposes, this purpose is achieved through the accounting system and not by holding/depositing cash in transaction-specific bank accounts. [This enables the treasury to delink management of cash from control at a transaction level](https://www.imf.org/external/pubs/ft/wp/2010/wp10143.pdf#%3A\~%3Atext%3DA%20treasury%20single%20account%20%28TSA%29%20is%20an%20essential%2Cpriority%20in%20the%20public%20financial%20management%20reform%20agenda).
+
+A **Uniform Resource Identifier (URI)** is a unique sequence of characters that identifies a logical or physical resource used by web technologies.
 
 **Voucher**\
 A token that entitles the holder to a discount or that may be exchanged for goods or services.

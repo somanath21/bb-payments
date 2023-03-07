@@ -30,6 +30,6 @@ The table below summarizes the cross-cutting requirements.
     * Destination system for funds and related channels by which the Recipient accesses the funds.
     * Source system for funds and related channels for the individual or institution.
 
-    The Payments Building Block must meet the security requirements described in the [Security building block](../security-requirements/).
-* The Payments BB should meet the mechanisms for consuming and publishing APIs as described in the [Information mediator BB](../information-mediation/).
-* The Payments BB must meet the requirements described in the [Architecture building block](../architecture-and-nonfunctional-requirements/).
+    The Payments Building Block must meet the security requirements described in the Security building block.
+* The Payments BB should meet the mechanisms for consuming and publishing APIs as described in the [Information mediator BB](https://govstack.gitbook.io/specification/building-blocks/information-mediation).
+* The Payments BB must meet the requirements described in the Architecture building block.
