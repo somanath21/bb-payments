@@ -1,0 +1,1555 @@
+{
+  "uuid": "e94a4170-6ef6-4b0a-978d-be91893e9a64",
+  "lastMigration": 24,
+  "name": "PaymentsBBVoucherAPI",
+  "endpointPrefix": "",
+  "latency": 0,
+  "port": 3003,
+  "hostname": "0.0.0.0",
+  "routes": [
+    {
+      "uuid": "658ca4d8-4e46-4b3c-af0d-eabdd9733dff",
+      "documentation": "Requests for voucher number, voucher serial number and expiry date by sending voucher group, amount and currency",
+      "method": "post",
+      "endpoint": "vouchers/voucher_preactivation",
+      "responses": [
+        {
+          "uuid": "40758b1e-2dc5-47b9-b89f-f001dfa33cfa",
+          "body": "{\n  \"voucher_number\": \"stringstringstri\",\n  \"voucher_serial_number\": \"stringstringstri\",\n  \"expiry_date_time\": \"2023-01-04T16:01:00.619Z\"\n}",
+          "latency": 0,
+          "statusCode": 200,
+          "label": "Successfully pre-activated voucher",
+          "headers": [],
+          "bodyType": "INLINE",
+          "filePath": "",
+          "databucketID": "",
+          "sendFileAsBody": false,
+          "rules": [
+            {
+              "target": "body",
+              "modifier": "voucher_amount",
+              "value": "",
+              "invert": true,
+              "operator": "null"
+            },
+            {
+              "target": "body",
+              "modifier": "voucher_amount",
+              "value": "^([0]|([1-9][0-9]{0,17}))([.][0-9]{0,3}[0-9])?$",
+              "invert": false,
+              "operator": "regex"
+            },
+            {
+              "target": "body",
+              "modifier": "voucher_currency",
+              "value": "",
+              "invert": true,
+              "operator": "null"
+            },
+            {
+              "target": "body",
+              "modifier": "voucher_currency",
+              "value": "A(ED|FN|LL|MD|NG|OA|RS|UD|WG|ZN)|B(AM|BD|DT|GN|HD|IF|MD|ND|OB|OV|RL|SD|TN|WP|YN|ZD)|C(AD|DF|HE|HF|HW|LF|LP|NY|OP|OU|RC|UC|UP|VE|ZK)|D(KK|OP|ZDJF|)|E(GP|RN|TB|UR)|F(FD|KP)|G(BP|EL|HS|IP|MD|NF|TQ|YD)|H(KD|NL|RK|TG|UF)|I(DR|LS|NR|QD|RR|SK)|J(MD|OD|PY)|K(ES|GS|HR|MF|PW|RW|WD|YD|ZT)|L(AK|BP|KR|RD|SL|YD)|M(AD|DL|GA|KD|MK|NT|OP|RO|UR|VR|WK|XN|XV|YR|ZN)|N(AD|GN|IO|OK|PR|ZD)|OMR|P(AB|EN|GK|HP|KR|LN|YG)|QAR|R(RN|SD|UB|WF)|S(AR|BD|CR|DG|EK|GD|HP|LL|OS|RD|SP|TD|VC|YP|ZL)|T(HB|JS|MT|ND|OP|RY|TD|WD|ZS)|U(GA|KR|MI|RY|SA|ZB)|U(AH|GX|SD|SN|YI|YU|ZS)|V(EF|ND|UV)|WST|X(AF|AG|AU|BA|BB|BC|BD|CD|DR|OF|PD|PF|PT|SU|TS|UA|XX)|YER|Z(AR|MW|WL)",
+              "invert": false,
+              "operator": "regex"
+            },
+            {
+              "target": "body",
+              "modifier": "voucher_group",
+              "value": "",
+              "invert": true,
+              "operator": "null"
+            },
+            {
+              "target": "body",
+              "modifier": "Gov_Stack_BB",
+              "value": "",
+              "invert": true,
+              "operator": "null"
+            },
+            {
+              "target": "body",
+              "modifier": "Gov_Stack_BB",
+              "value": "Gov_Stack_BB",
+              "invert": false,
+              "operator": "equals"
+            },
+            {
+              "target": "body",
+              "modifier": "voucher_comment",
+              "value": "",
+              "invert": true,
+              "operator": "null"
+            }
+          ],
+          "rulesOperator": "AND",
+          "disableTemplating": false,
+          "fallbackTo404": false,
+          "default": false
+        },
+        {
+          "uuid": "a9ba7ad2-5630-468e-906b-ccfb955e66ee",
+          "body": "{\n  \"Invalid payload, voucher_currency is invalid\"\n}",
+          "latency": 0,
+          "statusCode": 453,
+          "label": "Invalid request - invalid currency",
+          "headers": [],
+          "bodyType": "INLINE",
+          "filePath": "",
+          "databucketID": "",
+          "sendFileAsBody": false,
+          "rules": [
+            {
+              "target": "body",
+              "modifier": "voucher_amount",
+              "value": "",
+              "invert": true,
+              "operator": "null"
+            },
+            {
+              "target": "body",
+              "modifier": "voucher_amount",
+              "value": "^([0]|([1-9][0-9]{0,17}))([.][0-9]{0,3}[0-9])?$",
+              "invert": false,
+              "operator": "regex"
+            },
+            {
+              "target": "body",
+              "modifier": "voucher_currency",
+              "value": "",
+              "invert": true,
+              "operator": "null"
+            },
+            {
+              "target": "body",
+              "modifier": "voucher_currency",
+              "value": "A(ED|FN|LL|MD|NG|OA|RS|UD|WG|ZN)|B(AM|BD|DT|GN|HD|IF|MD|ND|OB|OV|RL|SD|TN|WP|YN|ZD)|C(AD|DF|HE|HF|HW|LF|LP|NY|OP|OU|RC|UC|UP|VE|ZK)|D(KK|OP|ZDJF|)|E(GP|RN|TB|UR)|F(FD|KP)|G(BP|EL|HS|IP|MD|NF|TQ|YD)|H(KD|NL|RK|TG|UF)|I(DR|LS|NR|QD|RR|SK)|J(MD|OD|PY)|K(ES|GS|HR|MF|PW|RW|WD|YD|ZT)|L(AK|BP|KR|RD|SL|YD)|M(AD|DL|GA|KD|MK|NT|OP|RO|UR|VR|WK|XN|XV|YR|ZN)|N(AD|GN|IO|OK|PR|ZD)|OMR|P(AB|EN|GK|HP|KR|LN|YG)|QAR|R(RN|SD|UB|WF)|S(AR|BD|CR|DG|EK|GD|HP|LL|OS|RD|SP|TD|VC|YP|ZL)|T(HB|JS|MT|ND|OP|RY|TD|WD|ZS)|U(GA|KR|MI|RY|SA|ZB)|U(AH|GX|SD|SN|YI|YU|ZS)|V(EF|ND|UV)|WST|X(AF|AG|AU|BA|BB|BC|BD|CD|DR|OF|PD|PF|PT|SU|TS|UA|XX)|YER|Z(AR|MW|WL)",
+              "invert": true,
+              "operator": "regex"
+            },
+            {
+              "target": "body",
+              "modifier": "voucher_group",
+              "value": "",
+              "invert": true,
+              "operator": "null"
+            },
+            {
+              "target": "body",
+              "modifier": "Gov_Stack_BB",
+              "value": "",
+              "invert": true,
+              "operator": "null"
+            },
+            {
+              "target": "body",
+              "modifier": "Gov_Stack_BB",
+              "value": "Gov_Stack_BB",
+              "invert": false,
+              "operator": "equals"
+            },
+            {
+              "target": "body",
+              "modifier": "voucher_comment",
+              "value": "",
+              "invert": true,
+              "operator": "null"
+            }
+          ],
+          "rulesOperator": "AND",
+          "disableTemplating": false,
+          "fallbackTo404": false,
+          "default": false
+        },
+        {
+          "uuid": "577baa3c-abf1-4179-a2e3-0769a80720ce",
+          "body": "{\n  \"Invalid payload, voucher_group is invalid\"\n}",
+          "latency": 0,
+          "statusCode": 454,
+          "label": "Invalid request - invalid voucher group",
+          "headers": [],
+          "bodyType": "INLINE",
+          "filePath": "",
+          "databucketID": "",
+          "sendFileAsBody": false,
+          "rules": [
+            {
+              "target": "body",
+              "modifier": "voucher_amount",
+              "value": "",
+              "invert": true,
+              "operator": "null"
+            },
+            {
+              "target": "body",
+              "modifier": "voucher_amount",
+              "value": "^([0]|([1-9][0-9]{0,17}))([.][0-9]{0,3}[0-9])?$",
+              "invert": false,
+              "operator": "regex"
+            },
+            {
+              "target": "body",
+              "modifier": "voucher_currency",
+              "value": "",
+              "invert": true,
+              "operator": "null"
+            },
+            {
+              "target": "body",
+              "modifier": "voucher_currency",
+              "value": "A(ED|FN|LL|MD|NG|OA|RS|UD|WG|ZN)|B(AM|BD|DT|GN|HD|IF|MD|ND|OB|OV|RL|SD|TN|WP|YN|ZD)|C(AD|DF|HE|HF|HW|LF|LP|NY|OP|OU|RC|UC|UP|VE|ZK)|D(KK|OP|ZDJF|)|E(GP|RN|TB|UR)|F(FD|KP)|G(BP|EL|HS|IP|MD|NF|TQ|YD)|H(KD|NL|RK|TG|UF)|I(DR|LS|NR|QD|RR|SK)|J(MD|OD|PY)|K(ES|GS|HR|MF|PW|RW|WD|YD|ZT)|L(AK|BP|KR|RD|SL|YD)|M(AD|DL|GA|KD|MK|NT|OP|RO|UR|VR|WK|XN|XV|YR|ZN)|N(AD|GN|IO|OK|PR|ZD)|OMR|P(AB|EN|GK|HP|KR|LN|YG)|QAR|R(RN|SD|UB|WF)|S(AR|BD|CR|DG|EK|GD|HP|LL|OS|RD|SP|TD|VC|YP|ZL)|T(HB|JS|MT|ND|OP|RY|TD|WD|ZS)|U(GA|KR|MI|RY|SA|ZB)|U(AH|GX|SD|SN|YI|YU|ZS)|V(EF|ND|UV)|WST|X(AF|AG|AU|BA|BB|BC|BD|CD|DR|OF|PD|PF|PT|SU|TS|UA|XX)|YER|Z(AR|MW|WL)",
+              "invert": false,
+              "operator": "regex"
+            },
+            {
+              "target": "body",
+              "modifier": "voucher_group",
+              "value": "",
+              "invert": false,
+              "operator": "null"
+            },
+            {
+              "target": "body",
+              "modifier": "Gov_Stack_BB",
+              "value": "",
+              "invert": true,
+              "operator": "null"
+            },
+            {
+              "target": "body",
+              "modifier": "Gov_Stack_BB",
+              "value": "Gov_Stack_BB",
+              "invert": false,
+              "operator": "equals"
+            },
+            {
+              "target": "body",
+              "modifier": "voucher_comment",
+              "value": "",
+              "invert": true,
+              "operator": "null"
+            }
+          ],
+          "rulesOperator": "AND",
+          "disableTemplating": false,
+          "fallbackTo404": false,
+          "default": false
+        },
+        {
+          "uuid": "eca34d9f-de40-427b-9cc4-1fbed7d98307",
+          "body": "{\n  \"Invalid payload, voucher_amount is invalid\"\n}",
+          "latency": 0,
+          "statusCode": 452,
+          "label": "Invalid request - invalid amount",
+          "headers": [],
+          "bodyType": "INLINE",
+          "filePath": "",
+          "databucketID": "",
+          "sendFileAsBody": false,
+          "rules": [
+            {
+              "target": "body",
+              "modifier": "voucher_amount",
+              "value": "",
+              "invert": false,
+              "operator": "null"
+            },
+            {
+              "target": "body",
+              "modifier": "voucher_amount",
+              "value": "^([0]|([1-9][0-9]{0,17}))([.][0-9]{0,3}[0-9])?$",
+              "invert": true,
+              "operator": "regex"
+            },
+            {
+              "target": "body",
+              "modifier": "voucher_currency",
+              "value": "",
+              "invert": true,
+              "operator": "null"
+            },
+            {
+              "target": "body",
+              "modifier": "voucher_currency",
+              "value": "A(ED|FN|LL|MD|NG|OA|RS|UD|WG|ZN)|B(AM|BD|DT|GN|HD|IF|MD|ND|OB|OV|RL|SD|TN|WP|YN|ZD)|C(AD|DF|HE|HF|HW|LF|LP|NY|OP|OU|RC|UC|UP|VE|ZK)|D(KK|OP|ZDJF|)|E(GP|RN|TB|UR)|F(FD|KP)|G(BP|EL|HS|IP|MD|NF|TQ|YD)|H(KD|NL|RK|TG|UF)|I(DR|LS|NR|QD|RR|SK)|J(MD|OD|PY)|K(ES|GS|HR|MF|PW|RW|WD|YD|ZT)|L(AK|BP|KR|RD|SL|YD)|M(AD|DL|GA|KD|MK|NT|OP|RO|UR|VR|WK|XN|XV|YR|ZN)|N(AD|GN|IO|OK|PR|ZD)|OMR|P(AB|EN|GK|HP|KR|LN|YG)|QAR|R(RN|SD|UB|WF)|S(AR|BD|CR|DG|EK|GD|HP|LL|OS|RD|SP|TD|VC|YP|ZL)|T(HB|JS|MT|ND|OP|RY|TD|WD|ZS)|U(GA|KR|MI|RY|SA|ZB)|U(AH|GX|SD|SN|YI|YU|ZS)|V(EF|ND|UV)|WST|X(AF|AG|AU|BA|BB|BC|BD|CD|DR|OF|PD|PF|PT|SU|TS|UA|XX)|YER|Z(AR|MW|WL)",
+              "invert": false,
+              "operator": "regex"
+            },
+            {
+              "target": "body",
+              "modifier": "voucher_group",
+              "value": "",
+              "invert": true,
+              "operator": "null"
+            },
+            {
+              "target": "body",
+              "modifier": "Gov_Stack_BB",
+              "value": "",
+              "invert": true,
+              "operator": "null"
+            },
+            {
+              "target": "body",
+              "modifier": "Gov_Stack_BB",
+              "value": "Gov_Stack_BB",
+              "invert": false,
+              "operator": "equals"
+            },
+            {
+              "target": "body",
+              "modifier": "voucher_comment",
+              "value": "",
+              "invert": true,
+              "operator": "null"
+            }
+          ],
+          "rulesOperator": "AND",
+          "disableTemplating": false,
+          "fallbackTo404": false,
+          "default": false
+        },
+        {
+          "uuid": "a77a507e-6d10-4e73-aa4f-00c6e8c064d0",
+          "body": "{\n  \"Invalid payload, Gov Stack Building Block does not exist\"\n}",
+          "latency": 0,
+          "statusCode": 460,
+          "label": "Invalid request - Gov Stack Building Block does not exist",
+          "headers": [],
+          "bodyType": "INLINE",
+          "filePath": "",
+          "databucketID": "",
+          "sendFileAsBody": false,
+          "rules": [
+            {
+              "target": "body",
+              "modifier": "voucher_amount",
+              "value": "",
+              "invert": false,
+              "operator": "null"
+            },
+            {
+              "target": "body",
+              "modifier": "voucher_amount",
+              "value": "^([0]|([1-9][0-9]{0,17}))([.][0-9]{0,3}[0-9])?$",
+              "invert": false,
+              "operator": "regex"
+            },
+            {
+              "target": "body",
+              "modifier": "voucher_currency",
+              "value": "",
+              "invert": true,
+              "operator": "null"
+            },
+            {
+              "target": "body",
+              "modifier": "voucher_currency",
+              "value": "A(ED|FN|LL|MD|NG|OA|RS|UD|WG|ZN)|B(AM|BD|DT|GN|HD|IF|MD|ND|OB|OV|RL|SD|TN|WP|YN|ZD)|C(AD|DF|HE|HF|HW|LF|LP|NY|OP|OU|RC|UC|UP|VE|ZK)|D(KK|OP|ZDJF|)|E(GP|RN|TB|UR)|F(FD|KP)|G(BP|EL|HS|IP|MD|NF|TQ|YD)|H(KD|NL|RK|TG|UF)|I(DR|LS|NR|QD|RR|SK)|J(MD|OD|PY)|K(ES|GS|HR|MF|PW|RW|WD|YD|ZT)|L(AK|BP|KR|RD|SL|YD)|M(AD|DL|GA|KD|MK|NT|OP|RO|UR|VR|WK|XN|XV|YR|ZN)|N(AD|GN|IO|OK|PR|ZD)|OMR|P(AB|EN|GK|HP|KR|LN|YG)|QAR|R(RN|SD|UB|WF)|S(AR|BD|CR|DG|EK|GD|HP|LL|OS|RD|SP|TD|VC|YP|ZL)|T(HB|JS|MT|ND|OP|RY|TD|WD|ZS)|U(GA|KR|MI|RY|SA|ZB)|U(AH|GX|SD|SN|YI|YU|ZS)|V(EF|ND|UV)|WST|X(AF|AG|AU|BA|BB|BC|BD|CD|DR|OF|PD|PF|PT|SU|TS|UA|XX)|YER|Z(AR|MW|WL)",
+              "invert": false,
+              "operator": "regex"
+            },
+            {
+              "target": "body",
+              "modifier": "voucher_group",
+              "value": "",
+              "invert": true,
+              "operator": "null"
+            },
+            {
+              "target": "body",
+              "modifier": "Gov_Stack_BB",
+              "value": "",
+              "invert": true,
+              "operator": "null"
+            },
+            {
+              "target": "body",
+              "modifier": "Gov_Stack_BB",
+              "value": "Gov_Stack_BB",
+              "invert": true,
+              "operator": "equals"
+            },
+            {
+              "target": "body",
+              "modifier": "voucher_comment",
+              "value": "",
+              "invert": true,
+              "operator": "null"
+            }
+          ],
+          "rulesOperator": "AND",
+          "disableTemplating": false,
+          "fallbackTo404": false,
+          "default": true
+        },
+        {
+          "uuid": "4e01c1d6-1d3b-47ab-a8f4-007edc927bc0",
+          "body": "{\n  \"Invalid request - body can not be empty\"\n}",
+          "latency": 0,
+          "statusCode": 400,
+          "label": "Invalid request - body is empty",
+          "headers": [],
+          "bodyType": "INLINE",
+          "filePath": "",
+          "databucketID": "",
+          "sendFileAsBody": false,
+          "rules": [
+            {
+              "target": "body",
+              "modifier": "",
+              "value": "",
+              "invert": false,
+              "operator": "null"
+            }
+          ],
+          "rulesOperator": "AND",
+          "disableTemplating": false,
+          "fallbackTo404": false,
+          "default": false
+        }
+      ],
+      "enabled": true,
+      "responseMode": null
+    },
+    {
+      "uuid": "0290c505-f27d-41b3-86aa-c85e18e036a6",
+      "documentation": "This operation cancels a specific voucher number",
+      "method": "patch",
+      "endpoint": "vouchers/voucherstatuscheck/:voucherserialnumber",
+      "responses": [
+        {
+          "uuid": "a92bdd1b-ec8a-4cb1-8ad0-8f1412d33faa",
+          "body": "{\n  \"message\": \"Voucher cancelled\"\n}",
+          "latency": 0,
+          "statusCode": 200,
+          "label": "Voucher cancelled",
+          "headers": [
+            {
+              "key": "Content-Type",
+              "value": "application/json"
+            }
+          ],
+          "bodyType": "INLINE",
+          "filePath": "",
+          "databucketID": "",
+          "sendFileAsBody": false,
+          "rules": [
+            {
+              "target": "params",
+              "modifier": "voucherserialnumber",
+              "value": "1234",
+              "invert": false,
+              "operator": "equals"
+            },
+            {
+              "target": "body",
+              "modifier": "voucherserialnumber",
+              "value": "^$|\\s+",
+              "invert": true,
+              "operator": "regex"
+            },
+            {
+              "target": "body",
+              "modifier": "voucherserialnumber",
+              "value": "",
+              "invert": true,
+              "operator": "null"
+            },
+            {
+              "target": "body",
+              "modifier": "Gov_Stack_BB",
+              "value": "^$|\\s+",
+              "invert": true,
+              "operator": "regex"
+            },
+            {
+              "target": "body",
+              "modifier": "Gov_Stack_BB",
+              "value": "",
+              "invert": true,
+              "operator": "null"
+            }
+          ],
+          "rulesOperator": "AND",
+          "disableTemplating": false,
+          "fallbackTo404": false,
+          "default": false
+        },
+        {
+          "uuid": "abbcfef0-a36b-436c-98fc-e439c0fc7a1d",
+          "body": "{\n  \"message\": \"Invalid request\"\n}",
+          "latency": 0,
+          "statusCode": 400,
+          "label": "Invalid request",
+          "headers": [
+            {
+              "key": "Content-Type",
+              "value": "application/json"
+            }
+          ],
+          "bodyType": "INLINE",
+          "filePath": "",
+          "databucketID": "",
+          "sendFileAsBody": false,
+          "rules": [
+            {
+              "target": "body",
+              "modifier": "",
+              "value": "",
+              "invert": false,
+              "operator": "null"
+            },
+            {
+              "target": "body",
+              "modifier": "voucherserialnumber",
+              "value": "^$|\\s+",
+              "invert": false,
+              "operator": "regex"
+            },
+            {
+              "target": "body",
+              "modifier": "voucherserialnumber",
+              "value": "",
+              "invert": false,
+              "operator": "null"
+            },
+            {
+              "target": "body",
+              "modifier": "Gov_Stack_BB",
+              "value": "^$|\\s+",
+              "invert": false,
+              "operator": "regex"
+            },
+            {
+              "target": "body",
+              "modifier": "Gov_Stack_BB",
+              "value": "",
+              "invert": false,
+              "operator": "null"
+            }
+          ],
+          "rulesOperator": "OR",
+          "disableTemplating": false,
+          "fallbackTo404": false,
+          "default": true
+        },
+        {
+          "uuid": "003b7329-926a-4b8b-9bf4-0ffdfc170e46",
+          "body": "{\n  \"message\": \"Invalid voucher\"\n}",
+          "latency": 0,
+          "statusCode": 463,
+          "label": "Invalid voucher",
+          "headers": [
+            {
+              "key": "Content-Type",
+              "value": "application/json"
+            }
+          ],
+          "bodyType": "INLINE",
+          "filePath": "",
+          "databucketID": "",
+          "sendFileAsBody": false,
+          "rules": [
+            {
+              "target": "params",
+              "modifier": "voucherserialnumber",
+              "value": "3214",
+              "invert": false,
+              "operator": "equals"
+            },
+            {
+              "target": "body",
+              "modifier": "voucherserialnumber",
+              "value": "^$|\\s+",
+              "invert": true,
+              "operator": "regex"
+            },
+            {
+              "target": "body",
+              "modifier": "voucherserialnumber",
+              "value": "",
+              "invert": true,
+              "operator": "null"
+            },
+            {
+              "target": "body",
+              "modifier": "Gov_Stack_BB",
+              "value": "^$|\\s+",
+              "invert": true,
+              "operator": "regex"
+            },
+            {
+              "target": "body",
+              "modifier": "Gov_Stack_BB",
+              "value": "",
+              "invert": true,
+              "operator": "null"
+            }
+          ],
+          "rulesOperator": "AND",
+          "disableTemplating": false,
+          "fallbackTo404": false,
+          "default": false
+        },
+        {
+          "uuid": "a436b1e9-b6d4-45e3-b814-e21f18232a36",
+          "body": "{\n  \"message\": \"Voucher is already cancelled\"\n}",
+          "latency": 0,
+          "statusCode": 464,
+          "label": "Voucher is already cancelled",
+          "headers": [
+            {
+              "key": "Content-Type",
+              "value": "application/json"
+            }
+          ],
+          "bodyType": "INLINE",
+          "filePath": "",
+          "databucketID": "",
+          "sendFileAsBody": false,
+          "rules": [
+            {
+              "target": "params",
+              "modifier": "voucherserialnumber",
+              "value": "2134",
+              "invert": false,
+              "operator": "equals"
+            },
+            {
+              "target": "body",
+              "modifier": "voucherserialnumber",
+              "value": "^$|\\s+",
+              "invert": true,
+              "operator": "regex"
+            },
+            {
+              "target": "body",
+              "modifier": "voucherserialnumber",
+              "value": "",
+              "invert": true,
+              "operator": "null"
+            },
+            {
+              "target": "body",
+              "modifier": "Gov_Stack_BB",
+              "value": "^$|\\s+",
+              "invert": true,
+              "operator": "regex"
+            },
+            {
+              "target": "body",
+              "modifier": "Gov_Stack_BB",
+              "value": "",
+              "invert": true,
+              "operator": "null"
+            }
+          ],
+          "rulesOperator": "AND",
+          "disableTemplating": false,
+          "fallbackTo404": false,
+          "default": false
+        }
+      ],
+      "enabled": true,
+      "responseMode": null
+    },
+    {
+      "uuid": "236f74d1-94d9-4a39-9d0c-17fb74e68302",
+      "documentation": "Request for voucher redemption by sending the voucher number, the merchant name and merchant payment details.",
+      "method": "post",
+      "endpoint": "vouchers/voucher_redemption",
+      "responses": [
+        {
+          "uuid": "525fc27b-5ec1-41b2-b2ad-163b5352228e",
+          "body": "{\n  \"result_status\": \"Voucher is successfully redeemed\"\n}",
+          "latency": 0,
+          "statusCode": 200,
+          "label": "Voucher is successfully redeemed",
+          "headers": [],
+          "bodyType": "INLINE",
+          "filePath": "",
+          "databucketID": "",
+          "sendFileAsBody": false,
+          "rules": [
+            {
+              "target": "body",
+              "modifier": "voucher_number",
+              "value": "^((?!(0))[0-9]{0,19})$",
+              "invert": false,
+              "operator": "regex"
+            },
+            {
+              "target": "body",
+              "modifier": "voucher_number",
+              "value": "",
+              "invert": true,
+              "operator": "null"
+            },
+            {
+              "target": "body",
+              "modifier": "Gov_Stack_BB",
+              "value": "Gov_Stack_BB",
+              "invert": false,
+              "operator": "equals"
+            },
+            {
+              "target": "body",
+              "modifier": "merchant_name",
+              "value": "Leonard Snow",
+              "invert": false,
+              "operator": "equals"
+            },
+            {
+              "target": "body",
+              "modifier": "merchant_bank_details",
+              "value": "",
+              "invert": true,
+              "operator": "null"
+            },
+            {
+              "target": "body",
+              "modifier": "merchant_voucher_group",
+              "value": "Voucher group",
+              "invert": false,
+              "operator": "equals"
+            },
+            {
+              "target": "body",
+              "modifier": "override",
+              "value": "",
+              "invert": true,
+              "operator": "null"
+            },
+            {
+              "target": "body",
+              "modifier": "",
+              "value": "",
+              "invert": true,
+              "operator": "null"
+            }
+          ],
+          "rulesOperator": "AND",
+          "disableTemplating": false,
+          "fallbackTo404": false,
+          "default": false
+        },
+        {
+          "uuid": "79e9d60b-88c5-4342-87b0-e3b14a4005db",
+          "body": "{\n  \"message\": \"GovStack Building Block does not exist\"\n}",
+          "latency": 0,
+          "statusCode": 460,
+          "label": "Error - GovStack Building Block does not exist",
+          "headers": [],
+          "bodyType": "INLINE",
+          "filePath": "",
+          "databucketID": "",
+          "sendFileAsBody": false,
+          "rules": [
+            {
+              "target": "body",
+              "modifier": "voucher_number",
+              "value": "^((?!(0))[0-9]{0,19})$",
+              "invert": false,
+              "operator": "regex"
+            },
+            {
+              "target": "body",
+              "modifier": "voucher_number",
+              "value": "",
+              "invert": true,
+              "operator": "null"
+            },
+            {
+              "target": "body",
+              "modifier": "Gov_Stack_BB",
+              "value": "Gov_Stack_BB",
+              "invert": true,
+              "operator": "equals"
+            },
+            {
+              "target": "body",
+              "modifier": "merchant_name",
+              "value": "Leonard Snow",
+              "invert": false,
+              "operator": "equals"
+            },
+            {
+              "target": "body",
+              "modifier": "merchant_bank_details",
+              "value": "",
+              "invert": true,
+              "operator": "null"
+            },
+            {
+              "target": "body",
+              "modifier": "merchant_voucher_group",
+              "value": "",
+              "invert": true,
+              "operator": "null"
+            },
+            {
+              "target": "body",
+              "modifier": "merchant_voucher_group",
+              "value": "Voucher group",
+              "invert": false,
+              "operator": "equals"
+            },
+            {
+              "target": "body",
+              "modifier": "override",
+              "value": "",
+              "invert": true,
+              "operator": "null"
+            },
+            {
+              "target": "body",
+              "modifier": "",
+              "value": "",
+              "invert": true,
+              "operator": "null"
+            }
+          ],
+          "rulesOperator": "AND",
+          "disableTemplating": false,
+          "fallbackTo404": false,
+          "default": false
+        },
+        {
+          "uuid": "93ce5d98-5969-45e7-b8eb-d0faabec96ab",
+          "body": "{\n  \"message\": \"Invalid voucher number\"\n}",
+          "latency": 0,
+          "statusCode": 461,
+          "label": "Invalid request - Invalid voucher number",
+          "headers": [],
+          "bodyType": "INLINE",
+          "filePath": "",
+          "databucketID": "",
+          "sendFileAsBody": false,
+          "rules": [
+            {
+              "target": "body",
+              "modifier": "voucher_number",
+              "value": "",
+              "invert": false,
+              "operator": "null"
+            },
+            {
+              "target": "body",
+              "modifier": "Gov_Stack_BB",
+              "value": "Gov_Stack_BB",
+              "invert": false,
+              "operator": "equals"
+            },
+            {
+              "target": "body",
+              "modifier": "merchant_name",
+              "value": "Leonard Snow",
+              "invert": false,
+              "operator": "equals"
+            },
+            {
+              "target": "body",
+              "modifier": "merchant_bank_details",
+              "value": "",
+              "invert": true,
+              "operator": "null"
+            },
+            {
+              "target": "body",
+              "modifier": "merchant_voucher_group",
+              "value": "",
+              "invert": true,
+              "operator": "null"
+            },
+            {
+              "target": "body",
+              "modifier": "merchant_voucher_group",
+              "value": "Voucher group",
+              "invert": false,
+              "operator": "equals"
+            },
+            {
+              "target": "body",
+              "modifier": "override",
+              "value": "",
+              "invert": true,
+              "operator": "null"
+            },
+            {
+              "target": "body",
+              "modifier": "",
+              "value": "",
+              "invert": true,
+              "operator": "null"
+            }
+          ],
+          "rulesOperator": "AND",
+          "disableTemplating": false,
+          "fallbackTo404": false,
+          "default": false
+        },
+        {
+          "uuid": "98abe02e-d027-4df5-b41e-899e3f6a69ad",
+          "body": "{\n  \"message\": \"Insufficient funds in funding a/c\"\n}",
+          "latency": 0,
+          "statusCode": 462,
+          "label": "Error - Insufficient funds in funding a/c",
+          "headers": [],
+          "bodyType": "INLINE",
+          "filePath": "",
+          "databucketID": "",
+          "sendFileAsBody": false,
+          "rules": [
+            {
+              "target": "body",
+              "modifier": "voucher_number",
+              "value": "^((?!(0))[0-9]{0,19})$",
+              "invert": false,
+              "operator": "regex"
+            },
+            {
+              "target": "body",
+              "modifier": "voucher_number",
+              "value": "",
+              "invert": true,
+              "operator": "null"
+            },
+            {
+              "target": "body",
+              "modifier": "Gov_Stack_BB",
+              "value": "Gov_Stack_BB",
+              "invert": false,
+              "operator": "equals"
+            },
+            {
+              "target": "body",
+              "modifier": "merchant_name",
+              "value": "Leonard Snow",
+              "invert": false,
+              "operator": "equals"
+            },
+            {
+              "target": "body",
+              "modifier": "merchant_bank_details",
+              "value": "",
+              "invert": true,
+              "operator": "null"
+            },
+            {
+              "target": "body",
+              "modifier": "merchant_voucher_group",
+              "value": "Voucher group",
+              "invert": true,
+              "operator": "equals"
+            },
+            {
+              "target": "body",
+              "modifier": "override",
+              "value": "",
+              "invert": true,
+              "operator": "null"
+            },
+            {
+              "target": "body",
+              "modifier": "",
+              "value": "",
+              "invert": true,
+              "operator": "null"
+            }
+          ],
+          "rulesOperator": "AND",
+          "disableTemplating": false,
+          "fallbackTo404": false,
+          "default": false
+        },
+        {
+          "uuid": "420d96ff-13ef-4a60-a8b6-298131896b40",
+          "body": "{\n  \"message\": \"Cannot credit merchant\"\n}",
+          "latency": 0,
+          "statusCode": 463,
+          "label": "Error - Cannot credit merchant",
+          "headers": [],
+          "bodyType": "INLINE",
+          "filePath": "",
+          "databucketID": "",
+          "sendFileAsBody": false,
+          "rules": [
+            {
+              "target": "body",
+              "modifier": "voucher_number",
+              "value": "^((?!(0))[0-9]{0,19})$",
+              "invert": false,
+              "operator": "regex"
+            },
+            {
+              "target": "body",
+              "modifier": "voucher_number",
+              "value": "",
+              "invert": true,
+              "operator": "null"
+            },
+            {
+              "target": "body",
+              "modifier": "Gov_Stack_BB",
+              "value": "Gov_Stack_BB",
+              "invert": false,
+              "operator": "equals"
+            },
+            {
+              "target": "body",
+              "modifier": "merchant_name",
+              "value": "Leonard Snow",
+              "invert": true,
+              "operator": "equals"
+            },
+            {
+              "target": "body",
+              "modifier": "merchant_bank_details",
+              "value": "",
+              "invert": true,
+              "operator": "null"
+            },
+            {
+              "target": "body",
+              "modifier": "merchant_voucher_group",
+              "value": "Voucher group",
+              "invert": false,
+              "operator": "equals"
+            },
+            {
+              "target": "body",
+              "modifier": "override",
+              "value": "",
+              "invert": true,
+              "operator": "null"
+            },
+            {
+              "target": "body",
+              "modifier": "",
+              "value": "",
+              "invert": true,
+              "operator": "null"
+            }
+          ],
+          "rulesOperator": "AND",
+          "disableTemplating": false,
+          "fallbackTo404": false,
+          "default": false
+        },
+        {
+          "uuid": "1fcd9573-2753-4b2b-a6df-fd54740888fe",
+          "body": "{\n  \"message\": \"Invalid request\"\n}",
+          "latency": 0,
+          "statusCode": 400,
+          "label": "Invalid request",
+          "headers": [],
+          "bodyType": "INLINE",
+          "filePath": "",
+          "databucketID": "",
+          "sendFileAsBody": false,
+          "rules": [
+            {
+              "target": "body",
+              "modifier": "",
+              "value": "",
+              "invert": false,
+              "operator": "null"
+            }
+          ],
+          "rulesOperator": "OR",
+          "disableTemplating": false,
+          "fallbackTo404": false,
+          "default": true
+        }
+        
+      ],
+      "enabled": true,
+      "responseMode": null
+    },
+    {
+      "uuid": "d8879a90-3938-4eb4-ab32-f224b3f3f3e1",
+      "documentation": "Request for voucher activation by sending the voucher serial number",
+      "method": "patch",
+      "endpoint": "vouchers/voucher_activation/",
+      "responses": [
+        {
+          "uuid": "c7d8a76f-a410-467f-81e4-9749f6629f69",
+          "body": "{\n  \"result_status\": \"Successfully activated voucher\"\n}",
+          "latency": 0,
+          "statusCode": 200,
+          "label": "Successfully activated voucher",
+          "headers": [
+            {
+              "key": "Content-Type",
+              "value": "application/json"
+            }
+          ],
+          "bodyType": "INLINE",
+          "filePath": "",
+          "databucketID": "",
+          "sendFileAsBody": false,
+          "rules": [
+            {
+              "target": "body",
+              "modifier": "voucher_serial_number",
+              "value": "",
+              "invert": true,
+              "operator": "null"
+            },
+            {
+              "target": "body",
+              "modifier": "voucher_serial_number",
+              "value": "",
+              "invert": true,
+              "operator": "equals"
+            },
+            {
+              "target": "body",
+              "modifier": "voucher_serial_number",
+              "value": "^((?!(0))[0-9]{0,19})$",
+              "invert": false,
+              "operator": "regex"
+            },
+            {
+              "target": "body",
+              "modifier": "Gov_Stack_BB",
+              "value": "",
+              "invert": true,
+              "operator": "null"
+            },
+            {
+              "target": "body",
+              "modifier": "Gov_Stack_BB",
+              "value": "",
+              "invert": true,
+              "operator": "equals"
+            }
+          ],
+          "rulesOperator": "AND",
+          "disableTemplating": false,
+          "fallbackTo404": false,
+          "default": false
+        },
+        {
+          "uuid": "911765ac-06fd-4243-9bcf-61411601ef6a",
+          "body": "{\n  \"message\": \"Invalid request\"\n}",
+          "latency": 0,
+          "statusCode": 400,
+          "label": "Invalid request",
+          "headers": [],
+          "bodyType": "INLINE",
+          "filePath": "",
+          "databucketID": "",
+          "sendFileAsBody": false,
+          "rules": [
+            {
+              "target": "body",
+              "modifier": "",
+              "value": "",
+              "invert": false,
+              "operator": "null"
+            }
+          ],
+          "rulesOperator": "OR",
+          "disableTemplating": false,
+          "fallbackTo404": false,
+          "default": true
+        },
+        {
+          "uuid": "822b9489-69b5-4fe5-9bbd-18e0aee00ebe",
+          "body": "{\n  \"message\": \"Invalid voucher serial number\"\n}",
+          "latency": 0,
+          "statusCode": 456,
+          "label": "Invalid voucher serial number",
+          "headers": [],
+          "bodyType": "INLINE",
+          "filePath": "",
+          "databucketID": "",
+          "sendFileAsBody": false,
+          "rules": [
+            {
+              "target": "body",
+              "modifier": "voucher_serial_number",
+              "value": "",
+              "invert": false,
+              "operator": "null"
+            },
+            {
+              "target": "body",
+              "modifier": "voucher_serial_number",
+              "value": "",
+              "invert": false,
+              "operator": "equals"
+            },
+            {
+              "target": "body",
+              "modifier": "voucher_serial_number",
+              "value": "^((?!(0))[0-9]{0,19})$",
+              "invert": true,
+              "operator": "regex"
+            }
+          ],
+          "rulesOperator": "OR",
+          "disableTemplating": false,
+          "fallbackTo404": false,
+          "default": false
+        },
+        {
+          "uuid": "e38c51a0-6bf0-4bad-a089-0dafd4f37299",
+          "body": "{\n  \"message\": \"Gov Stack Building Block does not exist\"\n}",
+          "latency": 0,
+          "statusCode": 460,
+          "label": "Gov Stack Building Block does not exist",
+          "headers": [],
+          "bodyType": "INLINE",
+          "filePath": "",
+          "databucketID": "",
+          "sendFileAsBody": false,
+          "rules": [
+            {
+              "target": "body",
+              "modifier": "Gov_Stack_BB",
+              "value": "",
+              "invert": false,
+              "operator": "null"
+            },
+            {
+              "target": "body",
+              "modifier": "Gov_Stack_BB",
+              "value": "",
+              "invert": false,
+              "operator": "equals"
+            }
+          ],
+          "rulesOperator": "OR",
+          "disableTemplating": false,
+          "fallbackTo404": false,
+          "default": false
+        }
+      ],
+      "enabled": true,
+      "responseMode": null
+    },
+    {
+      "uuid": "11e0eb75-3513-4c7c-9a33-bdc4c9405d42",
+      "documentation": "Check the status of the Voucher. The API will respond with Not Pre-Activated, Pre-Activated, Activated, Suspended, Blocked, Purged or Not Existing",
+      "method": "get",
+      "endpoint": "vouchers/voucherstatuscheck/:voucherserialnumber",
+      "responses": [
+        {
+          "uuid": "cd774659-0642-48d6-9636-1207a9ca9066",
+          "body": "{\n  \"message\": \"Invalid request\"\n}",
+          "latency": 0,
+          "statusCode": 400,
+          "label": "Invalid request",
+          "headers": [
+            {
+              "key": "Content-Type",
+              "value": "application/json"
+            }
+          ],
+          "bodyType": "INLINE",
+          "filePath": "",
+          "databucketID": "",
+          "sendFileAsBody": false,
+          "rules": [
+            {
+              "target": "params",
+              "modifier": "voucherserialnumber",
+              "value": "null",
+              "invert": false,
+              "operator": "equals"
+            }
+          ],
+          "rulesOperator": "OR",
+          "disableTemplating": false,
+          "fallbackTo404": false,
+          "default": true
+        },
+        {
+          "uuid": "e0d54c47-f7c9-42f9-9a50-e03b765ffc4e",
+          "body": "{\n  \"message\": \"Invalid voucher number\"\n}",
+          "latency": 0,
+          "statusCode": 456,
+          "label": "Invalid voucher number",
+          "headers": [
+            {
+              "key": "Content-Type",
+              "value": "application/json"
+            }
+          ],
+          "bodyType": "INLINE",
+          "filePath": "",
+          "databucketID": "",
+          "sendFileAsBody": false,
+          "rules": [
+            {
+              "target": "params",
+              "modifier": "voucherserialnumber",
+              "value": "^.{1,}$",
+              "invert": false,
+              "operator": "regex"
+            },
+            {
+              "target": "params",
+              "modifier": "voucherserialnumber",
+              "value": "invalidNumber",
+              "invert": false,
+              "operator": "equals"
+            },
+            {
+              "target": "params",
+              "modifier": "voucherserialnumber",
+              "value": "null",
+              "invert": true,
+              "operator": "equals"
+            },
+            {
+              "target": "params",
+              "modifier": "voucherserialnumber",
+              "value": "",
+              "invert": true,
+              "operator": "null"
+            }
+          ],
+          "rulesOperator": "AND",
+          "disableTemplating": false,
+          "fallbackTo404": false,
+          "default": false
+        },
+        {
+          "uuid": "6943cbd5-4a40-43b9-9e31-ddae3e9213a0",
+          "body": "{\n  \"message\": \"Voucher number already used\"\n}",
+          "latency": 0,
+          "statusCode": 458,
+          "label": "Voucher number already used",
+          "headers": [
+            {
+              "key": "Content-Type",
+              "value": "application/json"
+            }
+          ],
+          "bodyType": "INLINE",
+          "filePath": "",
+          "databucketID": "",
+          "sendFileAsBody": false,
+          "rules": [
+            {
+              "target": "params",
+              "modifier": "voucherserialnumber",
+              "value": "^.{1,}$",
+              "invert": false,
+              "operator": "regex"
+            },
+            {
+              "target": "params",
+              "modifier": "voucherserialnumber",
+              "value": "alreadyUsed",
+              "invert": false,
+              "operator": "equals"
+            },
+            {
+              "target": "params",
+              "modifier": "voucherserialnumber",
+              "value": "null",
+              "invert": true,
+              "operator": "equals"
+            },
+            {
+              "target": "params",
+              "modifier": "voucherserialnumber",
+              "value": "",
+              "invert": true,
+              "operator": "null"
+            }
+          ],
+          "rulesOperator": "AND",
+          "disableTemplating": false,
+          "fallbackTo404": false,
+          "default": false
+        },
+        {
+          "uuid": "9e5832f1-0574-4630-9df7-5753b08f45e7",
+          "body": "{\n  \"message\": \"Voucher has expired\"\n}",
+          "latency": 0,
+          "statusCode": 459,
+          "label": "Voucher has expired",
+          "headers": [
+            {
+              "key": "",
+              "value": ""
+            }
+          ],
+          "bodyType": "INLINE",
+          "filePath": "",
+          "databucketID": "",
+          "sendFileAsBody": false,
+          "rules": [
+            {
+              "target": "params",
+              "modifier": "voucherserialnumber",
+              "value": "^.{1,}$",
+              "invert": false,
+              "operator": "regex"
+            },
+            {
+              "target": "params",
+              "modifier": "voucherserialnumber",
+              "value": "expired",
+              "invert": false,
+              "operator": "equals"
+            },
+            {
+              "target": "params",
+              "modifier": "voucherserialnumber",
+              "value": "null",
+              "invert": true,
+              "operator": "equals"
+            },
+            {
+              "target": "params",
+              "modifier": "voucherserialnumber",
+              "value": "",
+              "invert": true,
+              "operator": "null"
+            }
+          ],
+          "rulesOperator": "AND",
+          "disableTemplating": false,
+          "fallbackTo404": false,
+          "default": false
+        },
+        {
+          "uuid": "e5850d88-cc27-4e57-8e1c-7ee43fefd386",
+          "body": "{\n  \"message\": \"Gov Stack Building Block does not exist\"\n}",
+          "latency": 0,
+          "statusCode": 460,
+          "label": "Gov Stack Building Block does not exist",
+          "headers": [
+            {
+              "key": "Content-Type",
+              "value": "application/json"
+            }
+          ],
+          "bodyType": "INLINE",
+          "filePath": "",
+          "databucketID": "",
+          "sendFileAsBody": false,
+          "rules": [
+            {
+              "target": "params",
+              "modifier": "voucherserialnumber",
+              "value": "^.{1,}$",
+              "invert": false,
+              "operator": "regex"
+            },
+            {
+              "target": "params",
+              "modifier": "voucherserialnumber",
+              "value": "notExistingGovStackBB",
+              "invert": false,
+              "operator": "equals"
+            },
+            {
+              "target": "params",
+              "modifier": "voucherserialnumber",
+              "value": "null",
+              "invert": true,
+              "operator": "equals"
+            },
+            {
+              "target": "params",
+              "modifier": "voucherserialnumber",
+              "value": "",
+              "invert": true,
+              "operator": "null"
+            }
+          ],
+          "rulesOperator": "AND",
+          "disableTemplating": false,
+          "fallbackTo404": false,
+          "default": false
+        },
+        {
+          "uuid": "8f7b4800-b1a4-491c-97ec-04b83df506de",
+          "body": "{\n  \"voucher_status\": \"Not Pre-Activated\",\n  \"voucher_amount\": \"string\"\n}",
+          "latency": 0,
+          "statusCode": 200,
+          "label": "Voucher status",
+          "headers": [
+            {
+              "key": "Content-Type",
+              "value": "application/json"
+            }
+          ],
+          "bodyType": "INLINE",
+          "filePath": "",
+          "databucketID": "",
+          "sendFileAsBody": false,
+          "rules": [
+            {
+              "target": "params",
+              "modifier": "voucherserialnumber",
+              "value": "^.{1,}$",
+              "invert": false,
+              "operator": "regex"
+            },
+            {
+              "target": "params",
+              "modifier": "voucherserialnumber",
+              "value": "null",
+              "invert": true,
+              "operator": "equals"
+            },
+            {
+              "target": "params",
+              "modifier": "voucherserialnumber",
+              "value": "",
+              "invert": true,
+              "operator": "null"
+            }
+          ],
+          "rulesOperator": "AND",
+          "disableTemplating": false,
+          "fallbackTo404": false,
+          "default": false
+        }
+      ],
+      "enabled": true,
+      "responseMode": null
+    }
+  ],
+  "proxyMode": false,
+  "proxyHost": "",
+  "proxyRemovePrefix": false,
+  "tlsOptions": {
+    "enabled": false,
+    "type": "CERT",
+    "pfxPath": "",
+    "certPath": "",
+    "keyPath": "",
+    "caPath": "",
+    "passphrase": ""
+  },
+  "cors": true,
+  "headers": [
+    {
+      "key": "Content-Type",
+      "value": "application/json"
+    }
+  ],
+  "proxyReqHeaders": [
+    {
+      "key": "",
+      "value": ""
+    }
+  ],
+  "proxyResHeaders": [
+    {
+      "key": "",
+      "value": ""
+    }
+  ],
+  "data": []
+}
