@@ -1,12 +1,37 @@
 # 4 Key Digital Functionalities
 
-The Payments Building Block provides functionalities to cater to the following payment types:
+### 4.1 General Key Functionalities of the Payments Building Block
 
-* Government-to-person (G2P) payments such as:
-  * periodic bulk payments such as salary payments,
-  * unconditional social cash transfer: Cash payments provided to financially disadvantaged or vulnerable people or households without requiring anything in return. The unconditional cash transfer should support different modes/channels for payments: bank payments, voucher payments, mobile money payments, and other electronic channels.
-  * conditional cash transfer: Cash payments provided to financially disadvantaged or vulnerable people or households aimed at changing behaviors. The payments are conditional depending upon the recipient's actions.
-* Person to Government (P2G) payments: support payments for government services e.g. payment of government fees, driving licenses, and utility payments.
+In general, the functions below describe the activities/actions that are performed in the Payments Building Block.
+
+1. Enable government programs to channel payments through a shared payments infrastructure to accounts at multiple providers, allowing citizens to choose their preferred Financial Services Provider (FSP) and switch providers if their circumstances change or they discover a better service.
+2. Connect securely and interact with registry, identity, and other Building Blocks through the Information Mediation Building Block.
+3. Handle payments processing and orchestration, including verification of user information, confirmation of payee details, verification of destination account for the beneficiary, fee calculation, and handling of automated bulk transactions.
+4. Send receipts, notifications, and acknowledgement of receipts in a secure manner to payers and other external applications to receive confirmation of payment made and safekeeping of a record of the receipt that was sent.
+5. Provides for auditability of the Payments Building Block to have its controls evaluated for effectiveness, efficiency, and security, including tracing transactions, identifying users who access the system, clearly defined system controls, and compliance with local regulations and global best practices.
+6. Schedule and aggregate payments to individuals, allowing programs to stagger payments or combine with other payments to the same groups of individuals.
+7. Enable payment confirmation through secure receipts, notifications, and acknowledgement of receipts to payers and other external applications.
+8. Store event logs and audit trails for all transactions processed and their outcomes for monitoring and audit purposes.
+9. Validate data structures and content to ensure that it is not missing key pieces of information, including verifying the destination account and triggering a different process if the account is not in good status.
+10. Break down bulk payments into batches that can be handled efficiently or create a queue mechanism whereby the list is sequentially processed with throttling to reduce the flow of payment initiated.
+11. Coordinate or orchestrate the validation, verification, batching, and scheduling using a set of rules, including options for kicking back to the operator for review or resubmission in certain error cases.
+12. Generate reconciliation of accounts based on the successful sending of funds into accounts and reports to show the additional status of systems and payment types and timings.
+13. Manage fees in a centralized way and support the use of digital channels to/from end-users, regulated account systems with payment signaling, and notifications by the FSP enablers.
+14. Scale on transaction performance, transaction latency, reliability, resilience, and graceful service degradation.
+15. Support digital tools for query management, including beneficiary queries and complaints about the payment services.
+16. Route bulk payments through the account holding the funds, either at the government Treasury or a commercial bank.
+17. Release funds by the Ministry or payroll master after appropriate approvals.
+18. Handle processing and orchestration of bulk payments, including verification of user information, confirmation of payee details, verification of destination account for the beneficiary, fee calculation, and handling of automated bulk transactions.
+19. Validate data structures and content to ensure that key information is not missing.
+20. Break down bulk payments into batches that can be handled efficiently or create a queue mechanism whereby the list is sequentially processed.
+21. Generate reconciliation of accounts based on successful sending of funds into accounts.
+22. Provision, issue, activate, and redeem vouchers to support G2P beneficiary payments.
+23. Ensure that adequate funds have been allocated to the voucher during provisioning.
+24. Allow issuance of vouchers but make them unusable until they are in the hands of the beneficiary.
+25. Activate vouchers to make them usable for predefined use cases and for a certain period of time.
+26. Handle redemption of vouchers so that beneficiaries receive appropriate benefits from third parties.
+27. Generate reports that show the vouchers in their different states as well as the aggregate quantity "stock", which triggers requests for "re-stocking" of vouchers.
+28. Authenticate beneficiaries at the point of redemption by checking the Registry Building Block to authenticate the user.
 
 The following requirements would be implemented by the Payment BB:
 
@@ -20,11 +45,13 @@ The following requirements would be implemented by the Payment BB:
 * Searches and provides a logged information-based query of other applications.
 * Able to handle operations in remote and inaccessible locations.
 
-## 4.1 Government to Person Payment Principles <a href="#docs-internal-guid-c38a9447-7fff-fcb5-e6eb-c6419072f004" id="docs-internal-guid-c38a9447-7fff-fcb5-e6eb-c6419072f004"></a>
+The implementation of the key digital functionalities mentioned above should adhere to the following principles:
+
+## 4.2 Government to Person Payment Principles <a href="#docs-internal-guid-c38a9447-7fff-fcb5-e6eb-c6419072f004" id="docs-internal-guid-c38a9447-7fff-fcb5-e6eb-c6419072f004"></a>
 
 G2P payments architecture should strive to achieve the following principles:
 
-### 4.1.1 Beneficiary/Recipient-related Principles
+### 4.2.1 Beneficiary/Recipient-related Principles
 
 * Beneficiaries can receive their payment through a fully functional account that allows them to save and make payments using an associated payment instrument with general acceptance.
 * They can choose the payment service provider and payment instrument through which they receive their payments based on their informed choice; they can use the same account for multiple G2P payments, make P2G payments and easily switch if desired.
@@ -35,7 +62,7 @@ G2P payments architecture should strive to achieve the following principles:
 * Beneficiaries can easily access their funds. They are able to cash out their funds at any time at a wide range of conveniently close financial access points. At a reasonable and clearly communicated withdrawal fee or at no cost.
 * Beneficiaries are included regardless of gender, race, or other immutable characteristics, through at least one of the payment methods used; gender gaps are considered in the design.
 
-### 4.1.2 Infrastructure and Systems-related Principles
+### 4.2.2 Infrastructure and Systems-related Principles
 
 * The leveraged infrastructures and systems are shared across G2P programs and payment streams, as well as other use cases, avoiding the implementation of systems to exclusively deliver G2P payments. They are scalable and have cyber security arrangements in place.
 * Common ID provides access to multiple programs; the national ID system has high coverage and quality; it allows government agencies and payment service providers to validate recipients’ identities; it enables data sharing across government agencies.
@@ -43,57 +70,9 @@ G2P payments architecture should strive to achieve the following principles:
 * The payment systems are interoperable to maximize the potential of the available infrastructure to recipients; interoperability arrangements exist for Integrated Financial Management Information System (IFMIS), Treasury Single Account (TSA), banks, and non-banks covering most channels and instruments.
 * There is no manual intervention in the disbursement process and the entire payments flow is Straight-Through-Processing, including the reconciliation of payments. Payments are made without delays.
 
-### 4.1.3 Payment Services Provider-related Principles
+### 4.2.3 Payment Services Provider-related Principles
 
 * Payment service providers have a strong and long-term, predictable business case or incentives to deliver payments and provide choice.
 * A large variety of bank and non-bank financial institutions operating in a competitive market are used to deliver G2P payments.
 * Agents of bank and non-bank financial institutions are accessible to G2P payment recipients.
 
-### 4.2 General Key Functionalities of the Payments Building Block
-
-In general, the functions below describe the activities/actions that are performed in the Payments Building Block.
-
-The Payments BB architecture should:
-
-* Allow any government program to channel payments through a shared payments infrastructure to accounts at multiple providers. This enables citizens to choose their preferred Financial Services Provider (FSP). It enables citizens to switch providers if their circumstances change or they discover a better service.
-* Connect securely and interact with registry, identity, and other important Building Blocks through the Information Mediation Building Block.
-* Payments processing and orchestration: handle the processing of the transactions before moving to the payment. This would include the following:
-  * Check that the information provided by the user is correct and meets the requirements for the service being requested.
-  * Get the confirmation of the payee on the details submitted or looked up via external id-account mapping.
-  * Verify the destination account for the beneficiary to be in good standing - e.g. the bank has not noted a suspicious account or suspended the account for another reason.
-* Return information from external systems on fees to be charged by providers.
-* Handle automated bulk transactions (e.g. payroll, social benefits disbursement).
-* Send automated requests to the FSP/bank to effect payment to the person in the case of unconditional social cash transfers.
-* Keep records of transaction history for audit purposes.
-* Auditability refers to the ability of the Payments Building Block to have its controls evaluated for effectiveness, efficiency, and security. Looking at auditability from an effectiveness standpoint, transactions must be capable of being traced to ensure that all transactions initiated within the systems have been completed, irrespective of whether the transaction was successful or not. This also requires the Payments Building Block to degrade gracefully under conditions of high traffic or node failure so that such conditions are captured in the audit trail. From an effectiveness point of view, auditors must be able to trace the flow of transactions through the system in a logical flow and be able to determine the duration of each part of a transaction to determine if the optimal route is being followed or if there are bottlenecks that need to be addressed. From a security standpoint, external auditors should be able to identify users who access the system and what actions they may perform in the system. In addition, the auditability function will also require the system controls to be clearly defined and access to evidence of their effectiveness either through prevention or escalation and an appreciation of the residual risk. Lastly, the system will need to be able to show compliance with local regulations and standards which will depend on the country in which it is implemented. If at some point personal identifying information or payment data is stored the system should show compliance with global best practices such as PCI-DSS v3 (or the prevailing standard at the time).
-* Schedule and aggregate payments to individuals (scheduling, tracking, and triggering will be done in Scheduling BB if it receives a schedule of payment via an API request, any specific attributes accessible by the scheduler in addition to date/time to access and verify before triggering).
-* Payment confirmation: Send receipts, notifications, and acknowledgement of receipts in a secure manner such that payers and other external applications (e.g. other Building Blocks) receive confirmation of payment made. It should also include the safekeeping of a record of the receipt that was sent.
-* Event logs and audit trails: all transactions processed and their outcomes should be logged and stored securely for monitoring and audit purposes.
-* Validation/Verification: the system shall validate data structures and content (i.e. the list information) to ensure that it is not missing key pieces of information. Verification of the destination account is a best practice, whereby the system shall dynamically confirm that the beneficiary's account exists, is in good status, and if not, triggers a different process.
-* Batch logic/ Queue: the system shall break down the bulk payment into “batches” that can be handled efficiently, or creates a queue mechanism whereby the list is sequentially processed. The logic to reduce the flow of payment initiated (called “throttling”) is contemplated here.
-* Scheduling: the timing of when such batches are sent is important for many reasons, including programmatic ones. Programs may seek to stagger payments or to combine with other payments to the same groups of individuals.
-* Control logic: the system shall coordinate or orchestrate the validation, verification, batching, and scheduling using a set of rules. Such rules also include options for kicking back to the operator for review or resubmission in certain error cases.
-* Reconciliation and Reports Dashboard: the system shall be capable of generating reconciliation of accounts, based on the successful sending of funds into accounts. Reports shall show this information and the additional status of systems and payment types and timings.
-* Fees Calculation: fees to be paid by the Government should be quoted back to the system and managed in a centralized way. Fee schedules can also be managed in this component - i.e. pre-negotiated amounts that shall also leave the government source of funds to the various providers involved.
-* Should support the use of digital channels to/from end-users, and all regulated account systems with payment signaling (e.g. QR codes) and notifications by the FSP enablers.
-* The system should have the ability to scale on transaction performance (transaction latency, reliability, resilience, graceful service degradation).
-* MUST support digital tools for query management, including beneficiary queries including complaints about the payment services.
-
-## 4.3 Key Functionalities for Bulk Payment
-
-Bulk payments are used to accomplish G2P beneficiary payments (e.g. payroll, pension plans, and other social protection programs). Bulk payments have to be routed through the account holding the funds. (This could be either at the government Treasury or a commercial bank).
-
-The funds should be released by the Ministry or payroll master and go through the appropriate approvals.
-
-## 4.4 Key Functionalities for Voucher Disbursement
-
-The voucher component of the Payments Building Block should support the provisioning, issuance, activation, and redemption of vouchers.
-
-* The **provisioning** process will involve ensuring that adequate funds have been allocated to the voucher.
-* The **issuance** process will allow vouchers to be issued but not usable until they are in the hands of the beneficiary.
-* The **activation** process will make the voucher active and hence usable for certain predefined use cases and for a certain period of time.
-* **Redemption**: When the vouchers are appropriately used, the beneficiary receives the appropriate benefit (cash, product, or service) from a third party (either an agent or a merchant - e.g. a school).
-
-In terms of the reporting, this is expected to be a standard part of the voucher management system which would be capable of showing the vouchers in their different states as well as the aggregate quantity "stock". Such reports would trigger, either automatically or manually, requests for "re-stocking" of vouchers. Detailed reporting requirements are out of the scope.
-
-The authentication of the beneficiary at the point of redemption will lie with the calling block which would likely check the Registry Building Block to authenticate the user. Other flows could involve the voucher management server storing the beneficiary details but this would appear to go against the principle of avoiding duplication. This may also need consideration of consent in cases where delegation applies.
