@@ -88,7 +88,7 @@ The voucher management server shall have a storage subsystem to store the vouche
 * All access to the voucher database MUST be logged.
 * Segregation of duty must be done with respect to privileged access to the database and key management of the encryption of the voucher (the level of key management may need to be determined).
 
-#### 6.1.6 Account Lookup Directory Service (Mapper)
+#### 6.1.6 Account Lookup Directory Service (Account Mapper)
 
 The account lookup directory service identifies the Financial Service Providers (FSP) where the merchant/agent/payee’s account is located.
 

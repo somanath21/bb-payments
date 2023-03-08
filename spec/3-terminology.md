@@ -26,7 +26,7 @@ A financial services provider refers to one that is licensed by a regulatory aut
 **Interoperability**\
 The ability of DFSPs participating in a payment Scheme to exchange Transactions with each other. The term may also be used when two systems interconnect.
 
-**Mapper or Account Lookup Directory Service**\
+**Account Mapper or Account Lookup Directory Service**\
 A dynamic directory matching beneficiaries’ unique identifier and their account numbers enable multiple programs to direct payments to the same account and beneficiaries to switch payment service providers. The identifier can be a national ID, phone number, or other number or alias that can uniquely identify individuals across social protection and financial sector databases.
 
 **Mobile Money (MoMo)**\
