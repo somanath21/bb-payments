@@ -181,6 +181,26 @@ see https://app.swaggerhub.com/apis/myapi943/payment-hub_ap_is/1.0#/
 
 ## 8.6 Voucher APIs (Outgoing) <a href="#docs-internal-guid-9cf2815f-7fff-7e39-e7ed-207134468ff3" id="docs-internal-guid-9cf2815f-7fff-7e39-e7ed-207134468ff3"></a>
 
+{% swagger src=".gitbook/assets/VoucherAPIS (1).json" path="/vouchers/voucher_preactivation" method="post" %}
+[VoucherAPIS (1).json](<.gitbook/assets/VoucherAPIS (1).json>)
+{% endswagger %}
+
+{% swagger src=".gitbook/assets/VoucherAPIS (1).json" path="/vouchers/voucher_activation" method="patch" %}
+[VoucherAPIS (1).json](<.gitbook/assets/VoucherAPIS (1).json>)
+{% endswagger %}
+
+{% swagger src=".gitbook/assets/VoucherAPIS (1).json" path="/vouchers/voucher_redeemption" method="post" %}
+[VoucherAPIS (1).json](<.gitbook/assets/VoucherAPIS (1).json>)
+{% endswagger %}
+
+{% swagger src=".gitbook/assets/VoucherAPIS (1).json" path="/vouchers/voucherstatuscheck/{voucherserialnumber}" method="get" %}
+[VoucherAPIS (1).json](<.gitbook/assets/VoucherAPIS (1).json>)
+{% endswagger %}
+
+{% swagger src=".gitbook/assets/VoucherAPIS (1).json" path="/vouchers/voucherstatuscheck/{voucherserialnumber}" method="patch" %}
+[VoucherAPIS (1).json](<.gitbook/assets/VoucherAPIS (1).json>)
+{% endswagger %}
+
 The first API call (pre-activation) is a request for a voucher of a specific value in a specific currency. The API call may also include a voucher group indicating that the voucher is to be used for a specific purpose. The voucher management server will respond with a voucher number - typically a 16-digit code, a voucher serial number, and the expiry date. The voucher would be marked in a pre-activated state.
 
 The second API call (activation) is a request to activate a pre-activated voucher. This call would send the voucher number to the Payments Building Block to have the voucher activated.
