@@ -1,5 +1,9 @@
 # 8 Service APIs
 
+This section provides a reference for APIs that should be implemented by this Building Block. The APIs defined here establish a blueprint for how the Building Block will interact with other Building Blocks. Additional APIs may be implemented by the Building Block, but the listed APIs define a minimal set of functionality that should be provided by any implementation of this Building Block.&#x20;
+
+The [GovStack non-functional requirements document](https://govstack.gitbook.io/specification/architecture-and-nonfunctional-requirements/6-onboarding) provides additional information on how 'adaptors' may be used to translate an existing API to the patterns described here.
+
 ## 8.1 Incoming Payments to Government (P2G) <a href="#docs-internal-guid-83db42bd-7fff-3768-b76a-9586be4ab890" id="docs-internal-guid-83db42bd-7fff-3768-b76a-9586be4ab890"></a>
 
 The implementation will be such that a “Request to Pay” APIs is exposed and the Gov't Ministry (entity) is treated as a type of Biller. Refer to the [GSMA API](https://developer.mobilemoneyapi.io/1.2/content/merchant-payments)
