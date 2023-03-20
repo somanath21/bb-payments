@@ -1,0 +1,22 @@
+POST /api/v1/p2g/payee_initiated HTTP/1.1
+Host: example.com
+Content-Type: application/json
+Authorization: Bearer {access_token}
+
+{
+    "amount": "200.00",
+    "id": "2",
+    "debitParty": [
+        {
+            "key": "accountid",
+            "value": "2999"
+        }
+    ],
+    "creditParty": [
+        {
+            "key": "accountid",
+            "value": "2999"
+        }
+    ],
+    "currency": "RWF"
+}
