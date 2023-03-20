@@ -1,6 +1,10 @@
-# 9 Workflows
+---
+description: >-
+  This section provides a detailed view of how this Building Block will interact
+  with other Building Blocks to support common use cases.
+---
 
-The workflow provides a detailed view of how the Payments BB will interact with other Building Blocks to support common use cases.
+# 9 Internal Workflows
 
 ## 9.1 G2P Bulk Payment Workflow <a href="#docs-internal-guid-dfe6b849-7fff-2b78-34c6-27cab0f78e42" id="docs-internal-guid-dfe6b849-7fff-2b78-34c6-27cab0f78e42"></a>
 
@@ -57,20 +61,19 @@ Figure: Key digital requirements of Bulk Payments expressed as a high-level bloc
 
 **9.1.1.4 Sequence Diagram**
 
-The sequence diagram shows the flow of data between building blocks for bulk payments workflow.
+The sequence diagram shows the flow of data between Building Block for bulk payments workflow.
 
-* <mark style="color:orange;">The Beneficiary system (Registration BB) transmits the compiled list with boundary conditions for payment timings for each G2P programme (i.e. staggered, each week, standing, etc.).</mark>
-* <mark style="color:orange;">Bulk payment services validate data structures and content in compiled lists.</mark>
-* <mark style="color:orange;">Bulk payment service uses the Account Lookup (Directory) Service (ALS), a type of Discovery Service that is more protective of account information and privacy. The ALS is used to establish the destination FSP, and the payment alias is then provided by the destination FSP. These functions are used when the account address is not specified in advance. The discovery service can also be used to verify whether the account address information provided by the beneficiary system is valid (this would be in the event the payment information is provided by the beneficiary system to the Payments BB directly).</mark>
-* <mark style="color:orange;">FSP validates that the account exists and provides the status of the account.</mark>
-* <mark style="color:orange;">Bulk payment service prepares the batch breakdown on the basis of rulesets governing which FSPs shall receive which payments, combining payments with other payments to the same beneficiary, etc.</mark>
-* <mark style="color:orange;">In the case of salary payments, there is a single entry in the payment instruction file sent to the bulk payments service.</mark>
-* <mark style="color:orange;">FSP returns a quote on the fees to be charged.</mark>
-* <mark style="color:orange;">Bulk payment service sends the batch to each FSP with payment instructions.</mark>
-* <mark style="color:orange;">FSP notifies the end beneficiary who then requests the payment via a channel (Merchant POS, Agent, mobile banking, wallet account feature, bank transfer, voucher).</mark>
-* <mark style="color:orange;">The beneficiary is paid and the success is communicated back to the Beneficiary system (as well as error codes).</mark>
-
-Bulk payment service system does reconciliation on accounts paid/not paid and communicates that back to the beneficiary system as well.
+* The Beneficiary system (Registration Building Block) transmits the compiled list with boundary conditions for payment timings for each G2P programme (i.e. staggered, each week, standing, etc.).
+* The beneficiary is paid and the success is communicated back to the Beneficiary system (as well as error codes).
+* FSP notifies the end beneficiary who then requests the payment via a channel (Merchant POS, Agent, mobile banking, wallet account feature, bank transfer, voucher).
+* Bulk payment service sends the batch to each Financial Service Provider with payment instructions.
+* Financial Service Provider returns a quote on the fees to be charged.
+* In the case of salary payments, there is a single entry in the payment instruction file sent to the bulk payments service.
+* Bulk payment service prepares the batch breakdown on the basis of rulesets governing which Financial Service Providers shall receive which payments, combining payments with other payments to the same beneficiary, etc.
+* Financial Service Provider validates that the account exists and provides the status of the account.
+* Bulk payment service uses the Account Lookup (Directory) Service (ALS), a type of Discovery Service that is more protective of account information and privacy. The ALS is used to establish the destination Financial Service Provider, and the payment alias is then provided by the destination Financial Service Provider. These functions are used when the account address is not specified in advance. The discovery service can also be used to verify whether the account address information provided by the beneficiary system is valid (this would be in the event the payment information is provided by the beneficiary system to the Payments Building Block directly).
+* Bulk payment services validate data structures and content in compiled lists.
+* Bulk payment service system does reconciliation on accounts paid/not paid and communicates that back to the beneficiary system as well.
 
 ```mermaid
 sequenceDiagram
@@ -103,19 +106,19 @@ Bulk Payment-->>Beneficiary System:Reconciliation file
 
 #### 9.1.2 Disbursement to Beneficiary Using Mobile Money <a href="#docs-internal-guid-30610214-7fff-b023-24dd-ddf9a6ed5ea9" id="docs-internal-guid-30610214-7fff-b023-24dd-ddf9a6ed5ea9"></a>
 
-In order to facilitate the transfer of funds from the disbursement organisation (the payer) to the mobile money provider, the mobile money provider would need to be connected to the payment gateway/switch. Should this connection not be in place, the disbursement could be facilitated by a third-party aggregator or there would need to be a bilateral connection between the payer’s FSP and the Mobile Money Provider.
+In order to facilitate the transfer of funds from the disbursement organisation (the payer) to the mobile money provider, the mobile money provider would need to be connected to the payment gateway/switch. Should this connection not be in place, the disbursement could be facilitated by a third-party aggregator or there would need to be a bilateral connection between the payer’s Financial Service Provider and the Mobile Money Provider.
 
 #### **9.1.2.1 Interaction with Other Building Blocks**
 
 This workflow requires interaction with the registry Building Blocks.
 
-The disbursement organisation (payer) gives instruction to its FSP to process a bulk disbursement to a number of mobile money recipients (Healthcare workers).
+The disbursement organisation (payer) gives instruction to its Financial Service Provider to process a bulk disbursement to a number of mobile money recipients (Healthcare workers).
 
-The payer’s FSP forwards the bulk payment instructions to the Bulk payment service which validates the list and queries the ID directory service to determine the recipients' mobile money providers. The ID directory returns the list of the recipients' providers to the BB which would then create separate batches for each mobile money provider.
+The payer’s Financial Service Provider forwards the bulk payment instructions to the Bulk payment service which validates the list and queries the ID directory service to determine the recipients' mobile money providers. The ID directory returns the list of the recipients' providers to the Building Block which would then create separate batches for each mobile money provider.
 
-The bulk payments service sends the batch and payment instructions to the payer’s FSP which processes the transfer through the gateway which forwards the payment to the correct Mobile Money Provider.
+The bulk payments service sends the batch and payment instructions to the payer’s Financial Service Provider which processes the transfer through the gateway that forwards the payment to the correct Mobile Money Provider.
 
-The Mobile Money provider would then credit the beneficiaries' accounts who would receive a notification, confirming the amount has been credited to their accounts. Upon payment success, the Mobile Money provider would notify the payer’s FSP of the payment completion.
+The Mobile Money provider would then credit the beneficiaries' accounts who would receive a notification, confirming the amount has been credited to their accounts. Upon payment success, the Mobile Money provider would notify the payer’s Financial Service Provider of the payment completion.
 
 ## 9.2 G2P Beneficiary Payments Using Vouchers
 
@@ -142,15 +145,15 @@ The Admin processes for the Voucher Management Server cover the lifecycle of the
 * Voucher Provisioning\
   This function will be done by an administrator (privileged user). It will typically be triggered by the deposit of funds in a funding account, thus the source account. Voucher provisioning creates a conditional right to funds and an inventory of issued vouchers. Other processes related to this are voucher inventory management, voucher suspension, and voucher purging.
 * Merchant Registration\
-  In order for efficient redemption of vouchers merchants MUST be registered in advance to create a network of trusted providers. This registration is assumed to be managed by the Registration BB, The account verification of the merchant can be done at registration or during redemption subject to a configuration\
+  In order for efficient redemption of vouchers merchants MUST be registered in advance to create a network of trusted providers. This registration is assumed to be managed by the Registration Building Block, The account verification of the merchant can be done at registration or during redemption subject to a configuration.\
   \
-  During the registration process, merchants MAY also be assigned to different voucher groups depending on the required function that has been implemented. For example, there may be a voucher group for schools. This implies that vouchers of this type can only be redeemed at schools. This also requires that the use flow system at which the voucher is issued is aware of these voucher groups and is able to send the appropriate request to the Voucher Management System.
+  During the registration process, merchants MAY also be assigned to different voucher groups depending on the required function that has been implemented. For example, there may be a voucher group for schools. This implies that vouchers of this type can only be redeemed at schools. This also requires that the user flow system at which the voucher is issued is aware of these voucher groups and is able to send the appropriate request to the Voucher Management System.
 * Agent Registration\
-  In markets where cashouts are being used, it is expected that the Registration BB will register agents in a similar way.
+  In markets where cashouts are being used, it is expected that the Registration Building Block will register agents in a similar way.
 * Voucher Groups\
   Depending on the requirement it should also be possible to set up multiple voucher groups. Vouchers in the same voucher group will have similar characteristics and are labeled with a specific voucher group name. During voucher provisioning, a voucher can be created and attached to a single voucher group. When a voucher is requested (using the pre-activation API) it is expected that the voucher group will be one of the parameters set.
 * Voucher Issuing\
-  Voucher issuing is triggered by the Registration Building Block which will determine whether the conditions of issuance have been met. The calling Block will determine the denomination and voucher group of the voucher to be issued. The voucher number and the voucher serial number that is issued can be presented to the beneficiary in multiple ways including but not restricted to encoding in the form of QR codes, bar codes, printed vouchers, or even SMS. This is outside the scope of the Payments BB. It is expected that Building Blocks through which the voucher is redeemed will also be able to decode the voucher
+  Voucher issuing is triggered by the Registration Building Block which will determine whether the conditions of issuance have been met. The calling Block will determine the denomination and voucher group of the voucher to be issued. The voucher number and the voucher serial number that is issued can be presented to the beneficiary in multiple ways including but not restricted to encoding in the form of QR codes, bar codes, printed vouchers, or even SMS. This is outside the scope of the Payments Building Block. It is expected that Building Blocks through which the voucher is redeemed will also be able to decode the voucher
 
 #### **10.2.1.2 Interaction with Other Building Blocks**
 
@@ -178,13 +181,13 @@ Alternative: the voucher could be activated immediately on being requested. This
 
 * Preconditions
   * The calling registration block will determine that all the necessary preconditions are met.
-  * The most critical precondition is the prefunding which will be done manually at the voucher provisioning stage. Other options that could be prefunding triggered by activation or at redemption which are not considered because they are considerably more complex and create additional failure points in the activation of the vouchers.
+  * The most critical precondition is the prefunding which will be done manually at the voucher provisioning stage. Other options that could be prefunding triggered by activation or at redemption are not considered because they are considerably more complex and create additional failure points in the activation of the vouchers.
 * Assumptions/Queries
   * It is assumed that only one currency will be used.
   * A zero-trust architecture.
   * The transaction is not reversible.
 * Post-Condition\
-  The calling BB may invoke another payment BB API, e.g. initiating an incentive payment for the agent.
+  The calling Building Block may invoke another payment Building Block API, e.g. initiating an incentive payment for the agent.
 
 **Voucher Redemption**
 
@@ -197,7 +200,7 @@ Flow Description:
 * At redemption, the beneficiary shows the voucher to the merchant or agent.
 * The merchant/agent will scan and interpret the medium in which the voucher is presented (this could be a QR code or a barcode or an SMS or even a printed number).
 * Voucher redemption Validation: The details presented MAY allow the merchant/agent to authenticate/validate the owner of the voucher.
-* The agent will then initiate the redemption process which will call the Payment BB API Management Gateway.
+* The agent will then initiate the redemption process which will call the Payment Building Block API Management Gateway.
 * The API Management Gateway will validate the voucher and initiate the payment through the payment gateway.
 * If specific voucher groups have been set up, voucher usage may be restricted to specific merchants. An override parameter should also be provided that will allow a Voucher of any voucher group to be redeemed at any merchant.
 * Once the payment to the merchant/agent is successful the Payment gateway will inform the API Management Gateway.
@@ -209,12 +212,12 @@ Alternatives:
 
 Preconditions:
 
-* The merchant must have been registered possibly by the Registration BB with their preferred payment method.
+* The merchant must have been registered possibly by the Registration Building Block with their preferred payment method.
 * The merchant must have a mechanism (e.g. a mobile APP, USSD app, or SMS option) to verify the beneficiary prior to redemption.
 
 Assumptions:
 
-* The app for reading the QR code and redemption is not part of the scope of the Payment BB.
+* The app for reading the QR code and redemption is not part of the scope of the Payment Building Block.
 * The entire voucher amount is consumed. Partial redemption will not be allowed.
 * The amount that is paid to the merchant or agent is debited from a prefunded account.
 
@@ -248,22 +251,22 @@ Alternatives:
 
 **Voucher Technical Requirements**
 
-| **Requirement**                                     | **Type (Must/Should/May)** |
-| --------------------------------------------------- | -------------------------- |
-| Voucher Provisioning                                |                            |
-| High volume generation of vouchers                  | MUST                       |
-| Voucher numbers must be unique and not predictable  | MUST                       |
-| Logs must not capture voucher numbers               | MUST                       |
-| Voucher Storage (will this be in a separate BB)     |                            |
-| Secure storage                                      | MUST                       |
-| High Availability                                   | MUST                       |
-| Issuance                                            | <p><br></p>                |
-| API invoked to get voucher number and serial number | MUST                       |
-| Redemption                                          |                            |
-| API to redeem voucher                               | MUST                       |
-| API to invoke payment gateway                       | MUST                       |
+| **Requirement**                                             | **Type (Must/Should/May)** |
+| ----------------------------------------------------------- | -------------------------- |
+| Voucher Provisioning                                        |                            |
+| High volume generation of vouchers                          | MUST                       |
+| Voucher numbers must be unique and not predictable          | MUST                       |
+| Logs must not capture voucher numbers                       | MUST                       |
+| Voucher Storage (will this be in a separate Building Block) |                            |
+| Secure storage                                              | MUST                       |
+| High Availability                                           | MUST                       |
+| Issuance                                                    | <p><br></p>                |
+| API invoked to get voucher number and serial number         | MUST                       |
+| Redemption                                                  |                            |
+| API to redeem voucher                                       | MUST                       |
+| API to invoke payment gateway                               | MUST                       |
 
-* accounts/walletsAll calls from external parties (e.g. Registration BB) to the voucher management system will be initiated through the API management gateway.
+* All calls from external parties (e.g. Registration Building Block) to the voucher management system will be initiated through the API management gateway.
 * The payment orchestration module may direct transitions between the various functions.
 * The discovery service could be called by other building blocks to determine where bank accounts/wallets sit.
 * The only function that speaks to the DFS is the payment gateway. Any function that needs to speak to the DFS goes through the Payment gateway.
@@ -288,7 +291,7 @@ The following P2G payments using mobile applications are considered.
 
 ### 9.3.2 Interaction with Other Building Blocks
 
-This workflow requires interaction with the messaging BB and the registration building block.
+This workflow requires interaction with the Messaging Building Block and the Registration Building Block.
 
 ### 9.3.3 Sequence Diagram - P2G Payment
 
@@ -303,7 +306,7 @@ Flow Description:
 * Upon registration for a government service, the Registration Building Block sends transaction details to the Payments Building Block which creates and returns a unique payment reference for the payer of the service.
 * The Registration Building Block sends the unique reference number to the payer.
 * After entering their account the payer would invoke a bill payment to a selected service (in this case paying for the registration service). The payer would need to enter the payment reference which would prompt the retrieval of the payment details from the Registration Building Block in real-time. If the payment details are correct, the payer is prompted to enter their mobile money pin to authorize the payment.
-* Upon authorisation, the payer’s account is debited and the government’s connected account is credited in real-time. The FSP, in this case, the mobile money provider would then notify the success status to the Payments Building Block.
+* Upon authorisation, the payer’s account is debited and the government’s connected account is credited in real-time. The Financial Service Provider, in this case, the mobile money provider would then notify the success status to the Payments Building Block.
 * For this type of payment, as the payment reference is needed to validate the payment, this can be done by any mobile money account holder.
 
 Notes:
@@ -343,15 +346,15 @@ Notes:
 
 **10.3.5.1 QR Code Payment Flow Use Case Example**
 
-1. During registration, the Registration BB will generate transaction details including the amount to be paid by the payer and transaction ID, and send them to the payments building block.
-2. The Payments Building Block will use the transaction details to initiate a request to pay to the FSP.
+1. During registration, the Registration Building Block will generate transaction details including the amount to be paid by the payer and transaction ID, and send them to the Payments Building Block.
+2. The Payments Building Block will use the transaction details to initiate a request to pay to the Financial Service Provider.
 3. The QR payment widget displayed to the payer will have the following different attributes
    1. payment\_entity\_id
    2. amount
    3. currency
    4. transaction\_id
 4. The payer scans the QR code to approve/reject the payment.
-5. The FSP sends a notification of the status of the transaction to the Payments BB and the payer.
-6. Transaction status is sent to the registration building block on completion of payments.
+5. The Financial Service Provider sends a notification of the status of the transaction to the Payments Building Block and the payer.
+6. Transaction status is sent to the Registration Building Block on completion of payments.
 7. The Messaging Building Block sends a transaction confirmation message to the payer.
 

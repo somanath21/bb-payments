@@ -1,3 +1,7 @@
+---
+description: This section provides context for this Building Block.
+---
+
 # 2 Description
 
 The Payments Building Block enables digital financial payments to be tracked, evaluated, initiated, validated, processed, logged, compared, and verified against budget. This Building Block also provides interoperability with connections to the various external applications that need payment services in order to trigger transitions in their own WorkFlow. Payment services generally interface through gateways to regulated financial entities such as banks, credit facilities, and insurance companies. To help users easily complete payment transactions and learn if their transaction succeeded or failed, it converts heterogeneous interface protocols, formats, and user interfaces to a standard set of common interfaces and formats. It can also help in tracking the costs of commodity and equipment purchases to optimize budgets.

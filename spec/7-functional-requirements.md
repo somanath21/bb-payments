@@ -1,6 +1,8 @@
-# 6 Functional Requirements
+---
+description: This section lists the technical capabilities of this Building Block.
+---
 
-This section lists the technical capabilities of the Payments Building Block.
+# 6 Functional Requirements
 
 ## 6.1 Payments Building Block Components
 

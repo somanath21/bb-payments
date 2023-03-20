@@ -1,3 +1,9 @@
+---
+description: >-
+  This section provides information on the core data structures/data models that
+  are used by this Building Block.
+---
+
 # 7 Data Structures
 
 ### 7.1 Voucher Resource Model <a href="#docs-internal-guid-2e7883c1-7fff-2230-02ab-f41e68a34a31" id="docs-internal-guid-2e7883c1-7fff-2230-02ab-f41e68a34a31"></a>
