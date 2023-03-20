@@ -1,9 +1,3 @@
----
-description: >-
-  This section provides a detailed view of how this Building Block will interact
-  with other Building Blocks to support common use cases.
----
-
 # 9 Internal Workflows
 
 ## 9.1 G2P Bulk Payment Workflow <a href="#docs-internal-guid-dfe6b849-7fff-2b78-34c6-27cab0f78e42" id="docs-internal-guid-dfe6b849-7fff-2b78-34c6-27cab0f78e42"></a>
@@ -251,22 +245,22 @@ Alternatives:
 
 **Voucher Technical Requirements**
 
-| **Requirement**                                             | **Type (Must/Should/May)** |
-| ----------------------------------------------------------- | -------------------------- |
-| Voucher Provisioning                                        |                            |
-| High volume generation of vouchers                          | MUST                       |
-| Voucher numbers must be unique and not predictable          | MUST                       |
-| Logs must not capture voucher numbers                       | MUST                       |
-| Voucher Storage (will this be in a separate Building Block) |                            |
-| Secure storage                                              | MUST                       |
-| High Availability                                           | MUST                       |
-| Issuance                                                    | <p><br></p>                |
-| API invoked to get voucher number and serial number         | MUST                       |
-| Redemption                                                  |                            |
-| API to redeem voucher                                       | MUST                       |
-| API to invoke payment gateway                               | MUST                       |
+| **Requirement**                                     | **Type (Must/Should/May)** |
+| --------------------------------------------------- | -------------------------- |
+| Voucher Provisioning                                | MUST                       |
+| High volume generation of vouchers                  | MUST                       |
+| Voucher numbers must be unique and not predictable  | MUST                       |
+| Logs must not capture voucher numbers               | MUST                       |
+| Voucher Storage (will this be in a separate BB)     | MAY                        |
+| Secure storage                                      | MUST                       |
+| High Availability                                   | MUST                       |
+| Issuance                                            | <p><br>MUST</p>            |
+| API invoked to get voucher number and serial number | MUST                       |
+| Redemption                                          |                            |
+| API to redeem voucher                               | MUST                       |
+| API to invoke payment gateway                       | MUST                       |
 
-* All calls from external parties (e.g. Registration Building Block) to the voucher management system will be initiated through the API management gateway.
+* All calls from external parties (e.g. Registration BB) to the voucher management system will be initiated through the API management gateway.
 * The payment orchestration module may direct transitions between the various functions.
 * The discovery service could be called by other building blocks to determine where bank accounts/wallets sit.
 * The only function that speaks to the DFS is the payment gateway. Any function that needs to speak to the DFS goes through the Payment gateway.
