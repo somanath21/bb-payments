@@ -1,3 +1,9 @@
+---
+description: >-
+  This section provides a detailed view of how this Building Block will interact
+  with other Building Blocks to support common use cases.
+---
+
 # 9 Internal Workflows
 
 ## 9.1 G2P Bulk Payment Workflow <a href="#docs-internal-guid-dfe6b849-7fff-2b78-34c6-27cab0f78e42" id="docs-internal-guid-dfe6b849-7fff-2b78-34c6-27cab0f78e42"></a>
@@ -22,16 +28,16 @@ Bulk payments file
 
 There are three options for the disbursement,
 
-* Manual process for Govt/Dept to send the retail payment details for each FSP (i.e. either by email or other means). This would be the case where there is a lack of interoperability among FSPs.
-* Upload the batch disbursement file in the payment web portal for each Financial Services Provider (FSP) to retrieve in the case of a centralised Account Lookup Directory Service.
+* Manual process for Government/Department to send the retail payment details to each Financial Services Provider (FSP) (i.e. either by email or other means). This would be the case where there is a lack of interoperability among FSPs.
+* Upload the batch disbursement file in the payment web portal for each FSP to retrieve in the case of a centralised Account Lookup Directory Service.
 * Automate the disbursement process through the decentralised Account Lookup Directory Service and the payment gateway.
 
 **Option 1**: Retail payment information is sent securely to each Payment Service Provider for disbursement
 
 ![Payments Building Block diagrams.drawio - diagrams.net](.gitbook/assets/image20.png)
 
-**Option 2**: Retail payments are accessed via a payment web portal by the Payment Service Provider. The advice/electronic fund transfer request, or paper-based check is issued from the Financial Management Information System to the TSA-holding Bank.\
-Based on this advice, the Bank disburses funds from the Trusted Single Account (TSA) into the digital payments system of the FSP which transfers the corresponding funds to the recipient’s account. For the retail payment scrolls, where each agency is responsible for running the payment system - payroll, social welfare payments, etc - the payment details are not stored in those systems. Instead, the beneficiary’s payment token is retrieved from the Centralised Account Lookup Directory Service and kept in the government payment portal. The payment lists are only shared with the program account holder institution/FSP, Payment Service Provider (PSP), via the government payment portal. The FSP/PSP can log in on the government web portal to access the directory for payments that the FSP needs to effect for each G2P Program.
+**Option 2**: Retail payments are accessed via a payment web portal by the Payment Service Provider. The advice/electronic fund transfer request, or paper-based check is issued from the Financial Management Information System to the Trusted Single Account (TSA) -holding Bank.\
+Based on this advice, the Bank disburses funds from the TSA into the digital payments system of the FSP which transfers the corresponding funds to the recipient’s account. For the retail payment scrolls, where each agency is responsible for running the payment system - payroll, social welfare payments, etc. - the payment details are not stored in those systems. Instead, the beneficiary’s payment token is retrieved from the Centralised Account Lookup Directory Service and kept in the government payment portal. The payment lists are only shared with the program account holder institution/FSP, Payment Service Provider (PSP), via the government payment portal. The FSP/PSP can log in on the government web portal to access the directory for payments that the FSP needs to effect for each G2P Program.
 
 ![Payments Building Block diagrams.drawio - diagrams.net](<.gitbook/assets/image8 (1).png>)
 
@@ -39,7 +45,7 @@ Based on this advice, the Bank disburses funds from the Trusted Single Account (
 
 ![Payments Building Block diagrams.drawio - diagrams.net](.gitbook/assets/image2.png)
 
-Bulk payments require the functionality of a Payments Gateway and the functionality therein. It also assumes a separate mechanism by which the recipient account address is determined. In the figure below the “account lookup directory service” functionality maps the concept of identity to the payment alias and from there to the FSP routing address. (i.e. wallet address or account address)
+Bulk payments require the functionality of a Payments Gateway and the functionality therein. It also assumes a separate mechanism by which the recipient account address is determined. In the figure below the “account lookup directory service” functionality maps the concept of identity to the payment alias and from there to the Financial Services Provider routing address. (i.e. wallet address or account address)
 
 **9.1.1.3 Interaction with Other Building Blocks**
 
@@ -59,7 +65,7 @@ The sequence diagram shows the flow of data between Building Block for bulk paym
 
 * The Beneficiary system (Registration Building Block) transmits the compiled list with boundary conditions for payment timings for each G2P programme (i.e. staggered, each week, standing, etc.).
 * The beneficiary is paid and the success is communicated back to the Beneficiary system (as well as error codes).
-* FSP notifies the end beneficiary who then requests the payment via a channel (Merchant POS, Agent, mobile banking, wallet account feature, bank transfer, voucher).
+* Financial Services Provider (FSP) notifies the end beneficiary who then requests the payment via a channel (Merchant POS, Agent, mobile banking, wallet account feature, bank transfer, voucher).
 * Bulk payment service sends the batch to each Financial Service Provider with payment instructions.
 * Financial Service Provider returns a quote on the fees to be charged.
 * In the case of salary payments, there is a single entry in the payment instruction file sent to the bulk payments service.
@@ -155,7 +161,7 @@ This workflow requires interaction with the Registration and Merchant registry B
 
 #### **10.2.1.3 Sequence Diagram**
 
-The sequence diagram shows the flow of data between building blocks for this workflow.
+The sequence diagram shows the flow of data between Building Blocks for this workflow.
 
 **Voucher Activation**
 
@@ -165,7 +171,7 @@ The voucher activation flow is shown in the diagram below.
 
 Flow Description:
 
-* An external Building Block may invoke the Payments BB API gateway to pre-activate API on the Voucher Management Server with the amount of the voucher, the voucher currency, and the voucher group. The calling Block may optionally send a comment. The comment will be stored by the voucher server. The voucher group will indicate that it is looking for a voucher from a specific voucher group. This API call will be made through the payment orchestrator.
+* An external Building Block may invoke the Payments Building Block API gateway to pre-activate API on the Voucher Management Server with the amount of the voucher, the voucher currency, and the voucher group. The calling Building Block may optionally send a comment. The comment will be stored by the voucher server. The voucher group will indicate that it is looking for a voucher from a specific voucher group. This API call will be made through the Payments orchestrator.
 * The voucher group is typically used for conditional social transfer (e.g. for school fee payment). If any voucher can be used for any purpose, then all vouchers should be created with a generic voucher group (e.g. “GENERAL-PURPOSE”).
 * The API returns to get a voucher number, the voucher serial number, and its expiry date. At this point, the voucher will be flagged as Pre-Activated.
 * The calling Building Block may render the voucher as a QR code, as a barcode, or even as an SMS text. It is recommended that the voucher should include supplementary data of the recipient. It is also recommended that this data should also be printed in human-readable form so that the recipient can verify the data on the voucher. This data can also be verified at the point of redemption.
@@ -233,7 +239,7 @@ Flow Description:
 
 * The calling Building Block will request the API Management Gateway to cancel a Voucher.
 * The API Management Gateway will invoke the VMS API to cancel the Voucher.
-* The VMS API interface will check if the Voucher is valid and then cancel the Voucher.
+* The Vaucher Management System (VMS) API interface will check if the Voucher is valid and then cancel the Voucher.
 * The VMS API interface will confirm that the Voucher has been canceled.
 
 Alternatives:
@@ -245,22 +251,22 @@ Alternatives:
 
 **Voucher Technical Requirements**
 
-| **Requirement**                                     | **Type (Must/Should/May)** |
-| --------------------------------------------------- | -------------------------- |
-| Voucher Provisioning                                | MUST                       |
-| High volume generation of vouchers                  | MUST                       |
-| Voucher numbers must be unique and not predictable  | MUST                       |
-| Logs must not capture voucher numbers               | MUST                       |
-| Voucher Storage (will this be in a separate BB)     | MAY                        |
-| Secure storage                                      | MUST                       |
-| High Availability                                   | MUST                       |
-| Issuance                                            | <p><br>MUST</p>            |
-| API invoked to get voucher number and serial number | MUST                       |
-| Redemption                                          |                            |
-| API to redeem voucher                               | MUST                       |
-| API to invoke payment gateway                       | MUST                       |
+| **Requirement**                                             | **Type (Must/Should/May)** |
+| ----------------------------------------------------------- | -------------------------- |
+| Voucher Provisioning                                        | MUST                       |
+| High volume generation of vouchers                          | MUST                       |
+| Voucher numbers must be unique and not predictable          | MUST                       |
+| Logs must not capture voucher numbers                       | MUST                       |
+| Voucher Storage (will this be in a separate Building Block) | MAY                        |
+| Secure storage                                              | MUST                       |
+| High Availability                                           | MUST                       |
+| Issuance                                                    | <p><br>MUST</p>            |
+| API invoked to get voucher number and serial number         | MUST                       |
+| Redemption                                                  |                            |
+| API to redeem voucher                                       | MUST                       |
+| API to invoke payment gateway                               | MUST                       |
 
-* All calls from external parties (e.g. Registration BB) to the voucher management system will be initiated through the API management gateway.
+* All calls from external parties (e.g. Registration Building Block) to the voucher management system will be initiated through the API management gateway.
 * The payment orchestration module may direct transitions between the various functions.
 * The discovery service could be called by other building blocks to determine where bank accounts/wallets sit.
 * The only function that speaks to the DFS is the payment gateway. Any function that needs to speak to the DFS goes through the Payment gateway.
@@ -299,18 +305,18 @@ Flow Description:
 
 * Upon registration for a government service, the Registration Building Block sends transaction details to the Payments Building Block which creates and returns a unique payment reference for the payer of the service.
 * The Registration Building Block sends the unique reference number to the payer.
-* After entering their account the payer would invoke a bill payment to a selected service (in this case paying for the registration service). The payer would need to enter the payment reference which would prompt the retrieval of the payment details from the Registration Building Block in real-time. If the payment details are correct, the payer is prompted to enter their mobile money pin to authorize the payment.
-* Upon authorisation, the payer’s account is debited and the government’s connected account is credited in real-time. The Financial Service Provider, in this case, the mobile money provider would then notify the success status to the Payments Building Block.
+* After entering their account the payer would invoke a bill payment to a selected service (in this case paying for the registration service). The payer would need to enter the payment reference which would prompt the retrieval of the payment details from the Registration Building Block in real time. If the payment details are correct, the payer is prompted to enter their mobile money pin to authorize the payment.
+* Upon authorisation, the payer’s account is debited and the government’s connected account is credited in real time. The Financial Service Provider, in this case, the mobile money provider would then notify the success status of the Payments Building Block.
 * For this type of payment, as the payment reference is needed to validate the payment, this can be done by any mobile money account holder.
 
 Notes:
 
 The above model requires that the payer must provide two pieces of information through their USSD, STK, or mobile app:
 
-* A merchant ID. Typically the government would be given a special merchant ID. The payer should be able to select which government service they would be paying through the mobile money interface.
+* A merchant ID. Typically the government would be given a special merchant ID. The payer should be able to select which government service they would be paying for through the mobile money interface.
 * A reference ID: this is unique and time bound for each transaction.
-* As the bill payment is invoked by inputting the reference number which prompts the retrieval of the payment details in real-time from the registration building block, a failed transaction could be triggered by a session time-out or a wrong PIN. In both cases the payer would have to re-initiate the transaction.
-* In the P2G payment in the flow above, the government holds an account with the FSP which would collect the payments on the government's behalf and transfer them to the single treasury account on a defined timeline (i.e. daily) in an aggregated way. For reconciliation purposes, the registration BB would need to notify the government of a successful/unsuccessful payment.
+* As the bill payment is invoked by inputting the reference number which prompts the retrieval of the payment details in real-time from the registration building block, a failed transaction could be triggered by a session time-out or a wrong PIN. In both cases, the payer would have to re-initiate the transaction.
+* In the P2G payment in the flow above, the government holds an account with the Financial Services Provider which would collect the payments on the government's behalf and transfer them to the single treasury account on a defined timeline (i.e. daily) in an aggregated way. For reconciliation purposes, the Registration Building Block would need to notify the government of a successful/unsuccessful payment.
 
 ### 9.3.4 Sequence Diagram - P2G FSP Payment by USSD Prompt
 
@@ -318,16 +324,16 @@ The above model requires that the payer must provide two pieces of information t
 
 Flow Description:
 
-* Upon registration for a government service, the registration building sends transaction details to the payment building block which sends a payment request to the payer through their mobile money provider (USSD prompt).
+* Upon registration for a government service, the registration building sends transaction details to the Payments Building Block which sends a payment request to the payer through their mobile money provider (Unstructured Supplementary Service Data prompt).
 * The payer will see a request coming for the specific service requested with payment details, prompting them to authorize the payment by entering the pin code.
-* Upon authorisation, the payer’s account is debited and the government’s connected account is credited in real-time.
-* The FSP, in this case, the mobile money provider would then notify the success status to the payment building block.
+* Upon authorisation, the payer’s account is debited and the government’s connected account is credited in real time.
+* The Financial Services Provider, in this case, the mobile money provider would then notify the success status to the Payments Building Block.
 * This payment differs from the previous P2G mobile money payment as the payment is not initiated by the payer by invoking a bill payment but is initiated by a merchant (in this case the government agency providing the service). Therefore the payer is requested to pay for the service immediately.
 
 Notes:
 
 * There can be no error in the above as both the merchant number and the payment reference are pushed to the phone.
-* The only risk here is a timeout on the USSD or the user keying in the wrong PIN which may require the transaction to be reinitiated.
+* The only risk here is a timeout on the Unstructured Supplementary Service Data or the user keying in the wrong PIN which may require the transaction to be reinitiated.
 
 ### 9.3.5 Sequence Diagram - P2G Payment with QR Code
 

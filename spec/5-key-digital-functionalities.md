@@ -37,9 +37,9 @@ In general, the functions below describe the activities/actions that are perform
 25. Activate vouchers to make them usable for predefined use cases and for a certain period of time.
 26. Handle redemption of vouchers so that beneficiaries receive appropriate benefits from third parties.
 27. Generate reports that show the vouchers in their different states as well as the aggregate quantity "stock", which triggers requests for "re-stocking" of vouchers.
-28. Authenticate beneficiaries at the point of redemption by checking the Registry Building Block to authenticate the user.
+28. Authenticate beneficiaries at the point of redemption by checking the Digital Registries Building Block to authenticate the user.
 
-The following requirements would be implemented by the Payment BB:
+The following requirements would be implemented by the Payment Building Block:
 
 * Cater for the distribution of social service transfers electronically and cash safely to end users (in the case where the user does not want to use electronic payments it is recommended that vouchers are used).
 * Creates eVouchers to disburse financial subsidies in a controlled and safe manner.
@@ -51,7 +51,7 @@ The following requirements would be implemented by the Payment BB:
 * Searches and provides a logged information-based query of other applications.
 * Able to handle operations in remote and inaccessible locations.
 
-The implementation of the key digital functionalities mentioned above should adhere to the following principles:
+The implementation of the key digital functionalities mentioned above should adhere to the following principles.
 
 ## 4.2 Government to Person Payment Principles <a href="#docs-internal-guid-c38a9447-7fff-fcb5-e6eb-c6419072f004" id="docs-internal-guid-c38a9447-7fff-fcb5-e6eb-c6419072f004"></a>
 
@@ -62,7 +62,9 @@ G2P payments architecture should strive to achieve the following principles:
 * Beneficiaries can receive their payment through a fully functional account that allows them to save and make payments using an associated payment instrument with general acceptance.
 * They can choose the payment service provider and payment instrument through which they receive their payments based on their informed choice; they can use the same account for multiple G2P payments, make P2G payments and easily switch if desired.
 * Onboarding to their payment method is low cost and easy with account opening requirements that are available to recipients and with no opening fees; a payment instrument is provided to the recipient at no cost.
-* The Integrated Financial Management Information System (IFMIS) is used to process government payments against budgetary allocations. It supports (1) the Treasury Single Account (TSA) that aggregates all incoming government receipts and disburses all government payments and (2) budget management to ensure budget compliance, tracking and reporting. The IFMIS provides the Ministry of Finance with a unified view of the government’s budget execution.
+* The Integrated Financial Management Information System (IFMIS) is used to process government payments against budgetary allocations. It supports
+  * the Treasury Single Account (TSA) that aggregates all incoming government receipts and disburses all government payments&#x20;
+  * budget management to ensure budget compliance, tracking, and reporting. The IFMIS provides the Ministry of Finance with a unified view of the government’s budget execution.
 * The payment instrument is easy-to-use and generally accepted, and the overall costs for using it do not result in increased costs for the beneficiary in comparison to other forms of payment.
 * Beneficiaries are well informed, their account/data is protected, and have access to redress. They know when, where, and how many payments will be made and understand how their payment method works, its costs, how to use their payment instrument, and how to access their payment. They can access and know how to access effective grievance redressal mechanisms, their funds are secured, and their data privacy is ensured.
 * Beneficiaries can easily access their funds. They are able to cash out their funds at any time at a wide range of conveniently close financial access points. At a reasonable and clearly communicated withdrawal fee or at no cost.
