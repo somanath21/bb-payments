@@ -33,7 +33,7 @@ Generally, the Building Block is supportive of multiple types of payment use cas
 * **Government to people (G2P)**
   * Payment where the payer is a government and the payee is an individual e.g. Social benefits disbursement, government salary payments, Conditional and [Unconditional Social Cash Transfers](https://solutions.dial.community/use\_cases/unconditional\_social\_cash\_transf/use\_case\_steps/outreach\_communications)).
 * **People to Government (P2G).**
-  * Payment where the payer is an individual and the payee is a government (e.g. payment of taxes, payment[ Registration for Postpartum and Infant Care](https://github.com/GovStackWorkingGroup/BuildingBlockAPI/issues/1), payment of school fees, driving license, utility payments).
+  * Payment where the payer is an individual and the payee is a government. P2G payments can be government initiated, for instance, in the case of payments for registrations for government services. For bill payments and payments for government services directly by the person, the system should provide the person with the flexibility to choose which payment instrument to use (eg. mobile money, bank transfer or card payments). (e.g. payment of taxes, payment[ Registration for Postpartum and Infant Care](https://github.com/GovStackWorkingGroup/BuildingBlockAPI/issues/1), payment of school fees, driving license, utility payments).
 * **Government to Business (G2B)**
   * G2B payments include tax refunds, goods and services purchases, subsidies, contract payments, benefits, and loans.
 * **Business to Government (B2G)**
