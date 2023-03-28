@@ -1,64 +1,126 @@
 ---
 description: >-
-  This section provides a detailed view of how this Building Block will interact
-  with other Building Blocks to support common use cases.
+  This section provides a detailed view of how the Payments Building Block will
+  interact with other Building Blocks to support payments.
 ---
 
 # 9 Internal Workflows
 
+## &#x20;<a href="#docs-internal-guid-dfe6b849-7fff-2b78-34c6-27cab0f78e42" id="docs-internal-guid-dfe6b849-7fff-2b78-34c6-27cab0f78e42"></a>
+
 ## 9.1 G2P Bulk Payment Workflow <a href="#docs-internal-guid-dfe6b849-7fff-2b78-34c6-27cab0f78e42" id="docs-internal-guid-dfe6b849-7fff-2b78-34c6-27cab0f78e42"></a>
 
-**9.1.1 Sequence Diagram**
+### 9.1.1 Beneficiary Onboarding in Account Mapper
 
-The sequence diagram shows the flow of data between Building Block for bulk payments workflow.
+The workflow represents the process of on-boarding beneficiaries in the ID Mapper as a prerequisite step before any payment processing can occur. This use case is triggered when a new G2P beneficiary has been onboarded by a G2P program, assigned a Functional ID, and verified as eligible for the social benefit program.&#x20;
 
 ```mermaid
 sequenceDiagram
 
-title Beneficiary onboarding in Payment Building Block (PBB) – ID Mapper
-participant Registration BB as RBB
-participant IM
-participant Payments BB as PBB
-RBB-->> RBB: Functional ID is issued to Beneficiary<br>Request parameters can be json array<br>for bulk onboarding
-RBB ->> IM:  Register_Beneficiary <br>(Request ID, Source BB ID<br>Array of {PayeeFunctional ID, Payment Modality})
-IM ->> PBB:  Register_Beneficiary <br>(Request ID, Source BB ID,<br>Array of {PayeeFunctional ID, Payment Modality})
-note left of PBB: authenticate request token
-PBB ->> IM:  http/200
-IM ->> RBB: http/200
-note left of PBB: Validate parameters <br>1. Authenticate Source Building block exists<br>2. For each Payee Functional ID<br>2.1 Dup Check<br>2.2. Register in mapper
-PBB ->> IM:  Register_Beneficiary_Reply<br>(Request_ID, Response Code,Array of Failed cases)
-IM ->> RBB:  Register_Beneficiary_Reply<br>(Request_ID, Response Code,Array of Failed cases)
-RBB ->> IM: http/200
-IM ->> PBB: http/200
+note left of RBB: Functional ID is issued to Beneficiary, Request parameters can be json array for bulk onboarding
+
+RBB -->> IM:  Register_Beneficiary (Request ID,\nSource BB ID, Array of Beneficiaries)
+IM -->> PBB:  Register_Beneficiary (Request ID,\nSource BB ID, Array of Beneficiaries)
+
+note left of PBB: Validate parameters, Authenticate Source Building block exists
+
+PBB -->> AM: Register_Beneficiary (Request ID,\nSource BB ID, Array of Beneficiaries)
+note left of AM: For each Payee Functional ID, Duplicate Check, Register in mapper
+
+AM -->> PBB: Register_Beneficiary_Respone(Request_ID,\nResponse Code,Array of Failed cases)
+PBB -->> IM:  Register_Beneficiary_Respone(Request_ID,\nResponse Code,Array of Failed cases)
+IM -->> RBB:  Register_Beneficiary_Respone(Request_ID,\nResponse Code,Array of Failed cases)
 ```
 
-* The Beneficiary system (Registration Building Block) transmits the compiled list with boundary conditions for payment timings for each G2P programme (i.e. staggered, each week, standing, etc.).
-* The beneficiary is paid and the success is communicated back to the Beneficiary system (as well as error codes).
-* Financial Services Provider (FSP) notifies the end beneficiary who then requests the payment via a channel (Merchant POS, Agent, mobile banking, wallet account feature, bank transfer, voucher).
-* Bulk payment service sends the batch to each Financial Service Provider with payment instructions.
-* Financial Service Provider returns a quote on the fees to be charged.
-* In the case of salary payments, there is a single entry in the payment instruction file sent to the bulk payments service.
-* Bulk payment service prepares the batch breakdown on the basis of rulesets governing which Financial Service Providers shall receive which payments, combining payments with other payments to the same beneficiary, etc.
-* Financial Service Provider validates that the account exists and provides the status of the account.
-* Bulk payment service uses the Account Lookup (Directory) Service (ALS), a type of Discovery Service that is more protective of account information and privacy. The ALS is used to establish the destination Financial Service Provider, and the payment alias is then provided by the destination Financial Service Provider. These functions are used when the account address is not specified in advance. The discovery service can also be used to verify whether the account address information provided by the beneficiary system is valid (this would be in the event the payment information is provided by the beneficiary system to the Payments Building Block directly).
-* Bulk payment services validate data structures and content in compiled lists.
-* Bulk payment service system does reconciliation on accounts paid/not paid and communicates that back to the beneficiary system as well.
+1. The Requesting Building Block (RBB) sends a "Register\_Beneficiary" request to the Information Mediator (IM), containing the Request ID, Source Building Block (BB) ID, and an array of beneficiaries with their Functional ID, Payment Modality, and Financial Address (if available).
+2. IM forwards the "Register\_Beneficiary" request to the Payments Building Block (PBB) with the same parameters.
+3. PBB validates the API parameters and checks if the Source Building Block is configured in the Payments BB as an acceptable source of the API call.
+4. If the parameters are valid, PBB sends the "Register\_Beneficiary" request to the Account Mapper (AM) with the same parameters.
+5. Account Mapper checks for duplicate Functional IDs registered by the same Source Building Block and registers the beneficiaries in the mapper if they are not already registered.
+6. Account Mapper sends a "Register\_Beneficiary\_Response" to PBB, which contains the Request ID, response code, and an array of failed cases (if any) with descriptions.
+7. PBB forwards the "Register\_Beneficiary\_Response" to IM, with the same parameters.
+8. Finally, IM sends the "Register\_Beneficiary\_Response" to RBB, providing the final response code and the list of any failed cases with descriptions.
 
-#### 9.1.2 Disbursement to Beneficiary Using Mobile Money <a href="#docs-internal-guid-30610214-7fff-b023-24dd-ddf9a6ed5ea9" id="docs-internal-guid-30610214-7fff-b023-24dd-ddf9a6ed5ea9"></a>
+The workflow supports the addition of beneficiaries in the mapper in bulk. The source building block can use the same APIs for individual or bulk onboarding.&#x20;
+
+### 9.1.2  Pre-validation of Accounts prior to Bulk Disbursement
+
+This flow represents the prevalidation process of accounts in a bulk disbursement scenario. The process involves a Source BB (SBB), Payments BB (PBB), Payer Bank (PrBank), and Payee Bank (PyBank).
+
+```mermaid
+sequenceDiagram
+title Prevalidation of Accounts
+
+note right of SBB: Prepare Bulk Disbursement instructions containing <br>1. FunctionalID <br>2. Amount <br>3. Description/Narration <br>4. Instruction ID
+
+SBB -> PBB:  Prepayment_Validation(Batch_ID, Payment Instructions)
+
+note left of PBB: 1. Debulking <br>2. Check each Payee Functional ID in mapper <br>3. Record Failed Instructions
+
+loop Send Payee Bank wise Sub-Batches
+PBB -> PrBank: Bulk_ValidateAccount (Batch_ID, Destination_BIC,Payment Instructions)
+PrBank -> PyBank: Account Validation Request as per Incumbent Scheme Norm
+
+note left of PyBank: 1. Validate A/C exists <br>2. Validate it can receive Credit <br>3. Validate Credit limit won't exhaust
+
+PyBank -> PrBank: Account Validation Response as per Incumbent Scheme Norm
+PrBank -> PBB: BulkValidateAccount_Response (BatchID, Array of Failed Instructions)
+end
+
+PBB -> SBB: Prepayment_Validation_Response(BatchID, Array of Failed Instructions)
+
+
+```
+
+1. The process begins with the Source BB (SBB) preparing bulk disbursement instructions containing key information such as the Functional ID, amount, description/narration, and instruction ID.
+2. SBB sends these instructions as a prepayment validation request (Prepayment\_Validation) to Payments BB (PBB).
+3. Upon receiving the request, PBB performs several actions, including debulking the instructions, checking each payee's Functional ID in the mapper, and recording any failed instructions.
+4. PBB then sends payee bank-wise sub-batches for validation in a loop. For each sub-batch, PBB sends a bulk validate account request (Bulk\_ValidateAccount) to the Payer Bank (PrBank), including the batch ID, destination BIC, and payment instructions.
+5. PrBank forwards the account validation request to the Payee Bank (PyBank) as per the incumbent scheme norm.
+6. PyBank performs several validation checks, such as confirming the account exists, verifying that it can receive credit, and ensuring that the credit limit won't be exhausted.
+7. PyBank sends an account validation response back to PrBank, adhering to the incumbent scheme norm.
+8. PrBank then sends a bulk validate account response (BulkValidateAccount\_Response) to PBB, containing the batch ID and an array of any failed instructions.
+9. Finally, PBB sends a prepayment validation response (Prepayment\_Validation\_Response) to SBB, including the batch ID and an array of any failed instructions.
+
+This flow ensures that the accounts involved in a bulk disbursement transaction are valid and capable of receiving the specified credits before processing payments, reducing the risk of failed transactions and improving overall efficiency.
+
+### **9.1.3** Bulk Disbursement into a Financial Address pre-registered in the Account Mapper
+
+The flow depicted in the sequence diagram illustrates the process of bulk disbursement into financial addresses, such as bank accounts or mobile wallets, that are pre-registered in the Account Mapper. This use case is triggered when the Source BB submits a batch for processing of payments to the Payments BB.
+
+Pre-conditions: Functional IDs intended to be recipients of funds must be pre-registered in the Account Mapper. All the financial addresses must be validated before a payment is disbursed.
+
+Data Inputs: Source BB provides relevant confirmation to the Payments BB to begin credit transfer for successfully pre-validated accounts.
+
+```mermaid
+sequenceDiagram
+title Bulk Disbursement into an online Financial Address
+
+SBB ->> PBB: BulkPayment(Batch_ID, Payment Instructions)
+PBB ->> PrBank: getAuthorization()
+PrBank ->> PBB: getAuthorization_Response()
+
+loop Send Payee Bank wise Sub-Batches
+PBB ->> PrBank: BulkPayment_ReceiverFI(Batch_ID, Destination_BIC, Payment Instructions)
+end
+
+note over PrBank: Payer Bank processes each Receiving FI Batch <br> and processes instructions as batch or single instructions, <br>depending on available transaction rails.
+
+PrBank ->> PBB: BulkPayment_StatusPush(BatchID, Credit Instructions)
+
+
+```
+
+1. The process starts with Source Building Block (SBB) sending a BulkPayment request containing a Batch\_ID and a set of payment instructions to the Payment Building Block (PBB).
+2. PBB checks if liquidity was provisioned before this batch is executed and if sufficient liquidity was provisioned. If this is the case, PBB proceeds to de-bulk crediting batches by the receiving institution.
+3. PBB then requests authorization from the PrBank by sending a getAuthorization() message.
+4. PrBank responds with a getAuthorization\_Response() message, granting the required authorization to PBB.
+5. PBB begins sending payee bank-wise sub-batches to PrBank in a loop. For each sub-batch, PBB sends a BulkPayment\_ReceiverFI message containing the Batch\_ID, Destination\_BIC, and payment instructions.
+6. The Payer Bank (PrBank) executes these batches through existing rails.
+
+Exceptions: Some accounts might have been pre-validated or part of the crediting batch but cannot be credited by the payee bank for some reason. For such accounts, funds must be returned to the payer bank and credited back into the Source BB's Settlement Account through a separate process.
 
 In order to facilitate the transfer of funds from the disbursement organisation (the payer) to the mobile money provider, the mobile money provider would need to be connected to the payment gateway/switch. Should this connection not be in place, the disbursement could be facilitated by a third-party aggregator or there would need to be a bilateral connection between the payer’s Financial Service Provider and the Mobile Money Provider.
-
-#### **9.1.2.1 Interaction with Other Building Blocks**
-
-This workflow requires interaction with the registry Building Blocks.
-
-The disbursement organisation (payer) gives instruction to its Financial Service Provider to process a bulk disbursement to a number of mobile money recipients (Healthcare workers).
-
-The payer’s Financial Service Provider forwards the bulk payment instructions to the Bulk payment service which validates the list and queries the ID directory service to determine the recipients' mobile money providers. The ID directory returns the list of the recipients' providers to the Building Block which would then create separate batches for each mobile money provider.
-
-The bulk payments service sends the batch and payment instructions to the payer’s Financial Service Provider which processes the transfer through the gateway that forwards the payment to the correct Mobile Money Provider.
-
-The Mobile Money provider would then credit the beneficiaries' accounts who would receive a notification, confirming the amount has been credited to their accounts. Upon payment success, the Mobile Money provider would notify the payer’s Financial Service Provider of the payment completion.
 
 ## 9.2 G2P Beneficiary Payments Using Vouchers
 
@@ -70,11 +132,11 @@ The Voucher Management System supports three workflows for voucher payments:
 
 These use cases and the relationship between each one of them are shown and further described below.
 
-The use cases are described in the section below:
+The use cases are described in the below:
 
 ![Payments building block diagrams.drawio - diagrams.net](.gitbook/assets/image15.png)
 
-#### **9.2.1 Voucher administration**
+### **9.2.1 Voucher administration**
 
 These processes are usually done prior to the issuance of the voucher to ensure a smooth flow at the point of issuance.
 
@@ -93,7 +155,7 @@ The Admin processes for the Voucher Management Server cover the lifecycle of the
 * Voucher Issuing\
   Voucher issuing is triggered by the Registration Building Block which will determine whether the conditions of issuance have been met. The calling Block will determine the denomination and voucher group of the voucher to be issued. The voucher number and the voucher serial number that is issued can be presented to the beneficiary in multiple ways including but not restricted to encoding in the form of QR codes, bar codes, printed vouchers, or even SMS. This is outside the scope of the Payments Building Block. It is expected that Building Blocks through which the voucher is redeemed will also be able to decode the voucher.
 
-**9.2.2 Voucher Activation sequence diagram**
+### **9.2.2 Voucher Activation sequence diagram**
 
 The voucher activation flow is shown in the diagram below.
 
@@ -156,7 +218,7 @@ Alternative: the voucher could be activated immediately on being requested. This
 * Post-Condition\
   The calling Building Block may invoke another payment Building Block API, e.g. initiating an incentive payment for the agent.
 
-**9.2.3 Voucher Redemption sequence diagram**
+### **9.2.3 Voucher Redemption sequence diagram**
 
 The voucher redemption process is shown in the diagram below.
 
@@ -247,7 +309,7 @@ Note:
 
 In the case of a physical voucher, the voucher number or the secret number is hidden behind some material that must be scratched away to see the number. The voucher number is also commonly known as the PIN.
 
-**9.2.4 Voucher Cancellation sequence diagram**
+### **9.2.4 Voucher Cancellation sequence diagram**
 
 The voucher cancellation flow is shown in the diagram below.
 
@@ -289,24 +351,6 @@ Alternatives:
 * If the Voucher is already consumed, the VMS API will respond that the Voucher is already consumed.
 * If the Voucher is already canceled the VMS API will respond that the Voucher is already canceled.
 * If the Voucher is suspended the VMS API will respond that the Voucher is suspended.
-
-**9.2.5  Voucher Technical Requirements**
-
-| **Requirement**                                             | **Type (Must/Should/May)** |
-| ----------------------------------------------------------- | -------------------------- |
-| Voucher Provisioning                                        | MUST                       |
-| High volume generation of vouchers                          | MUST                       |
-| Voucher numbers must be unique and not predictable          | MUST                       |
-| Logs must not capture voucher numbers                       | MUST                       |
-| Voucher Storage (will this be in a separate Building Block) | MAY                        |
-| Secure storage                                              | MUST                       |
-| High Availability                                           | MUST                       |
-| Issuance                                                    | <p><br>MUST</p>            |
-| API invoked to get voucher number and serial number         | MUST                       |
-| Redemption                                                  |                            |
-| API to redeem voucher                                       | MUST                       |
-| API to invoke payment gateway                               | MUST                       |
-
 * All calls from external parties (e.g. Registration Building Block) to the voucher management system will be initiated through the API management gateway.
 * The payment orchestration module may direct transitions between the various functions.
 * The discovery service could be called by other building blocks to determine where bank accounts/wallets sit.
@@ -319,15 +363,9 @@ Alternatives:
 
 The following types of P2G payments are considered.
 
-A) Bill payments
-
-B) Payments for government services (application for a birth certificate)
-
-C) Payment for registrations. ([Registration for Postpartum and Infant Care](https://github.com/GovStackWorkingGroup/BuildingBlockAPI/issues/1))
-
-
-
-### 9.3.1 P2G Payment Upon Registration for a Government Service
+* Bill payments
+* Payments for government services (application for a birth certificate)
+* Payment for registrations. (In the case of the [Registration for Postpartum and Infant Care](https://github.com/GovStackWorkingGroup/BuildingBlockAPI/issues/1) use case)
 
 There are two possible scenarios that can be supported:
 
@@ -337,11 +375,7 @@ b) P2G payment is initiated by the Payee (USSD push payment for example)
 
 Scenario a) can also be implemented using QR code.
 
-9.3.1.1 P2G Payment initiated by the payer
-
-General Notes:
-
-* It is assumed that all APIs used are real (sync or async).
+### 9.3.1 P2G Payment initiated by the payer
 
 ![Link to Edit Diagram](<.gitbook/assets/image7 (1).png>)
 
@@ -362,7 +396,7 @@ The above model requires that the payer must provide two pieces of information t
 * As the bill payment is invoked by inputting the reference number which prompts the retrieval of the payment details in real-time from the registration building block, a failed transaction could be triggered by a session time-out or a wrong PIN. In both cases, the payer would have to re-initiate the transaction.
 * In the P2G payment in the flow above, the government holds an account with the Financial Services Provider which would collect the payments on the government's behalf and transfer them to the single treasury account on a defined timeline (i.e. daily) in an aggregated way. For reconciliation purposes, the Registration Building Block would need to notify the government of a successful/unsuccessful payment.
 
-### 9.3.1.2 P2G Payment Initiated by Payee (e.g USSD push payment) sequence diagram
+### 9.3.2 P2G Payment Initiated by Payee (e.g USSD push payment) sequence diagram
 
 ![](.gitbook/assets/image26.png)
 
@@ -379,7 +413,7 @@ Notes:
 * There can be no error in the above as both the merchant number and the payment reference are pushed to the phone.
 * The only risk here is a timeout on the Unstructured Supplementary Service Data or the user keying in the wrong PIN which may require the transaction to be reinitiated.
 
-### 9.3.1.3 P2G Payment implementation using QR Code sequence diagram
+### 9.3.3 P2G Payment implementation using QR Code sequence diagram
 
 ```mermaid
 sequenceDiagram
@@ -425,24 +459,14 @@ Notes:
 * Transaction status is sent to the Registration Building Block on completion of payments.
 * The Messaging Building Block sends a transaction confirmation message to the payer.
 
-### 9.3.2 Bill Payments
+### 9.3.4 P2G Bill Payments
 
-### &#x20;  &#x20;
-
-1. The Government Agency sends the invoice to the payer through the initiating DPG that initiated the transaction. The Invoice contains the data detailed in the header and multiple elements containing the fee, duty or tax details. The data model of the invoice is in the tables to the right.
-2. Simultaneously with step 1, the Government Agency sends the invoice to the Bill Aggregator BAn through the initiating DPG that initiated the transaction. Because many Bill Aggregators exist BAn Is the Bill Aggregator identified uniquely BA1, BA2… the Invoice contains the data detailed in the header and multiple elements containing the fee, duty or tax details. The data model of the invoice is in the tables to the right.
-3. Bill Aggregator sends the invoice reference to the Payment BB with the data model in the table to the right.
-4. The payer requests to pay at his preferred FSP by indicating his invoice reference.
-5. The FSP system requests the invoice details from the Payment Building Block indicating the invoice reference.
-6. The Payment BB requests the invoice details from the Bill Aggregator BAn Block indicating the invoice reference and using the previous routing information received in step 3.
-7. The Bill Aggregator BAn Block sends the Invoice details requests the invoice data to the Payment Building Block (refer to previous slide for details Invoice data model same as step 1).
-8. The Payment BB sends the Invoice details requests the invoice data to the FSP (refer to previous slide for details Invoice data model same as step 1 ).
-9. The FSP executes the payment by transferring the associated amounts to the associated accounts per tax/duty or fee type using the “Routing accounts details” table (data model detailed to the right).
-10. The FSP Sends the “Payment Reference details” (Data model detailed to the right) to the Payment Building Block.
-11. The Payment Building Block sends the “Payment Reference details” to the Bill Aggregator BAn.
+The P2G Bill Payments flow diagram illustrates the steps involved in processing bill payments between individuals and government agencies
 
 ```mermaid
 sequenceDiagram
+
+title: P2G Bill Payments
 
 Government agency -->>Payer: Send Invoice to payer
 Government agency -->>Bill Aggregator: Send Invoice
@@ -464,23 +488,15 @@ Bill Aggregator -->> Government agency: Send payment reference
 
 ```
 
-### 9.4 Beneficiary Onboarding in Account Mapper
-
-```mermaid
-sequenceDiagram
-
-note left of RBB: Functional ID is issued to Beneficiary, Request parameters can be json array for bulk onboarding
-
-RBB -->> IM:  Register_Beneficiary (Request ID,\nSource BB ID, Array of Beneficiaries)
-IM -->> PBB:  Register_Beneficiary (Request ID,\nSource BB ID, Array of Beneficiaries)
-
-note left of PBB: Validate parameters, Authenticate Source Building block exists
-
-PBB -->> AM: Register_Beneficiary (Request ID,\nSource BB ID, Array of Beneficiaries)
-note left of AM: For each Payee Functional ID, Duplicate Check, Register in mapper
-
-AM -->> PBB: Register_Beneficiary_Respone(Request_ID,\nResponse Code,Array of Failed cases)
-PBB -->> IM:  Register_Beneficiary_Respone(Request_ID,\nResponse Code,Array of Failed cases)
-IM -->> RBB:  Register_Beneficiary_Respone(Request_ID,\nResponse Code,Array of Failed cases)
-
-```
+1. The Government Agency sends an invoice to the payer, detailing the amount owed.
+2. The Government Agency also sends a copy of the invoice to the designated Bill Aggregator.
+3. The Bill Aggregator then sends the invoice reference number to the Payments Building Block (Payments BB).
+4. The payer, upon receiving the invoice, provides the invoice reference number to their preferred Collection Financial Service Provider (Collection FSP).
+5. The Collection FSP requests transaction details, including the amount to be paid, from the Payments BB using the invoice reference number.
+6. The Payments BB, in turn, requests the transaction details from the Bill Aggregator.
+7. The Bill Aggregator provides the requested transaction details to the Payments BB.
+8. The Payments BB forwards the transaction details to the Collection FSP.
+9. The Collection FSP executes the payment based on the transaction details provided.
+10. After completing the payment, the Collection FSP sends the payment reference to the Payments BB.
+11. The Payments BB forwards the payment reference to the Bill Aggregator.
+12. Finally, the Bill Aggregator sends the payment reference to the Government Agency, confirming the completion of the payment.

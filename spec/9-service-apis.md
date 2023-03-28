@@ -18,56 +18,35 @@ The implementation will be such that a “Request to Pay” APIs is exposed and 
 
 This API is designed for the government entity to initiate a request to the Financial Service Provider (FSP) and will be credited when the payer approves the request.
 
-API Endpoint: POST /api/v1/p2g/payee\_initiated
+{% swagger src=".gitbook/assets/Mobile_Money_API_v1.1.2-Specification_Definition (1) (1).yaml" path="/transactions" method="post" %}
+[Mobile_Money_API_v1.1.2-Specification_Definition (1) (1).yaml](<.gitbook/assets/Mobile_Money_API_v1.1.2-Specification_Definition (1) (1).yaml>)
+{% endswagger %}
 
+{% swagger src=".gitbook/assets/Mobile_Money_API_v1.1.2-Specification_Definition (1) (1).yaml" path="/transactions/type/{transactionType}" method="post" %}
+[Mobile_Money_API_v1.1.2-Specification_Definition (1) (1).yaml](<.gitbook/assets/Mobile_Money_API_v1.1.2-Specification_Definition (1) (1).yaml>)
+{% endswagger %}
 
+{% swagger src=".gitbook/assets/Mobile_Money_API_v1.1.2-Specification_Definition (1) (1).yaml" path="/transactions/{transactionReference}" method="get" %}
+[Mobile_Money_API_v1.1.2-Specification_Definition (1) (1).yaml](<.gitbook/assets/Mobile_Money_API_v1.1.2-Specification_Definition (1) (1).yaml>)
+{% endswagger %}
 
-```
-{
-    "amount": "200.00",
-    "id": "2",
-    "debitParty": [
-        {
-            "key": "accountid",
-            "value": "2999"
-        }
-    ],
-    "creditParty": [
-        {
-            "key": "accountid",
-            "value": "2999"
-        }
-    ],
-    "currency": "RWF"
-}
-```
+### 8.1.2 Bill Payments <a href="#docs-internal-guid-bfb99f40-7fff-cdda-fef1-dd6367f348ff" id="docs-internal-guid-bfb99f40-7fff-cdda-fef1-dd6367f348ff"></a>
 
-### 8.1.2 Payer-Initiated Merchant Payment <a href="#docs-internal-guid-bfb99f40-7fff-cdda-fef1-dd6367f348ff" id="docs-internal-guid-bfb99f40-7fff-cdda-fef1-dd6367f348ff"></a>
+The Bill Payments APIs allow government entities to accept bill payments from mobile money customers.
 
-This API covers the scenario where the payer initiates the request, and the payer's account will be debited upon successful completion of the request.
+{% swagger src=".gitbook/assets/Mobile_Money_API_v1.1.2-Specification_Definition (1) (1).yaml" path="/accounts/{accountId}/bills/{billReference}/payments" method="post" %}
+[Mobile_Money_API_v1.1.2-Specification_Definition (1) (1).yaml](<.gitbook/assets/Mobile_Money_API_v1.1.2-Specification_Definition (1) (1).yaml>)
+{% endswagger %}
 
-API endpoint: POST /api/v1/p2g/payer\_initiated
+{% swagger src=".gitbook/assets/Mobile_Money_API_v1.1.2-Specification_Definition (1) (1).yaml" path="/accounts/{identifierType}/{identifier}/bills/{billReference}/payments" method="post" %}
+[Mobile_Money_API_v1.1.2-Specification_Definition (1) (1).yaml](<.gitbook/assets/Mobile_Money_API_v1.1.2-Specification_Definition (1) (1).yaml>)
+{% endswagger %}
 
-```
-{
-    "amount": "200.00",
-    "debitParty": [
-        {
-            "key": "accountid",
-            "value": "2999"
-        }
-    ],
-    "creditParty": [
-        {
-            "key": "accountid",
-            "value": "2999"
-        }
-    ],
-    "currency": "RWF"
-}
-```
+{% swagger src=".gitbook/assets/Mobile_Money_API_v1.1.2-Specification_Definition (1) (1).yaml" path="/bills/{billReference}/payments" method="post" %}
+[Mobile_Money_API_v1.1.2-Specification_Definition (1) (1).yaml](<.gitbook/assets/Mobile_Money_API_v1.1.2-Specification_Definition (1) (1).yaml>)
+{% endswagger %}
 
-## 8.2 Bulk Payment APIs (Outgoing) <a href="#docs-internal-guid-f78d8d0a-7fff-33bf-2d15-aced73dc0f65" id="docs-internal-guid-f78d8d0a-7fff-33bf-2d15-aced73dc0f65"></a>
+## 8.2 Government to Person payments  <a href="#docs-internal-guid-f78d8d0a-7fff-33bf-2d15-aced73dc0f65" id="docs-internal-guid-f78d8d0a-7fff-33bf-2d15-aced73dc0f65"></a>
 
 There are APIs:
 
@@ -76,7 +55,13 @@ There are APIs:
 * for doing a lookup of identity and maps to valid bank or wallet accounts. As noted previously, third-party providers, depending on the topography of the payments landscape in the country may bring additional APIs to connect to the FSPs. Those are out of scope.
 * for querying the payments building block for information about a batch job, payments made under a specific program over time, and specific payment enquiries for a specific date, beneficiary, or any combination.
 
-## 8.3 From Source Beneficiary System to Payments Building Block
+## 8.2.1 Bulk disbursement APIs
+
+{% swagger src=".gitbook/assets/BulkPayments.yaml" path="/credit-instructions" method="post" %}
+[BulkPayments.yaml](.gitbook/assets/BulkPayments.yaml)
+{% endswagger %}
+
+
 
 ### 8.3.1 Programs
 
@@ -214,8 +199,6 @@ The VoucherPreActivation API is used by non-Payment Building Blocks in the GovSt
 [VoucherAPIS.json](.gitbook/assets/VoucherAPIS.json)
 {% endswagger %}
 
-![](<.gitbook/assets/image9 (1).png>)
-
 ### 8.6.2 VoucherActivation API <a href="#docs-internal-guid-53943e9f-7fff-ee8a-93a6-10bc57857bd7" id="docs-internal-guid-53943e9f-7fff-ee8a-93a6-10bc57857bd7"></a>
 
 The VoucherActivation API is used by non-Payments Building Blocks in the GovStack Framework to activate a pre-activated voucher. This second function call is intended to ensure that the voucher is only activated when it is disbursed. This API requests for the activation of a voucher when the caller sends the voucher number to be activated. If the API call is successful, the activation is confirmed, and the voucher can now be used by the beneficiary.
@@ -225,8 +208,6 @@ The VoucherActivation API is used by non-Payments Building Blocks in the GovStac
 {% swagger src=".gitbook/assets/VoucherAPIS.json" path="/vouchers/voucher_activation" method="patch" %}
 [VoucherAPIS.json](.gitbook/assets/VoucherAPIS.json)
 {% endswagger %}
-
-![](<.gitbook/assets/image4 (1).png>)
 
 ### 8.6.3 BatchVoucherActivation API <a href="#docs-internal-guid-97c3ee48-7fff-63bc-1eda-a2af444b93bb" id="docs-internal-guid-97c3ee48-7fff-63bc-1eda-a2af444b93bb"></a>
 
@@ -242,8 +223,6 @@ The calling building block will dispense the vouchers as needed using an appropr
 
 
 
-![](<.gitbook/assets/image3 (1).png>)
-
 ### 8.6.4 VoucherRedemption <a href="#docs-internal-guid-df8c2024-7fff-e374-7456-23db45c11b57" id="docs-internal-guid-df8c2024-7fff-e374-7456-23db45c11b57"></a>
 
 The VoucherRedemption API is used by non-Payment Building Blocks in the GovStack Framework to redeem a voucher. The calling Building Block will capture the voucher number and the voucher serial number from the merchant point. The external Building Block will also acquire the merchant name and payment details from the merchant registry. The calling Building Block will then send the voucher number, the voucher serial number, the merchant’s name, and payment details. The Payment Building Block will verify that the voucher has been activated and has not been used or blocked or canceled. If so, the Payment Building Block will then send a payment request to the funding agency/Financial Services Provider. The Payment Gateway of the Payments Building Block will facilitate the debit of the funding account, and the credit of the merchant as well as handle any intermediary fees. Once the payment has been successfully done the Payment Building Block will mark the voucher as consumed and notify the merchant (and beneficiary if possible).
@@ -254,8 +233,6 @@ The VoucherRedemption API is used by non-Payment Building Blocks in the GovStack
 [VoucherAPIS.json](.gitbook/assets/VoucherAPIS.json)
 {% endswagger %}
 
-![](.gitbook/assets/image25.png)
-
 ### 8.6.5 VoucherStatus API <a href="#docs-internal-guid-14288f23-7fff-3b24-f10e-6fb6e3200147" id="docs-internal-guid-14288f23-7fff-3b24-f10e-6fb6e3200147"></a>
 
 The VoucherStatus API is used by non-Payment Building Blocks in the GovStack Framework to check the status of a voucher. The calling Building Block will capture the voucher number and send it to the Payments Building Block to determine the status of a voucher. The Payments Building Block will respond with one of the statuses of Pre-Activated, Activated, Suspended, Blocked, or Not Existing.
@@ -265,8 +242,6 @@ The VoucherStatus API is used by non-Payment Building Blocks in the GovStack Fra
 {% swagger src=".gitbook/assets/VoucherAPIS.json" path="/vouchers/voucherstatuscheck/{voucherserialnumber}" method="get" %}
 [VoucherAPIS.json](.gitbook/assets/VoucherAPIS.json)
 {% endswagger %}
-
-![](.gitbook/assets/image16.png)
 
 ### 8.6.6 VoucherCancellation API <a href="#docs-internal-guid-ceb6fd44-7fff-a34f-207b-6fc5be1638fa" id="docs-internal-guid-ceb6fd44-7fff-a34f-207b-6fc5be1638fa"></a>
 
