@@ -14,15 +14,11 @@ The [GovStack non-functional requirements document](https://govstack.gitbook.io/
 
 The implementation will be such that a “Request to Pay” APIs is exposed and the Government Ministry (entity) is treated as a type of Biller. [Refer to the GSMA API](https://developer.mobilemoneyapi.io/download-files/Mobile\_Money\_API\_v1.1.2-Specification\_Definition.yaml) v1.1
 
-### 8.1.1 Payee-Initiated Merchant Payment
+### 8.1.1 Government Initiated  Payment
 
 This API is designed for the government entity to initiate a request to the Financial Service Provider (FSP) and will be credited when the payer approves the request.
 
 {% swagger src=".gitbook/assets/Mobile_Money_API_v1.1.2-Specification_Definition (1) (1).yaml" path="/transactions" method="post" %}
-[Mobile_Money_API_v1.1.2-Specification_Definition (1) (1).yaml](<.gitbook/assets/Mobile_Money_API_v1.1.2-Specification_Definition (1) (1).yaml>)
-{% endswagger %}
-
-{% swagger src=".gitbook/assets/Mobile_Money_API_v1.1.2-Specification_Definition (1) (1).yaml" path="/transactions/type/{transactionType}" method="post" %}
 [Mobile_Money_API_v1.1.2-Specification_Definition (1) (1).yaml](<.gitbook/assets/Mobile_Money_API_v1.1.2-Specification_Definition (1) (1).yaml>)
 {% endswagger %}
 
@@ -32,17 +28,9 @@ This API is designed for the government entity to initiate a request to the Fina
 
 ### 8.1.2 Bill Payments <a href="#docs-internal-guid-bfb99f40-7fff-cdda-fef1-dd6367f348ff" id="docs-internal-guid-bfb99f40-7fff-cdda-fef1-dd6367f348ff"></a>
 
-The Bill Payments APIs allow government entities to accept bill payments from mobile money customers.
+The Bill Payments APIs allow government entities to accept bill payments from persons on digital platforms like mobile money.
 
 {% swagger src=".gitbook/assets/Mobile_Money_API_v1.1.2-Specification_Definition (1) (1).yaml" path="/accounts/{accountId}/bills/{billReference}/payments" method="post" %}
-[Mobile_Money_API_v1.1.2-Specification_Definition (1) (1).yaml](<.gitbook/assets/Mobile_Money_API_v1.1.2-Specification_Definition (1) (1).yaml>)
-{% endswagger %}
-
-{% swagger src=".gitbook/assets/Mobile_Money_API_v1.1.2-Specification_Definition (1) (1).yaml" path="/accounts/{identifierType}/{identifier}/bills/{billReference}/payments" method="post" %}
-[Mobile_Money_API_v1.1.2-Specification_Definition (1) (1).yaml](<.gitbook/assets/Mobile_Money_API_v1.1.2-Specification_Definition (1) (1).yaml>)
-{% endswagger %}
-
-{% swagger src=".gitbook/assets/Mobile_Money_API_v1.1.2-Specification_Definition (1) (1).yaml" path="/bills/{billReference}/payments" method="post" %}
 [Mobile_Money_API_v1.1.2-Specification_Definition (1) (1).yaml](<.gitbook/assets/Mobile_Money_API_v1.1.2-Specification_Definition (1) (1).yaml>)
 {% endswagger %}
 
@@ -57,127 +45,19 @@ There are APIs:
 
 ## 8.2.1 Bulk disbursement APIs
 
+Register Beneficiary into Payments BB
+
+This is the API that is called by the Information Mediator BB when the Registration BB in turn calls its API for registering beneficiaries into the ID Mapper of the Payments BB.
+
+• Register\_Beneficiary\_Request
+
+
+
 {% swagger src=".gitbook/assets/BulkPayments.yaml" path="/credit-instructions" method="post" %}
 [BulkPayments.yaml](.gitbook/assets/BulkPayments.yaml)
 {% endswagger %}
 
 
-
-### 8.3.1 Programs
-
-(noun, meaning a program that sends funds to beneficiaries)
-
-```
-POST/program
-Create Program 
-GET/programs
-Get all Programs
-GET/program/{program_id}
-Get Program by id
-```
-
-### 8.3.2 Beneficiaries <a href="#docs-internal-guid-cde102bb-7fff-c41c-15d5-24f7a917aa16" id="docs-internal-guid-cde102bb-7fff-c41c-15d5-24f7a917aa16"></a>
-
-(noun, meaning a payee of a program)
-
-```
-GET/beneficiaries
-Get Beneficiaries (list of beneficiaries) 
-
-GET/beneficiary/{beneficiary_id}
-Get Beneficiary by id
-"beneficiaries": [
-      {
-        "id": 9,
-        "firstname": "Mitta",
-        "lastname": "Agarwal",
-        "email": "",
-        "mobile": "",
-        "active": true,
-        "activity_ids": [],
-        "activity_state": "",
-        "activity_summary": "",
-        "bank_account_id": {
-          details here        },
-         "identity_data_kyc": {
-          "passport_id": "",
-          "national_id": "",
-          "ssn": ""
-        },
-        "identities": {},
-        }
-      },
-
-PUT/beneficiary/{beneficiary_id}/kyc
-       Update Beneficiary KYC
-
-PUT/beneficiary/{beneficiary_id}/Provider  
-Update Beneficiary Financial Service Provider 
-
-POST/enroll-into-program
-Enroll into a Program
-
-        POST/de-enroll-from-program 
-                De-enroll beneficiary from a program 
-```
-
-### 8.3.3 Disbursement <a href="#docs-internal-guid-907cf93b-7fff-35b1-fa01-cc96cad61e4f" id="docs-internal-guid-907cf93b-7fff-35b1-fa01-cc96cad61e4f"></a>
-
-(verb, relating to sending funds in a batch)
-
-```
-GET/batches
-Get all batches
-
-POST/batches
-Create Scheduled Batch "params": {
-    "name": "Regular Benefits Batch", 
-    "program_id": 1,
-    "date_start": {},
-    "date_end": {}, 
-    "active": true, 
-    "state": "draft",
-    "note": "Note 3",
-    “approved-by”: “person, office”, 
-    “approval-tracking”: “tracking acct num”, 
-    “source”: “Source account”
-    
-    GET/batch/{transaction_batch_id} Get batch details
-
-    POST/map-beneficiaries
-    Mapping Beneficiaries (relates batch to beneficiary) beneficiaries": [
-        {
-        "batch_id": 16,
-        "bank_account_id": 2,
-        "beneficiary_id": 2,
-        "amount": 100,
-        "currency_id": 2, "date_start": {},
-        "date_end": {},
-        "note": "Disbursement for specific purpose payment"
-        },
-    POST/transaction/{transaction_batch_id} Create transaction for batch
-
-    GET/transaction-status/{transaction_batch_id}
-        Transaction Status
-```
-
-see this: ([https://app.swaggerhub.com/apis/rrkas/open-g\_2\_p\_erp/1.0#/](https://app.swaggerhub.com/apis/rrkas/open-g\_2\_p\_erp/1.0%23/))
-
-## 8.4 From Payments Building Block to Lookup Directories (or Similar)
-
-[Account-Lookup Service · GitBook (mojaloop.io)](https://docs.mojaloop.io/documentation/mojaloop-technical-overview/account-lookup-service/)
-
-## 8.5 From Payments Building Block: Bulk Payment to Financial Services Providers
-
-```
-GET /batch
-Batch Summary
-GET /batch/detail
-Batch Details
-
-POST/transfer… 
-see https://app.swaggerhub.com/apis/myapi943/payment-hub_ap_is/1.0#/ 
-```
 
 ## 8.6 Voucher APIs (Outgoing) <a href="#docs-internal-guid-9cf2815f-7fff-7e39-e7ed-207134468ff3" id="docs-internal-guid-9cf2815f-7fff-7e39-e7ed-207134468ff3"></a>
 

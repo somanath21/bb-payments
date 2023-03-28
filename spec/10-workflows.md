@@ -6,8 +6,6 @@ description: >-
 
 # 9 Internal Workflows
 
-## &#x20;<a href="#docs-internal-guid-dfe6b849-7fff-2b78-34c6-27cab0f78e42" id="docs-internal-guid-dfe6b849-7fff-2b78-34c6-27cab0f78e42"></a>
-
 ## 9.1 G2P Bulk Payment Workflow <a href="#docs-internal-guid-dfe6b849-7fff-2b78-34c6-27cab0f78e42" id="docs-internal-guid-dfe6b849-7fff-2b78-34c6-27cab0f78e42"></a>
 
 ### 9.1.1 Beneficiary Onboarding in Account Mapper
