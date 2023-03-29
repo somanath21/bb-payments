@@ -6,11 +6,13 @@ description: >-
 
 # 9 Internal Workflows
 
-## 9.1 G2P Bulk Payment Workflow <a href="#docs-internal-guid-dfe6b849-7fff-2b78-34c6-27cab0f78e42" id="docs-internal-guid-dfe6b849-7fff-2b78-34c6-27cab0f78e42"></a>
+## 9.1 G2P Bulk Payment Workflows <a href="#docs-internal-guid-dfe6b849-7fff-2b78-34c6-27cab0f78e42" id="docs-internal-guid-dfe6b849-7fff-2b78-34c6-27cab0f78e42"></a>
+
+This section discusses the various processes involved in G2P disbursement, such as beneficiary onboarding into the Account Mapper, bulk disbursements to pre-registered financial addresses, and account pre-validation prior to bulk disbursement.
 
 ### 9.1.1 Beneficiary Onboarding in Account Mapper
 
-The workflow represents the process of on-boarding beneficiaries in the ID Mapper as a prerequisite step before any payment processing can occur. This use case is triggered when a new G2P beneficiary has been onboarded by a G2P program, assigned a Functional ID, and verified as eligible for the social benefit program.&#x20;
+The workflow represents the process of onboarding beneficiaries in the ID Mapper as a prerequisite step before any payment processing can occur. This use case is triggered when a new G2P beneficiary has been onboarded by a G2P program, assigned a Functional ID, and verified as eligible for the social benefit program.&#x20;
 
 ```mermaid
 sequenceDiagram
@@ -130,7 +132,7 @@ The Voucher Management System supports three workflows for voucher payments:
 
 These use cases and the relationship between each one of them are shown and further described below.
 
-The use cases are described in the below:
+The use cases are described in the diagram below:
 
 ![Payments building block diagrams.drawio - diagrams.net](.gitbook/assets/image15.png)
 
@@ -169,7 +171,7 @@ alt Error 400
 end
 
 alt Error 456
-    Payment BB-->Source BB: Invalid voucher serial number
+    Payment BB-->>Source BB: Invalid voucher serial number
 end
 
 alt Error 460
@@ -224,52 +226,48 @@ The voucher redemption process is shown in the diagram below.
 sequenceDiagram
 title Voucher Redemption
 
-Source BB (Merchant Interface) -> Merchant registry: Submit voucher details
-Merchant registry --> Source BB (Merchant Interface): Merchant name and payment details
-Source BB (Merchant Interface) -> Payment BB: Submit voucher and merchant details
+Source BB (Merchant Interface) ->> Merchant registry: Submit voucher details
+Merchant registry -->> Source BB (Merchant Interface): Merchant name and payment details
+Source BB (Merchant Interface) ->> Payment BB: Submit voucher and merchant details
 
 alt Error 400
-    Payment BB-->Source BB (Merchant Interface): Invalid request
+    Payment BB-->>Source BB (Merchant Interface): Invalid request
 end
 
-Payment BB -> Payment BB: Check Voucher
+Payment BB ->> Payment BB: Check Voucher
 
 alt Error 458
-    Payment BB-->Source BB (Merchant Interface): Voucher number already used
+    Payment BB-->>Source BB (Merchant Interface): Voucher number already used
 end
 
 alt Error 461
-    Payment BB-->Source BB (Merchant Interface): Invalid voucher number
+    Payment BB-->>Source BB (Merchant Interface): Invalid voucher number
 end
 
-Payment BB->FSP: Debit request
+Payment BB->>FSP: Debit request
 
 alt Error 599
-    Payment BB-->Source BB (Merchant Interface): Network connection error
+    Payment BB-->>Source BB (Merchant Interface): Network connection error
 end
 
 FSP->Funding A/c: Debit request
-Funding A/c --> FSP: Debit successful
+Funding A/c -->> FSP: Debit successful
 
 alt Error 462
-    FSP --> Payment BB: Insufficient funds
-    Payment BB --> Source BB (Merchant Interface): Insufficient funds
+    FSP -->> Payment BB: Insufficient funds
+    Payment BB -->> Source BB (Merchant Interface): Insufficient funds
 end
 
 FSP->Merchant A/c: Credit Request
-Merchant A/c --> FSP: Credit Request successful
+Merchant A/c -->> FSP: Credit Request successful
 
 alt Error 463
-    FSP --> Payment BB: Cannot credit merchant
-    Payment BB --> Source BB (Merchant Interface): Cannot credit merchant
+    FSP -->> Payment BB: Cannot credit merchant
+    Payment BB -->> Source BB (Merchant Interface): Cannot credit merchant
 end
 
-Payment BB -> Payment BB: Consume Voucher
-Payment BB -> Source BB (Merchant Interface): Amount credited to merchant account and voucher is consumed
-
-
-
-
+Payment BB ->> Payment BB: Consume Voucher
+Payment BB ->> Source BB (Merchant Interface): Amount credited to merchant account and voucher is consumed
 
 ```
 
@@ -375,7 +373,21 @@ Scenario a) can also be implemented using QR code.
 
 ### 9.3.1 P2G Payment initiated by the payer
 
-![Link to Edit Diagram](<.gitbook/assets/image7 (1).png>)
+```mermaid
+sequenceDiagram
+title Payer initiated P2G payments 
+
+Registration BB ->> Payments BB: Send Transaction details
+Payments BB-->>Registration BB: Payment reference
+Registration BB ->> Payer: payment reference
+Payer ->> FSP: Invoke Bill payment service
+FSP -->>FSP: Debit payer, credit payee
+FSP -->> Payments BB: Payment notification
+Payments BB -->> Registration BB: Payment success notification
+Registration BB -->> Messaging BB: Payment success notification
+Messaging BB -->> Payer: Payment success notification
+
+```
 
 Flow Description:
 
@@ -396,7 +408,27 @@ The above model requires that the payer must provide two pieces of information t
 
 ### 9.3.2 P2G Payment Initiated by Payee (e.g USSD push payment) sequence diagram
 
-![](.gitbook/assets/image26.png)
+
+
+```mermaid
+sequenceDiagram
+title Payer initiated P2G payments 
+
+Registration BB ->> Payments BB: Send Transaction details
+Payments BB->>FSP: Request USSD Push
+alt Error 402: Account restrictions
+FSP -->>Payments BB: Payment Failure notification
+Payment BB -->> Registration BB: Payment Failure notification
+end
+FSP ->>Payer: Push USSD notification
+Payer -->>Payer: Enter Pin to confirm the transition
+Payer ->>FSP: transaction athorisation
+FSP -->FSP: Debit payer, credit payee
+FSP ->> Payments BB: Payment notification
+Payments BB ->> Registration BB: Payment success notification
+Registration BB -->> Messaging BB: Payment success notification
+Messaging BB -->> Payer: Payment success notification
+```
 
 Flow Description:
 
