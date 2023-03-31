@@ -6,9 +6,9 @@ description: >-
 
 # 4 Key Digital Functionalities
 
-4.1 General Key Functionalities of the Payments Building Block
+## 4.1 General Key Functionalities of the Payments Building Block
 
-In general, the functions below describe the activities/actions that are performed in the Payments Building Block.
+In general, the functionalities below describe the activities/actions that are performed in the Payments Building Block.
 
 1. Enable government programs to channel payments through a shared payments infrastructure to accounts at multiple providers, allowing citizens to choose their preferred Financial Services Provider (FSP) and switch providers if their circumstances change or they discover a better service.
 2. Connect securely and interact with registry, identity, and other Building Blocks through the Information Mediation Building Block.

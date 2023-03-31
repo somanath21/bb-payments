@@ -32,7 +32,7 @@ PBB -->> IM:  Register_Beneficiary_Respone(Request_ID,\nResponse Code,Array of F
 IM -->> RBB:  Register_Beneficiary_Respone(Request_ID,\nResponse Code,Array of Failed cases)
 ```
 
-1. The Requesting Building Block (RBB) sends a "Register\_Beneficiary" request to the Information Mediator (IM), containing the Request ID, Source Building Block (BB) ID, and an array of beneficiaries with their Functional ID, Payment Modality, and Financial Address (if available).
+1. The Requesting Building Block (RBB) sends a "Register\_Beneficiary" request to the Information Mediator (IM), containing the Request ID, Source Building Block (SBB) ID, and an array of beneficiaries with their Functional ID, Payment Modality, and Financial Address (if available).
 2. IM forwards the "Register\_Beneficiary" request to the Payments Building Block (PBB) with the same parameters.
 3. PBB validates the API parameters and checks if the Source Building Block is configured in the Payments BB as an acceptable source of the API call.
 4. If the parameters are valid, PBB sends the "Register\_Beneficiary" request to the Account Mapper (AM) with the same parameters.

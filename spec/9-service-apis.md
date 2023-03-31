@@ -38,13 +38,121 @@ The Bill Payments APIs allow government entities to accept bill payments from pe
 
 These APIs link the Payments Building Block to the Payee Source BB for bulk payment processing, identity verification, and bank/wallet mapping. Third-party providers may add extra APIs depending on the country's payment landscape.
 
-## 8.2.1 Bulk disbursement APIs
+## 8.2.1 Beneficiary onboarding API
+
+Once a new G2P beneficiary is onboarded by a G2P Program and assigned a Functional ID, they can be added to the Account Mapper in Payments BB after their eligibility for the social benefit program has been verified.
+
+As the number of beneficiaries can be large, the  API supports the addition of beneficiaries in the mapper in bulk. This allows for efficient onboarding and management of multiple beneficiaries at once, streamlining the process and reducing the time required for handling individual beneficiary registrations.
+
+The Register Beneficiary API is invoked by the Information Mediator BB, which is triggered when the Registration BB is registering beneficiaries into the Payments BB's ID Mapper.
+
+#### Request Parameters
+
+| Field             | Type        | Required | Description                                                                                                                                                                    |
+| ----------------- | ----------- | -------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ |
+| RequestID         | String (12) | Yes      | Globally unique ID                                                                                                                                                             |
+| SourceBBID        | String (12) | Yes      | To identify the origination of the request.                                                                                                                                    |
+| Beneficiaries     | Object      | Yes      | JSON Array                                                                                                                                                                     |
+| PayeeFunctionalID | String (20) | Yes      | The functional ID of the beneficiary.                                                                                                                                          |
+| PaymentModality   | String (2)  | No       | 00 for Bank Account, 01 for Mobile Money, 02 for Voucher, 03 for Digital Wallet, 04 for Proxy                                                                                  |
+| FinancialAddress  | String (30) | No       | Destination Account Number, ideally an IBAN if available, otherwise wallet destination accounts could be phone numbers as well, other Financial Addresses such as Aliases etc. |
+
+{% swagger src=".gitbook/assets/Registerbeneficiary.yaml" path="/register-beneficiary" method="post" %}
+[Registerbeneficiary.yaml](.gitbook/assets/Registerbeneficiary.yaml)
+{% endswagger %}
+
+#### Response Parameters
+
+| Field               | Type         | Required | Description                |
+| ------------------- | ------------ | -------- | -------------------------- |
+| ResponseCode        | String (2)   | Yes      | 00 – Success, 01 – Failure |
+| ResponseDescription | String (200) | Yes      |                            |
+| RequestID           | String (12)  | Yes      | Echoed from Request        |
+
+## 8.2.2 Update Beneficiary Details API
+
+This is the API that is called by the Information Mediator BB when the Registration BB in turn calls its API for registering beneficiaries into the ID Mapper of the Payments BB.
+
+#### Request Parameters
+
+| Field             | Type        | Required | Description                                                                                                                                                                    |
+| ----------------- | ----------- | -------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ |
+| RequestID         | String (12) | Yes      | Globally unique ID                                                                                                                                                             |
+| SourceBBID        | String (12) | Yes      | To identify the origination of the request.                                                                                                                                    |
+| Beneficiaries     | Object      | Yes      | JSON Array                                                                                                                                                                     |
+| PayeeFunctionalID | String (20) | Yes      | The functional ID of the beneficiary.                                                                                                                                          |
+| PaymentModality   | String (2)  | No       | 00 for Bank Account, 01 for Mobile Money, 02 for Voucher, 03 for Digital Wallet, 04 for Proxy                                                                                  |
+| FinancialAddress  | String (30) | No       | Destination Account Number, ideally an IBAN if available, otherwise wallet destination accounts could be phone numbers as well, other Financial Addresses such as Aliases etc. |
+
+{% swagger src=".gitbook/assets/UpdateBeneficiary.yaml" path="/update-beneficiary-details" method="post" %}
+[UpdateBeneficiary.yaml](.gitbook/assets/UpdateBeneficiary.yaml)
+{% endswagger %}
+
+#### Response Parameters
+
+| Field               | Type         | Required | Description                |
+| ------------------- | ------------ | -------- | -------------------------- |
+| ResponseCode        | String (2)   | Yes      | 00 – Success, 01 – Failure |
+| ResponseDescription | String (200) | Yes      |                            |
+| RequestID           | String (12)  | Yes      | Echoed from Request        |
+
+## 8.2.2 Pre Payment Validation API
+
+This API is to be exposed by the Payments BB; the prepayment validation API, called by Source BB, retrieves eligible Functional IDs from the account mapper for credit transfers.
+
+#### Request Parameters
+
+| Field              | Type        | Required | Description                                            |
+| ------------------ | ----------- | -------- | ------------------------------------------------------ |
+| RequestID          | String (12) | Yes      | Globally unique ID                                     |
+| SourceBBID         | String (12) | Yes      | To identify the origination of the request.            |
+| BatchID            | String (12) | Yes      | BatchID for batch submitted by the Source BB.          |
+| CreditInstructions | Object      | Yes      | JSON Array                                             |
+| InstructionID      | String (16) | Yes      | Individual ID for each instruction in the Credit Batch |
+| PayeeFunctionalID  | String (20) | Yes      | The functional ID of the beneficiary.                  |
+| Amount             | Float       | Yes      | Amount to be Credited                                  |
+| Currency           | String (3)  | Yes      | Transaction Currency Code                              |
+| Narration          | String (50) | No       | Description of Payment                                 |
+
+{% swagger src=".gitbook/assets/Prepaymentvalidation.yaml" path="/prepayment-validation" method="post" %}
+[Prepaymentvalidation.yaml](.gitbook/assets/Prepaymentvalidation.yaml)
+{% endswagger %}
+
+| Field               | Type         | Required | Description                |
+| ------------------- | ------------ | -------- | -------------------------- |
+| ResponseCode        | String (2)   | Yes      | 00 – Success, 01 – Failure |
+| ResponseDescription | String (200) | Yes      |                            |
+| RequestID           | String (12)  | Yes      | Echoed from Request        |
+
+## 8.2.2 Bulk disbursement APIs
 
 This API is to be exposed by the Payments BB; it will be called by the Source BB to handover a batch of credit instructions to be processed.
 
-{% swagger src=".gitbook/assets/BulkPayments.yaml" path="/credit-instructions" method="post" %}
-[BulkPayments.yaml](.gitbook/assets/BulkPayments.yaml)
+#### Request Parameters
+
+| Field              | Type        | Required | Description                                            |
+| ------------------ | ----------- | -------- | ------------------------------------------------------ |
+| RequestID          | String (12) | Yes      | Globally unique ID                                     |
+| SourceBBID         | String (12) | Yes      | To identify the origination of the request.            |
+| BatchID            | String (12) | Yes      | BatchID for batch submitted by the Source BB.          |
+| CreditInstructions | Object      | Yes      | JSON Array                                             |
+| InstructionID      | String (16) | Yes      | Individual ID for each instruction in the Credit Batch |
+| PayeeFunctionalID  | String (20) | Yes      | The functional ID of the beneficiary.                  |
+| Amount             | Float       | Yes      | Amount to be Credited                                  |
+| Currency           | String (3)  | Yes      | Transaction Currency Code                              |
+| Narration          | String (50) | No       | Description of Payment                                 |
+
+{% swagger src=".gitbook/assets/bulkpayment.yaml" path="/bulk-payment" method="post" %}
+[bulkpayment.yaml](.gitbook/assets/bulkpayment.yaml)
 {% endswagger %}
+
+#### Response Parameters
+
+| Field               | Type         | Required | Description                |
+| ------------------- | ------------ | -------- | -------------------------- |
+| ResponseCode        | String (2)   | Yes      | 00 – Success, 01 – Failure |
+| ResponseDescription | String (200) | Yes      |                            |
+| RequestID           | String (12)  | Yes      | Echoed from Request        |
 
 ## 8.6 Voucher APIs  <a href="#docs-internal-guid-9cf2815f-7fff-7e39-e7ed-207134468ff3" id="docs-internal-guid-9cf2815f-7fff-7e39-e7ed-207134468ff3"></a>
 
