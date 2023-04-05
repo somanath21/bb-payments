@@ -1,6 +1,8 @@
-# 6 Functional Requirements
+---
+description: This section lists the technical capabilities of this Building Block.
+---
 
-This section lists the technical capabilities of the Payments Building Block.
+# 6 Functional Requirements
 
 ## 6.1 Payments Building Block Components
 
@@ -10,7 +12,7 @@ The following components are needed to achieve the technical functionalities of 
 
 ### 6.1.1 API Management Gateway <a href="#docs-internal-guid-ccd3b00d-7fff-3413-9366-be54b42a4a46" id="docs-internal-guid-ccd3b00d-7fff-3413-9366-be54b42a4a46"></a>
 
-Handles all the API messaging calls and API access control verification from other BBs to the Payments BB and vice versa as well as within the Payments BB. All requests from other BBs first go through the API gateway. The gateway then routes requests to the appropriate application/service. The API Management gateway will:
+Handles all the API messaging calls and API access control verification from other Building Blocks to the Payments Building Block and vice versa as well as within the Payments Building Block. All requests from other Building Blocks first go through the API gateway. The gateway then routes requests to the appropriate application/service. The API Management gateway will:
 
 * Use Identity and access management for authentication.
 * Perform input validation checks to prevent oversized message attacks, SQL injection attacks as well as JSON and XML threats.
@@ -46,19 +48,19 @@ This process traditionally involves the generation of group vouchers against som
 
 #### **6.1.3.2 Voucher Issuance**
 
-This process involves the Registration BB (or any other BB for that matter) requesting a voucher number from the voucher management system through an API.
+This process involves the Registration Building Block (or any other Building Block for that matter) requesting a voucher number from the voucher management system through an API.
 
 Once confirmation is received that the voucher has been released it flags the voucher as activated. Design decisions include making this step optional. Having an additional step increases security by ensuring that the voucher is not used until it is in the hands of the beneficiary.
 
-Once a voucher has been issued by the calling building block (Registration BB) it will be presented to the beneficiary in a form that is determined by the calling building block (refer to voucher workflow). The format of the final voucher presentation will be determined by the function of the calling Building Block. At a minimum, this presentation should have the voucher number as well as the voucher serial number. it could also have the details of the beneficiary, which when placed on the voucher presentation, will help the merchant authenticate the beneficiary at the point of redemption.
+Once a voucher has been issued by the calling Building Block (Registration Building Block) it will be presented to the beneficiary in a form that is determined by the calling Building Block (refer to voucher workflow). The format of the final voucher presentation will be determined by the function of the calling Building Block. At a minimum, this presentation should have the voucher number as well as the voucher serial number. it could also have the details of the beneficiary, which when placed on the voucher presentation, will help the merchant authenticate the beneficiary at the point of redemption.
 
 #### **6.1.3.3 Voucher Redemption**
 
-In the redemption process, the merchant will authenticate the beneficiary and use a predefined technology (Unstructured Supplementary Service Data, Mobile App, Web Browser) to extract the voucher number and call a redemption API through the relevant calling Building Block. The calling Building Block may also validate the beneficiary details if so required. The Building Block will also be able to validate the merchant and determine the voucher group to which the merchant belongs. Lastly, the calling Building Block will invoke the Payment Building Block Redeem API, through the Payment Building Block API Management gateway, to validate the voucher and if valid to redeem it.
+In the redemption process, the merchant will authenticate the beneficiary and use a predefined technology (Unstructured Supplementary Service Data, Mobile App, Web Browser) to extract the voucher number and call a redemption API through the relevant calling Building Block. The calling Building Block may also validate the beneficiary details if so required. The Building Block will also be able to validate the merchant and determine the voucher group to which the merchant belongs. Lastly, the calling Building Block will invoke the Payment Building Block Redeem API, through the Payments Building Block API Management gateway, to validate the voucher and if valid to redeem it.
 
-Once the voucher is validated, the Voucher Management System should invoke an API on the Payment Gateway to effect the payment in the merchant or agent wallet or bank account (depending on what was set up at merchant/agent registration. The payment gateway/switch will debit a pre-funded account/wallet and credit the merchant/agent account/wallet. The successful execution will result in the voucher being flagged as consumed/used.
+Once the voucher is validated, the Voucher Management System should invoke an API on the Payment Gateway to effect the payment in the merchant or agent wallet or bank account (depending on what was set up at merchant/agent registration). The payment gateway/switch will debit a pre-funded account/wallet and credit the merchant/agent account/wallet. The successful execution will result in the voucher being flagged as consumed/used.
 
-#### 6.1.4 VMS API interface
+### 6.1.4 Voucher Management System (VMS) API interface
 
 The details of the VMS APIs are described in the Service API section.
 
@@ -78,17 +80,17 @@ The API interface should provide a minimum of five internal API calls.
   * A call to check the validity of the voucher by voucher number and group.
 * Voucher consumption: A call to consume the voucher by voucher number.
 
-#### 6.1.5 Voucher Storage
+### 6.1.5 Voucher Storage
 
 The voucher management server shall have a storage subsystem to store the vouchers.
 
 * Vouchers must be stored in secure but high-performance data storage (READ access will marginally exceed WRITE access).
 * The storage of the voucher number will require encryption of data at rest and in motion (unless the channel is encrypted).
 * Logs generated should NEVER contain the voucher numbers.
-* All access to the voucher database MUST be logged.
+* All-access to the voucher database MUST be logged.
 * Segregation of duty must be done with respect to privileged access to the database and key management of the encryption of the voucher (the level of key management may need to be determined).
 
-#### 6.1.6 Account Lookup Directory Service (Mapper)
+### 6.1.6 Account Lookup Directory Service (Account Mapper)
 
 The account lookup directory service identifies the Financial Service Providers (FSP) where the merchant/agent/payee’s account is located.
 
@@ -100,19 +102,19 @@ In the case where there is a national payment switch, the account lookup directo
 
 ### 6.1.7 Payment Request Initiation
 
-This request could come from two sources: external or internal. An external source could be another GovStack Building Block (e.g. the Registration BB or Social Benefits Registry BB or Payroll). Either source must be appropriately authenticated and authorized to initiate the request. The initiation could be synchronous (typically for a single payment) or asynchronous (typically for batch payments). The request should contain at a minimum: the payer identifier, the payee identifier, the amount, the currency, the policy, and the initiating source’s unique transaction ID. In the case of the internal payment request, it should also contain an ID provided by the payment orchestration module.
+This request could come from two sources: external or internal. An external source could be another GovStack Building Block (e.g. the Registration Building Block or Social Benefits Registry Building Block or Payroll). Either source must be appropriately authenticated and authorized to initiate the request. The initiation could be synchronous (typically for a single payment) or asynchronous (typically for batch payments). The request should contain at a minimum: the payer identifier, the payee identifier, the amount, the currency, the policy, and the initiating source’s unique transaction ID. In the case of the internal payment request, it should also contain an ID provided by the payment orchestration module.
 
 Certain processes in the transaction flow might require proof of intent from the user, for example, entering the PIN/Password or pressing an ’accept‘ key to initiate the payment process. Such events and their outcomes should be recorded for audit trail purposes. However, the PINs and passwords should not be stored in logs or if they have to, PINs and passwords should be hashed out.
 
-#### 6.1.8 Payment Gateway
+### 6.1.8 Payment Gateway
 
-A payment gateway allows different (digital) financial service providers (FSPs) to:
+A payment gateway allows different (digital) Financial Service Providers (FSPs) to:
 
 * Interconnect and exchange information.
 * Initiate and receive transactions.
 * Accept or reject transactions and debit or credit end-user accounts.
 
-#### 6.1.9 Payment Portal
+### 6.1.9 Payment Portal
 
 The payment portal will:
 
@@ -129,7 +131,7 @@ The payment portal will:
 
 ### 6.1.10 Notifications Service
 
-Support different events related to triggering specific actions on payment outcomes such as issuing receipts upon successful payment, automating payments in case of bulk transactions, passing information to other building blocks as necessary, and handling exceptional cases for instance user/system errors amongst others.
+Support different events related to triggering specific actions on payment outcomes such as issuing receipts upon successful payment, automating payments in case of bulk transactions, passing information to other Building Blocks as necessary, and handling exceptional cases for instance user/system errors amongst others.
 
 All notification events shall have a timestamp associated with them and be kept as part of the audit log.
 
@@ -137,8 +139,8 @@ All notification events shall have a timestamp associated with them and be kept 
 
 This should happen at two levels: internally and externally.
 
-* The internal reconciliation will occur between the different sub-blocks within the Payments BB. In order to achieve internal reconciliation the internal payment request initiator should issue a unique ID that will be referenced by subsequent Payments BB sub-blocks in all future calls related to the particular payment. This will allow end-to-end tracing of the transaction within the Payments BB.
-* The external reconciliation is more complex as it involves a calling BB which is outside the Payments BB (such as the Registration BB) and a third party (e.g. DFS). Ideally, there needs to be a sequence of IDs that can identify a transaction from start to finish.
+* The internal reconciliation will occur between the different sub-blocks within the Payments Building Blocks. In order to achieve internal reconciliation the internal payment request initiator should issue a unique ID that will be referenced by subsequent Payments Building Blocks in all future calls related to the particular payment. This will allow end-to-end tracing of the transaction within the Payments Building Blocks.
+* The external reconciliation is more complex as it involves a calling Building Block which is outside the Payments Building Blocks (such as the Registration Building Block) and a third party (e.g. DFS). Ideally, there needs to be a sequence of IDs that can identify a transaction from start to finish.
 * Cross-cutting Prerequisites for reconciliation:
   * The nodes that are under the control of the GovStack should be time synched.
   * IDs should be unique, if possible contain the timestamp, and should not roll over across short ranges.
@@ -156,7 +158,7 @@ Batch files go through a final check to be clean of defects and inconsistencies,
 
 ### 6.1.13 Batch Logic and Queuing
 
-* Prepares the batch breakdown on the basis of rulesets governing: which FSPs shall receive, which payments, and other considerations.
+* Prepares the batch breakdown on the basis of rulesets governing: which Financial Services Providers shall receive, which payments, and other considerations.
 * Combines payments with other payments to the same beneficiary.
 * At high volumes, batches are queued for processing.
 * Detects batch failure rates.
@@ -172,7 +174,7 @@ Batch files go through a final check to be clean of defects and inconsistencies,
 
 ### 6.1.15 Event Log
 
-Each component of the Payments block should be capable of producing both application and transaction logs. This is important to ensure that the system can be adequately monitored and troubleshooting can be performed efficiently and effectively.
+Each component of the Payments Building Block should be capable of producing both application and transaction logs. This is important to ensure that the system can be adequately monitored and troubleshooting can be performed efficiently and effectively.
 
 * Application or event logs will capture events that each component performs and should contain at least the following information:
   * application/user ID
@@ -191,7 +193,7 @@ Each component of the Payments block should be capable of producing both applica
 
 ### 6.1.16 Audit Logging
 
-Audit trails are required to provide assurance on the integrity of the requests received and actions taken on these requests. An audit trail is a chronological record of system activities that is sufficient to enable the reconstruction and examination of the sequence of environments and activities surrounding or leading to an operation, procedure, or event in a transaction from inception to final results. The audit trail shall comply with the following requirements:
+Audit trails are required to provide assurance of the integrity of the requests received and actions taken on these requests. An audit trail is a chronological record of system activities that is sufficient to enable the reconstruction and examination of the sequence of environments and activities surrounding or leading to an operation, procedure, or event in a transaction from inception to final results. The audit trail shall comply with the following requirements:
 
 * Must be automatically captured by the computer system whenever a payment request is created, modified, or deleted.
 * Must be stored in a secure manner and must not be editable by any user, including privileged users. A common approach is to copy/redirect logging to a separate logging server.
@@ -220,14 +222,67 @@ Protects the system at the transport and application levels. It provides the nec
 
 At the transport layer:
 
-* All communication between building blocks must use Transport Layer Security (TLS) for client authentication.TLS protocol 1.2 and above should be used to protect the confidentiality and integrity of the data in transit.
+* All communication between building blocks must use secure protocols to protect the confidentiality and integrity of the data in transit.
 * Strong authentication for parties involved in the transactions should be supported.
 * Confidentiality of personal information related to the transaction – Information on account data, transaction data, payment credentials, and users’/payee’ personal profiles must never be disclosed to any unauthorized party.
 * Non-repudiation of transactions by parties involved.
 * Acknowledgement receipt: this will result in creating a trusted communication path for all transactions between each party, by the end users, telecommunication companies, merchants, or banks.
 * The messages concerning the payment transaction shall be authenticated.
 
-### 6.1.19 Data Protection
+## 6.1.19 Bulk payment service
+
+The bulk payment service is invoked in the case of G2P bulk disbursement
+
+#### 6.1.19.1  G2P Bulk disbursement
+
+The following are the prerequisites required before bulk payments can be initiated:
+
+A) Funding requirements
+
+* The funding requirements must operate within the budget/ceiling.
+* The number of funding accounts and the life cycle processes will vary depending on the payment infrastructure scenarios.
+
+B) Bulk payments file
+
+* For the salary payments use case, this would be generated by the payroll system.
+* For the unconditional social cash transfer use case, this would be generated by a process that would be triggered as per a pre-agreed frequency and the information about the payments to be made would be extracted from the registry (a database containing the information about beneficiaries for a particular government social cash transfer programme). The process of generating this payments file is outside the Payments Building Block.
+
+There are three options for the disbursement:
+
+* Manual process for Government/Department to send the retail payment details to each Financial Services Provider (FSP) (i.e. either by email or other means). This would be the case where there is a lack of interoperability among FSPs.
+* Upload the batch disbursement file in the payment web portal for each FSP to retrieve in the case of a centralised Account Lookup Directory Service.
+* Automate the disbursement process through the decentralised Account Lookup Directory Service and the payment gateway.
+
+**Option 1**: Retail payment information is sent securely to each Payment Service Provider for disbursement
+
+<figure><img src=".gitbook/assets/image20.png" alt=""><figcaption></figcaption></figure>
+
+&#x20;**Option 2**: Retail payments are accessed via a payment web portal by the Payment Service Provider. The advice/electronic fund transfer request, or paper-based check is issued from the Financial Management Information System to the Trusted Single Account (TSA) -holding Bank.\
+Based on this advice, the Bank disburses funds from the TSA into the digital payments system of the FSP which transfers the corresponding funds to the recipient’s account. For the retail payment scrolls, where each agency is responsible for running the payment system - payroll, social welfare payments, etc. - the payment details are not stored in those systems. Instead, the beneficiary’s payment token is retrieved from the Centralised Account Lookup Directory Service and kept in the government payment portal. The payment lists are only shared with the program account holder institution/FSP, Payment Service Provider (PSP), via the government payment portal. The FSP/PSP can log in on the government web portal to access the directory for payments that the FSP needs to effect for each G2P Program.
+
+<figure><img src=".gitbook/assets/image2.png" alt=""><figcaption></figcaption></figure>
+
+**Option 3**: Similar to option 2 but the disbursement process to the beneficiary is routed automatically through the payment gateway using the payment token retrieved from the decentralised account lookup directory service.
+
+<figure><img src=".gitbook/assets/image8 (1).png" alt=""><figcaption></figcaption></figure>
+
+Bulk payments require the functionality of a Payments Gateway and the functionality therein. It also assumes a separate mechanism by which the recipient account address is determined. In the figure below the “account lookup directory service” functionality maps the concept of identity to the payment alias and from there to the Financial Services Provider routing address. (i.e. wallet address or account address)
+
+**6.1.19.2 Interaction with Other Building Blocks**
+
+The diagram below shows the  interaction with the registries Building Blocks.
+
+At a high level, the payment components used for bulk payments are shown in the figure below.
+
+<figure><img src=".gitbook/assets/image24.png" alt=""><figcaption></figcaption></figure>
+
+Figure: Key digital requirements of Bulk Payments expressed as a high-level block diagram. Dotted line for required components.
+
+<figure><img src=".gitbook/assets/Picture2.png" alt=""><figcaption></figcaption></figure>
+
+
+
+### 6.1.20 Data Protection
 
 Use of a hardware security module (HSM) or equivalent to provide cryptographic keys for critical functions such as encryption, decryption, and authentication for the use of applications, identities, and databases.
 

@@ -1,234 +1,209 @@
+---
+description: >-
+  This section provides a reference for APIs that should be implemented by this
+  Building Block.
+---
+
 # 8 Service APIs
 
-## 8.1 Incoming Payments to Government (P2G) <a href="#docs-internal-guid-83db42bd-7fff-3768-b76a-9586be4ab890" id="docs-internal-guid-83db42bd-7fff-3768-b76a-9586be4ab890"></a>
+The APIs defined here establish a blueprint for how the Building Block will interact with other Building Blocks. Additional APIs may be implemented by the Building Block, but the listed APIs define a minimal set of functionality that should be provided by any implementation of this Building Block.&#x20;
 
-The implementation will be such that a “Request to Pay” APIs is exposed and the Gov't Ministry (entity) is treated as a type of Biller. Refer to the [GSMA API](https://developer.mobilemoneyapi.io/1.2/content/merchant-payments)
+The [GovStack non-functional requirements document](https://govstack.gitbook.io/specification/architecture-and-nonfunctional-requirements/6-onboarding) provides additional information on how 'adaptors' may be used to translate an existing API to the patterns described here.
 
-### 8.1.1 Payee-Initiated Merchant Payment
+## 8.1 Person-to-Government APIs (P2G) <a href="#docs-internal-guid-83db42bd-7fff-3768-b76a-9586be4ab890" id="docs-internal-guid-83db42bd-7fff-3768-b76a-9586be4ab890"></a>
 
-The government entity initiates the request to the FSP and will be credited when the payer approves the request. This API covers the use case where the mother pays for registration payment.
+The implementation will be such that a “Request to Pay” API is exposed and the Government Ministry (entity) is treated as a type of Biller.
 
-```
-{
-    "amount": "200.00",
-    "id": "2",
-    "debitParty": [
-        {
-            "key": "accountid",
-            "value": "2999"
-        }
-    ],
-    "creditParty": [
-        {
-            "key": "accountid",
-            "value": "2999"
-        }
-    ],
-    "currency": "RWF"
-}
-```
+### 8.1.1 Government Initiated  P2G payment
 
-### 8.1.2 Payer-Initiated Merchant Payment <a href="#docs-internal-guid-bfb99f40-7fff-cdda-fef1-dd6367f348ff" id="docs-internal-guid-bfb99f40-7fff-cdda-fef1-dd6367f348ff"></a>
+This API is designed for the government entity to initiate a request to the Financial Service Provider (FSP) and will be credited when the payer approves the request.
 
-The payer initiates the request and will be debited upon successful completion of the request.
+{% swagger src=".gitbook/assets/Mobile_Money_API_v1.1.2-Specification_Definition (1) (1).yaml" path="/transactions" method="post" %}
+[Mobile_Money_API_v1.1.2-Specification_Definition (1) (1).yaml](<.gitbook/assets/Mobile_Money_API_v1.1.2-Specification_Definition (1) (1).yaml>)
+{% endswagger %}
 
-```
-{
-    "amount": "200.00",
-    "debitParty": [
-        {
-            "key": "accountid",
-            "value": "2999"
-        }
-    ],
-    "creditParty": [
-        {
-            "key": "accountid",
-            "value": "2999"
-        }
-    ],
-    "currency": "RWF"
-}
-```
+{% swagger src=".gitbook/assets/Mobile_Money_API_v1.1.2-Specification_Definition (1) (1).yaml" path="/transactions/{transactionReference}" method="get" %}
+[Mobile_Money_API_v1.1.2-Specification_Definition (1) (1).yaml](<.gitbook/assets/Mobile_Money_API_v1.1.2-Specification_Definition (1) (1).yaml>)
+{% endswagger %}
 
-## 8.2 Bulk Payment APIs (Outgoing) <a href="#docs-internal-guid-f78d8d0a-7fff-33bf-2d15-aced73dc0f65" id="docs-internal-guid-f78d8d0a-7fff-33bf-2d15-aced73dc0f65"></a>
+### 8.1.2 P2G Bill Payments <a href="#docs-internal-guid-bfb99f40-7fff-cdda-fef1-dd6367f348ff" id="docs-internal-guid-bfb99f40-7fff-cdda-fef1-dd6367f348ff"></a>
 
-There are APIs:
+The Bill Payments APIs allow government entities to accept bill payments from persons on digital platforms like mobile money.
 
-* that connect the Payments Building Block to the Source of Payee (Beneficiary system).
-* for sending bulk payments through the gateway to the FSPs.
-* for doing a lookup of identity and maps to valid bank or wallet accounts. As noted previously, third-party providers, depending on the topography of the payments landscape in the country may bring additional APIs to connect to the FSPs. Those are out of scope.
-* for querying the payments building block for information about a batch job, payments made under a specific program over time, and specific payment enquiries for a specific date, beneficiary, or any combination.
+{% swagger src=".gitbook/assets/Mobile_Money_API_v1.1.2-Specification_Definition (1) (1).yaml" path="/accounts/{accountId}/bills/{billReference}/payments" method="post" %}
+[Mobile_Money_API_v1.1.2-Specification_Definition (1) (1).yaml](<.gitbook/assets/Mobile_Money_API_v1.1.2-Specification_Definition (1) (1).yaml>)
+{% endswagger %}
 
-## 8.3 From Source Beneficiary System to Payments Building Block
+## 8.2 Government to Person payments  <a href="#docs-internal-guid-f78d8d0a-7fff-33bf-2d15-aced73dc0f65" id="docs-internal-guid-f78d8d0a-7fff-33bf-2d15-aced73dc0f65"></a>
 
-### 8.3.1 Programs
+These APIs link the Payments Building Block to the Payee Source BB for bulk payment processing, identity verification, and bank/wallet mapping. Third-party providers may add extra APIs depending on the country's payment landscape.
 
-(noun, meaning a program that sends funds to beneficiaries)
+## 8.2.1 Beneficiary onboarding API
 
-```
-POST/program
-Create Program 
-GET/programs
-Get all Programs
-GET/program/{program_id}
-Get Program by id
-```
+Once a new G2P beneficiary is onboarded by a G2P Program and assigned a Functional ID, they can be added to the Account Mapper in Payments BB after their eligibility for the social benefit program has been verified.
 
-### 8.3.2 Beneficiaries <a href="#docs-internal-guid-cde102bb-7fff-c41c-15d5-24f7a917aa16" id="docs-internal-guid-cde102bb-7fff-c41c-15d5-24f7a917aa16"></a>
+As the number of beneficiaries can be large, the  API supports the addition of beneficiaries in the mapper in bulk. This allows for efficient onboarding and management of multiple beneficiaries at once, streamlining the process and reducing the time required for handling individual beneficiary registrations.
 
-(noun, meaning a payee of a program)
+The Register Beneficiary API is invoked by the Information Mediator BB, which is triggered when the Registration BB is registering beneficiaries into the Payments BB's ID Mapper.
 
-```
-GET/beneficiaries
-Get Beneficiaries (list of beneficiaries) 
+#### Request Parameters
 
-GET/beneficiary/{beneficiary_id}
-Get Beneficiary by id
-"beneficiaries": [
-      {
-        "id": 9,
-        "firstname": "Mitta",
-        "lastname": "Agarwal",
-        "email": "",
-        "mobile": "",
-        "active": true,
-        "activity_ids": [],
-        "activity_state": "",
-        "activity_summary": "",
-        "bank_account_id": {
-          details here        },
-         "identity_data_kyc": {
-          "passport_id": "",
-          "national_id": "",
-          "ssn": ""
-        },
-        "identities": {},
-        }
-      },
-*note that we don’t assume KYC is handled by GovStack
+| Field             | Type        | Required | Description                                                                                                                                                                    |
+| ----------------- | ----------- | -------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ |
+| RequestID         | String (12) | Yes      | Globally unique ID                                                                                                                                                             |
+| SourceBBID        | String (12) | Yes      | To identify the origination of the request.                                                                                                                                    |
+| Beneficiaries     | Object      | Yes      | JSON Array                                                                                                                                                                     |
+| PayeeFunctionalID | String (20) | Yes      | The functional ID of the beneficiary.                                                                                                                                          |
+| PaymentModality   | String (2)  | No       | 00 for Bank Account, 01 for Mobile Money, 02 for Voucher, 03 for Digital Wallet, 04 for Proxy                                                                                  |
+| FinancialAddress  | String (30) | No       | Destination Account Number, ideally an IBAN if available, otherwise wallet destination accounts could be phone numbers as well, other Financial Addresses such as Aliases etc. |
 
-PUT/beneficiary/{beneficiary_id}/kyc
-       Update Beneficiary KYC
+{% swagger src=".gitbook/assets/Registerbeneficiary.yaml" path="/register-beneficiary" method="post" %}
+[Registerbeneficiary.yaml](.gitbook/assets/Registerbeneficiary.yaml)
+{% endswagger %}
 
-PUT/beneficiary/{beneficiary_id}/Provider  
-Update Beneficiary Financial Service Provider 
+#### Response Parameters
 
-POST/enroll-into-program
-Enroll into a Program
+| Field               | Type         | Required | Description                |
+| ------------------- | ------------ | -------- | -------------------------- |
+| ResponseCode        | String (2)   | Yes      | 00 – Success, 01 – Failure |
+| ResponseDescription | String (200) | Yes      |                            |
+| RequestID           | String (12)  | Yes      | Echoed from Request        |
 
-        POST/de-enroll-from-program 
-                De-enroll beneficiary from a program 
-```
+## 8.2.2 Update Beneficiary Details API
 
-### 8.3.3 Disbursement <a href="#docs-internal-guid-907cf93b-7fff-35b1-fa01-cc96cad61e4f" id="docs-internal-guid-907cf93b-7fff-35b1-fa01-cc96cad61e4f"></a>
+This is the API that is called by the Information Mediator BB when the Registration BB in turn calls its API for registering beneficiaries into the ID Mapper of the Payments BB.
 
-(verb, relating to sending funds in a batch)
+#### Request Parameters
 
-```
-GET/batches
-Get all batches
+| Field             | Type        | Required | Description                                                                                                                                                                    |
+| ----------------- | ----------- | -------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ |
+| RequestID         | String (12) | Yes      | Globally unique ID                                                                                                                                                             |
+| SourceBBID        | String (12) | Yes      | To identify the origination of the request.                                                                                                                                    |
+| Beneficiaries     | Object      | Yes      | JSON Array                                                                                                                                                                     |
+| PayeeFunctionalID | String (20) | Yes      | The functional ID of the beneficiary.                                                                                                                                          |
+| PaymentModality   | String (2)  | No       | 00 for Bank Account, 01 for Mobile Money, 02 for Voucher, 03 for Digital Wallet, 04 for Proxy                                                                                  |
+| FinancialAddress  | String (30) | No       | Destination Account Number, ideally an IBAN if available, otherwise wallet destination accounts could be phone numbers as well, other Financial Addresses such as Aliases etc. |
 
-POST/batches
-Create Scheduled Batch "params": {
-    "name": "Regular Benefits Batch", 
-    "program_id": 1,
-    "date_start": {},
-    "date_end": {}, 
-    "active": true, 
-    "state": "draft",
-    "note": "Note 3",
-    “approved-by”: “person, office”, 
-    “approval-tracking”: “tracking acct num”, 
-    “source”: “Source account”
-    
-    GET/batch/{transaction_batch_id} Get batch details
+{% swagger src=".gitbook/assets/UpdateBeneficiary.yaml" path="/update-beneficiary-details" method="post" %}
+[UpdateBeneficiary.yaml](.gitbook/assets/UpdateBeneficiary.yaml)
+{% endswagger %}
 
-    POST/map-beneficiaries
-    Mapping Beneficiaries (relates batch to beneficiary) beneficiaries": [
-        {
-        "batch_id": 16,
-        "bank_account_id": 2,
-        "beneficiary_id": 2,
-        "amount": 100,
-        "currency_id": 2, "date_start": {},
-        "date_end": {},
-        "note": "Disbursement for specific purpose payment"
-        },
-    POST/transaction/{transaction_batch_id} Create transaction for batch
+#### Response Parameters
 
-    GET/transaction-status/{transaction_batch_id}
-        Transaction Status
-```
+| Field               | Type         | Required | Description                |
+| ------------------- | ------------ | -------- | -------------------------- |
+| ResponseCode        | String (2)   | Yes      | 00 – Success, 01 – Failure |
+| ResponseDescription | String (200) | Yes      |                            |
+| RequestID           | String (12)  | Yes      | Echoed from Request        |
 
-see this: ([https://app.swaggerhub.com/apis/rrkas/open-g\_2\_p\_erp/1.0#/](https://app.swaggerhub.com/apis/rrkas/open-g\_2\_p\_erp/1.0%23/))
+## 8.2.2 Pre Payment Validation API
 
-## 8.4 From Payments Building Block to Lookup Directories (or Similar)
+This API is to be exposed by the Payments BB; the prepayment validation API, called by Source BB, retrieves eligible Functional IDs from the account mapper for credit transfers.
 
-[Account-Lookup Service · GitBook (mojaloop.io)](https://docs.mojaloop.io/documentation/mojaloop-technical-overview/account-lookup-service/)
+#### Request Parameters
 
-## 8.5 From Payments Building Block: Bulk Payment to FSPs
+| Field              | Type        | Required | Description                                            |
+| ------------------ | ----------- | -------- | ------------------------------------------------------ |
+| RequestID          | String (12) | Yes      | Globally unique ID                                     |
+| SourceBBID         | String (12) | Yes      | To identify the origination of the request.            |
+| BatchID            | String (12) | Yes      | BatchID for batch submitted by the Source BB.          |
+| CreditInstructions | Object      | Yes      | JSON Array                                             |
+| InstructionID      | String (16) | Yes      | Individual ID for each instruction in the Credit Batch |
+| PayeeFunctionalID  | String (20) | Yes      | The functional ID of the beneficiary.                  |
+| Amount             | Float       | Yes      | Amount to be Credited                                  |
+| Currency           | String (3)  | Yes      | Transaction Currency Code                              |
+| Narration          | String (50) | No       | Description of Payment                                 |
 
-```
-GET /batch
-Batch Summary
-GET /batch/detail
-Batch Details
+{% swagger src=".gitbook/assets/Prepaymentvalidation.yaml" path="/prepayment-validation" method="post" %}
+[Prepaymentvalidation.yaml](.gitbook/assets/Prepaymentvalidation.yaml)
+{% endswagger %}
 
-POST/transfer… 
-see https://app.swaggerhub.com/apis/myapi943/payment-hub_ap_is/1.0#/ 
-```
+| Field               | Type         | Required | Description                |
+| ------------------- | ------------ | -------- | -------------------------- |
+| ResponseCode        | String (2)   | Yes      | 00 – Success, 01 – Failure |
+| ResponseDescription | String (200) | Yes      |                            |
+| RequestID           | String (12)  | Yes      | Echoed from Request        |
 
-## 8.6 Voucher APIs (Outgoing) <a href="#docs-internal-guid-9cf2815f-7fff-7e39-e7ed-207134468ff3" id="docs-internal-guid-9cf2815f-7fff-7e39-e7ed-207134468ff3"></a>
+## 8.2.2 Bulk disbursement APIs
 
-The first API call (pre-activation) is a request for a voucher of a specific value in a specific currency. The API call may also include a voucher group indicating that the voucher is to be used for a specific purpose. The voucher management server will respond with a voucher number - typically a 16-digit code, a voucher serial number, and the expiry date. The voucher would be marked in a pre-activated state.
+This API is to be exposed by the Payments BB; it will be called by the Source BB to handover a batch of credit instructions to be processed.
 
-The second API call (activation) is a request to activate a pre-activated voucher. This call would send the voucher number to the Payments Building Block to have the voucher activated.
+#### Request Parameters
 
-The third API call (redemption) sends the serial number, the voucher number, and the merchant payment details to the Payment Building Block. If the voucher details are valid, the merchant is credited and the voucher is consumed.
+| Field              | Type        | Required | Description                                            |
+| ------------------ | ----------- | -------- | ------------------------------------------------------ |
+| RequestID          | String (12) | Yes      | Globally unique ID                                     |
+| SourceBBID         | String (12) | Yes      | To identify the origination of the request.            |
+| BatchID            | String (12) | Yes      | BatchID for batch submitted by the Source BB.          |
+| CreditInstructions | Object      | Yes      | JSON Array                                             |
+| InstructionID      | String (16) | Yes      | Individual ID for each instruction in the Credit Batch |
+| PayeeFunctionalID  | String (20) | Yes      | The functional ID of the beneficiary.                  |
+| Amount             | Float       | Yes      | Amount to be Credited                                  |
+| Currency           | String (3)  | Yes      | Transaction Currency Code                              |
+| Narration          | String (50) | No       | Description of Payment                                 |
 
-A fourth API allows for batch activation of vouchers through an encrypted file. The source file would contain details on the amount, the currency, and the voucher group while the encrypted response file would contain the voucher serial number, the voucher number, and the expiry date.
+{% swagger src=".gitbook/assets/bulkpayment.yaml" path="/bulk-payment" method="post" %}
+[bulkpayment.yaml](.gitbook/assets/bulkpayment.yaml)
+{% endswagger %}
 
-A last set of APIs are available for checking the status of a voucher as well as canceling a voucher.
+#### Response Parameters
+
+| Field               | Type         | Required | Description                |
+| ------------------- | ------------ | -------- | -------------------------- |
+| ResponseCode        | String (2)   | Yes      | 00 – Success, 01 – Failure |
+| ResponseDescription | String (200) | Yes      |                            |
+| RequestID           | String (12)  | Yes      | Echoed from Request        |
+
+## 8.6 Voucher APIs  <a href="#docs-internal-guid-9cf2815f-7fff-7e39-e7ed-207134468ff3" id="docs-internal-guid-9cf2815f-7fff-7e39-e7ed-207134468ff3"></a>
+
+The first API in the section below is used to request for a voucher with a specific value, currency, and purpose. The server responds with a voucher number, serial number, and expiry date. The second call activates the pre-activated voucher. The third call processes voucher redemption, crediting the merchant if valid. A fourth API enables batch voucher activation through encrypted files. Additional APIs allow for voucher status checks and cancellations.
 
 ### 8.6.1 VoucherPreActivation API
 
 The VoucherPreActivation API is used by non-Payment Building Blocks in the GovStack Framework to request for a voucher to be used. This call reserves the voucher (for a period, which is to be implemented). This API requests a single voucher from the voucher server that can be used for a future redemption process. The caller sends an amount, a voucher group (depending on the use case), the currency, and the name of the calling GovStack Building Block. If the API call is successful, the Payment Building Block will respond with a voucher number, a voucher serial number, and an expiry date.
 
-![](<.gitbook/assets/image9 (1).png>)
+{% swagger src=".gitbook/assets/VoucherAPIS.json" path="/vouchers/voucher_preactivation" method="post" %}
+[VoucherAPIS.json](.gitbook/assets/VoucherAPIS.json)
+{% endswagger %}
 
 ### 8.6.2 VoucherActivation API <a href="#docs-internal-guid-53943e9f-7fff-ee8a-93a6-10bc57857bd7" id="docs-internal-guid-53943e9f-7fff-ee8a-93a6-10bc57857bd7"></a>
 
-The VoucherActivation API is used by non-Payment Building Blocks in the GovStack Framework to activate a pre-activated voucher. This second function call is intended to ensure that the voucher is only activated when it is disbursed. This API requests for the activation of a voucher when the caller sends the voucher number to be activated. If the API call is successful, the activation is confirmed, and the voucher can now be used by the beneficiary.
+The VoucherActivation API is used by non-Payments Building Blocks in the GovStack Framework to activate a pre-activated voucher. This second function call is intended to ensure that the voucher is only activated when it is disbursed. This API requests for the activation of a voucher when the caller sends the voucher number to be activated. If the API call is successful, the activation is confirmed, and the voucher can now be used by the beneficiary.
 
-![](<.gitbook/assets/image4 (1).png>)
+{% swagger src=".gitbook/assets/VoucherAPIS.json" path="/vouchers/voucher_activation" method="patch" %}
+[VoucherAPIS.json](.gitbook/assets/VoucherAPIS.json)
+{% endswagger %}
 
 ### 8.6.3 BatchVoucherActivation API <a href="#docs-internal-guid-97c3ee48-7fff-63bc-1eda-a2af444b93bb" id="docs-internal-guid-97c3ee48-7fff-63bc-1eda-a2af444b93bb"></a>
 
-The BatchVoucherActivation API is used by a calling BB to activate vouchers in bulk. This may be used for bulk social cash transfers where the recipients receive benefits by vouchers. The calling BB is responsible for generating the beneficiary file as well as dispensing the vouchers. The Payment BB is responsible for generating and redeeming the voucher codes. Both BBs will have had to have exchanged encryption keys during the implementation phase.
+The BatchVoucherActivation API is used by a calling Building Block to activate vouchers in bulk. This may be used for bulk social cash transfers where the recipients receive benefits by vouchers. The calling Building Block is responsible for generating the beneficiary file as well as dispensing the vouchers. The Payments Building Block is responsible for generating and redeeming the voucher codes. Both BBs will have had to have exchanged encryption keys during the implementation phase.
 
-The file provided by the calling building block (typically the Scheduler Building Block) will typically contain a unique identifier, the amount of the voucher required, the currency of the voucher, and the voucher group. While the file format may vary, the recommended file format is an encrypted json file.
+The file provided by the calling Building Block (typically the Scheduler Building Block) will typically contain a unique identifier, the amount of the voucher required, the currency of the voucher, and the voucher group. While the file format may vary, the recommended file format is an encrypted JSON file.
 
-If the file is properly formatted, the Payments BB will respond with a file that contains the unique ID that was sent, the status, the voucher number, the voucher serial number, and the expiry date of the voucher. The response file will also be an encrypted file to ensure the appropriate security of the voucher number.
+If the file is properly formatted, the Payments Building Block will respond with a file that contains the unique ID that was sent, the status, the voucher number, the voucher serial number, and the expiry date of the voucher. The response file will also be an encrypted file to ensure the appropriate security of the voucher number.
 
-The calling building block will dispense the vouchers as needed using an appropriate delivery mechanism. The calling BB will also be responsible for any verification of the beneficiary during the redemption process. The description of the dispensing of the vouchers once the calling block has received it is outside the scope of the Payments BB.
-
-![](<.gitbook/assets/image3 (1).png>)
+The calling building block will dispense the vouchers as needed using an appropriate delivery mechanism. The calling Building Block will also be responsible for any verification of the beneficiary during the redemption process. The description of the dispensing of the vouchers once the calling block has received it is outside the scope of the Payments Building Block.
 
 ### 8.6.4 VoucherRedemption <a href="#docs-internal-guid-df8c2024-7fff-e374-7456-23db45c11b57" id="docs-internal-guid-df8c2024-7fff-e374-7456-23db45c11b57"></a>
 
-The VoucherRedemption API is used by non-Payment Building Blocks in the GovStack Framework to redeem a voucher. The calling Building Block will capture the voucher number and the voucher serial number from the merchant point. The external Building Block will also acquire the merchant name and payment details from the merchant registry. The calling Building Block will then send the voucher number, the voucher serial number, the merchant’s name, and payment details. The Payment Building Block will verify that the voucher has been activated and has not been used or blocked or canceled. If so, the Payment Building Block will then send a payment request to the funding agency/FSP. The Payment Gateway of the Payments Building Block will facilitate the debit of the funding account, and the credit of the merchant as well as handle any intermediary fees. Once the payment has been successfully done the Payment Building Block will mark the voucher as consumed and notify the merchant (and beneficiary if possible).
+The VoucherRedemption API is used by non-Payment Building Blocks in the GovStack Framework to redeem a voucher. The calling Building Block will capture the voucher number and the voucher serial number from the merchant point. The external Building Block will also acquire the merchant name and payment details from the merchant registry. The calling Building Block will then send the voucher number, the voucher serial number, the merchant’s name, and payment details. The Payment Building Block will verify that the voucher has been activated and has not been used or blocked or canceled. If so, the Payment Building Block will then send a payment request to the funding agency/Financial Services Provider. The Payment Gateway of the Payments Building Block will facilitate the debit of the funding account, and the credit of the merchant as well as handle any intermediary fees. Once the payment has been successfully done the Payment Building Block will mark the voucher as consumed and notify the merchant (and beneficiary if possible).
 
-![](.gitbook/assets/image25.png)
+{% swagger src=".gitbook/assets/VoucherAPIS.json" path="/vouchers/voucher_redeemption" method="post" %}
+[VoucherAPIS.json](.gitbook/assets/VoucherAPIS.json)
+{% endswagger %}
 
 ### 8.6.5 VoucherStatus API <a href="#docs-internal-guid-14288f23-7fff-3b24-f10e-6fb6e3200147" id="docs-internal-guid-14288f23-7fff-3b24-f10e-6fb6e3200147"></a>
 
-The VoucherStatus API is used by non-Payment Building Blocks in the GovStack Framework to check the status of a voucher. The calling Building Block will capture the voucher number and send it to the Payments Building Block to determine the status of a voucher. The Payments Building will respond with one of the statuses of Pre-Activated, Activated, Suspended, Blocked, or Not Existing.
+The VoucherStatus API is used by non-Payment Building Blocks in the GovStack Framework to check the status of a voucher. The calling Building Block will capture the voucher number and send it to the Payments Building Block to determine the status of a voucher. The Payments Building Block will respond with one of the statuses of Pre-Activated, Activated, Suspended, Blocked, or Not Existing.
 
-![](.gitbook/assets/image16.png)
+{% swagger src=".gitbook/assets/VoucherAPIS.json" path="/vouchers/voucherstatuscheck/{voucherserialnumber}" method="get" %}
+[VoucherAPIS.json](.gitbook/assets/VoucherAPIS.json)
+{% endswagger %}
 
 ### 8.6.6 VoucherCancellation API <a href="#docs-internal-guid-ceb6fd44-7fff-a34f-207b-6fc5be1638fa" id="docs-internal-guid-ceb6fd44-7fff-a34f-207b-6fc5be1638fa"></a>
 
-The VoucherCancellation API is used by non-Payment Building Blocks in the GovStack Framework to cancel a voucher. The calling Building Block will capture the voucher number and send it to the Payments Building Block to cancel the voucher. The Payments Building Block will respond with a status of Cancelled, Already Cancelled, or Not existing. The VoucherCancellation will override the Blocked status and render the voucher permanently unusable.
+The VoucherCancellation API is used by non-Payments Building Blocks in the GovStack Framework to cancel a voucher. The calling Building Block will capture the voucher number and send it to the Payments Building Block to cancel the voucher. The Payments Building Block will respond with a status of Cancelled, Already Cancelled, or Not existing. The Voucher Cancellation will override the Blocked status and render the voucher permanently unusable.
+
+
 
 ****
