@@ -1,0 +1,70 @@
+openapi: 3.0.0
+info:
+  title: PrePayment Validation and Bulk Payment APIs
+  version: 1.0.0
+paths:
+  /prepayment-validation:
+    post:
+      summary: Pre-payment validation
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                RequestID:
+                  type: string
+                  minLength: 12
+                  maxLength: 12
+                SourceBBID:
+                  type: string
+                  minLength: 12
+                  maxLength: 12
+                BatchID:
+                  type: string
+                  minLength: 12
+                  maxLength: 12
+                CreditInstructions:
+                  type: array
+                  items:
+                    type: object
+                    properties:
+                      InstructionID:
+                        type: string
+                        minLength: 16
+                        maxLength: 16
+                      PayeeFunctionalID:
+                        type: string
+                        minLength: 20
+                        maxLength: 20
+                      Amount:
+                        type: number
+                        format: float
+                      Currency:
+                        type: string
+                        minLength: 3
+                        maxLength: 3
+                      Narration:
+                        type: string
+                        minLength: 0
+                        maxLength: 50
+      responses:
+        '200':
+          description: Successful response
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  ResponseCode:
+                    type: string
+                    minLength: 2
+                    maxLength: 2
+                  ResponseDescription:
+                    type: string
+                    maxLength: 200
+                  RequestID:
+                    type: string
+                    minLength: 12
+                    maxLength: 12
