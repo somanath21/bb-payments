@@ -37,7 +37,37 @@ The voucher resource model is shown below.
 
 ## 7.2 Incoming Government Payments Resource
 
-![](<.gitbook/assets/image13 (1).png>)
+| **Name**                                       | **Description**                                                                                                                                                                                                      | **Type**  | Required           |
+| ---------------------------------------------- | -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | --------- | ------------------ |
+| **transactionReference**                       | Unique reference for the transaction. This is returned in the response by FSP.                                                                                                                                       | string    | <p>→ NA<br>← M</p> |
+| **requestingOrganisationTransactionReference** | A reference provided by the requesting organisation that is to be associated with the transaction.                                                                                                                   | string    | <p>→ O<br>← O</p>  |
+| **originalTransactionReference**               | For reversals and refunds, this field indicates the transaction which is the subject of the reversal.                                                                                                                | string    | <p>→ O<br>← O</p>  |
+| **creditParty**                                | A series of key/value pairs that enable the credit party to be identified. Keys include MSISDN and Wallet Identifier.                                                                                                | array     | <p>→ C<br>← C</p>  |
+| **debitParty**                                 | A collection of key/value pairs that enable the debit party to be identified. Keys include MSISDN and Wallet Identifier.                                                                                             | array     | <p>→ C<br>← C</p>  |
+| **type**                                       | The harmonised Transaction Type (not required if passed in the URL)                                                                                                                                                  | string    | <p>→ M<br>← M</p>  |
+| **subType**                                    | A non-harmonised sub-classification of the type of transaction. Values are not fixed, and usage will vary according to Provider.                                                                                     | string    | <p>→ O<br>← O</p>  |
+| **transactionStatus**                          | Indicates the status of the transaction as stored by the API provider.                                                                                                                                               | string    | <p>→ NA<br>← M</p> |
+| **amount**                                     | The transaction amount.                                                                                                                                                                                              | string    | <p>→ M<br>← M</p>  |
+| **currency**                                   | Currency of the transaction amount.                                                                                                                                                                                  | string    | <p>→ M<br>← M</p>  |
+| **descriptionText**                            | Free format text description of the transaction provided by the client. This can be provided as a reference for the receiver on a notification SMS and on an account statement.                                      | string    | <p>→ O<br>← O</p>  |
+| **fees**                                       | Allows the passing and/or returning of all fees pertaining to the transaction.                                                                                                                                       | array     | <p>→ O<br>← O</p>  |
+| **geoCode**                                    | Indicates the geographic location from where the transaction was initiated.                                                                                                                                          | string    | <p>→ O<br>← O</p>  |
+| **oneTimeCode**                                | A one-time code that can be supplied in the request or can be generated in the response depending upon the use case. An authorisation code can be supplied in this field for requests that have been pre-authorised. | string    | <p>→ O<br>← O</p>  |
+| **requestingOrganisation**                     | The originating organisation of the request.                                                                                                                                                                         | object    | <p>→ O<br>← O</p>  |
+| **servicingIdentity**                          | The field is used to identify the servicing identity for transactions, e.g. till, POS ID, assistant ID.                                                                                                              | string    | <p>→ O<br>← O</p>  |
+| **transactionReceipt**                         | Transaction receipt number as notified to the parties. This may differ from the Transaction Reference.                                                                                                               | string    | <p>→ NA<br>← O</p> |
+| **creationDate**                               | Date and time when the transaction was created by the API Provider                                                                                                                                                   | date-time | <p>→ NA<br>← O</p> |
+| **modificationDate**                           | Date and time when the transaction was modified by the API Provider                                                                                                                                                  | date-time | <p>→ NA<br>← O</p> |
+| **requestDate**                                | The creation date and time of the transaction as supplied by the client.                                                                                                                                             | date-time | <p>→ O<br>← O</p>  |
+| **customData**                                 | A collection of key/value pairs that can be used for provider specific fields.                                                                                                                                       | string    | <p>→ O<br>← O</p>  |
+| **metadata**                                   | A collection of key/value pairs. These can be used to populate additional transaction fields.                                                                                                                        | array     | <p>→ O<br>← O</p>  |
+
+#### [#](https://developer.mobilemoneyapi.io/use-cases/merchant-payments/api-service-definition.html#reversals-api) <a href="#reversals-api" id="reversals-api"></a>
+
+\
+
+
+
 
 ## 7.3 Data Elements <a href="#docs-internal-guid-8d4f18ff-7fff-2f74-3bc3-2f4c2a3f0a1b" id="docs-internal-guid-8d4f18ff-7fff-2f74-3bc3-2f4c2a3f0a1b"></a>
 
