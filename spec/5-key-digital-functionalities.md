@@ -6,8 +6,6 @@ description: >-
 
 # 4 Key Digital Functionalities
 
-## 4.1 Overview of Payments Building Block Functionality
-
 In general, the functionalities below describe the activities/actions that are performed in the Payments Building Block.
 
 1. Enable government programs to channel payments through a shared payments infrastructure to accounts at multiple providers, allowing citizens to choose their preferred Financial Services Provider and switch providers if their circumstances change or they discover a better service.
@@ -39,8 +37,6 @@ In general, the functionalities below describe the activities/actions that are p
 27. Generate reports that show the vouchers in their different states as well as the aggregate quantity "stock", which triggers requests for "re-stocking" of vouchers.
 28. Authenticate beneficiaries at the point of redemption by checking the Digital Registries Building Block to authenticate the user.
 
-## 4.2 Design and Components of Payments Building Block <a href="#docs-internal-guid-d85f59a4-7fff-1564-6ae2-86d67f36a258" id="docs-internal-guid-d85f59a4-7fff-1564-6ae2-86d67f36a258"></a>
-
 The following requirements would be implemented by the Payment Building Block:
 
 * Cater for the distribution of social service transfers electronically and cash safely to end users (in the case where the user does not want to use electronic payments it is recommended that vouchers are used).
@@ -55,7 +51,7 @@ The following requirements would be implemented by the Payment Building Block:
 
 The implementation of the key digital functionalities mentioned above should adhere to the following principles.
 
-## 4.2.1 Government to Person Payment Principles <a href="#docs-internal-guid-c38a9447-7fff-fcb5-e6eb-c6419072f004" id="docs-internal-guid-c38a9447-7fff-fcb5-e6eb-c6419072f004"></a>
+## 4.2.1 Government-to-Person Payment Principles <a href="#docs-internal-guid-c38a9447-7fff-fcb5-e6eb-c6419072f004" id="docs-internal-guid-c38a9447-7fff-fcb5-e6eb-c6419072f004"></a>
 
 Government-to-person (G2P) payments architecture should strive to achieve the following principles:
 
