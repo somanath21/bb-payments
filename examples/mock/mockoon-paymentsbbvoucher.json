@@ -1524,6 +1524,95 @@
       "type": "http"
     },
     {
+      "uuid": "06ed02a6-54a9-4f28-b277-30cb02088981",
+      "type": "http",
+      "documentation": "Update beneficiary details",
+      "method": "post",
+      "endpoint": "update-beneficiary-details",
+      "responses": [
+        {
+          "uuid": "17325161-8b34-4ef3-84a6-dce5986a7c8c",
+          "body": "{\n  \"ResponseCode\": \"00\",\n  \"ResponseDescription\": \"Successfully updated beneficiary details\",\n  \"RequestID\": \"{{bodyRaw 'RequestID'}}\"\n}",
+          "latency": 0,
+          "statusCode": 200,
+          "label": "Successfully updated beneficiary details",
+          "headers": [],
+          "bodyType": "INLINE",
+          "filePath": "",
+          "databucketID": "",
+          "sendFileAsBody": false,
+          "rules": [
+            {
+              "target": "body",
+              "modifier": "RequestID",
+              "value": "",
+              "invert": true,
+              "operator": "null"
+            },
+            {
+              "target": "body",
+              "modifier": "RequestID",
+              "value": "^\\w{12}$",
+              "invert": false,
+              "operator": "regex"
+            },
+            {
+              "target": "body",
+              "modifier": "SourceBBID",
+              "value": "",
+              "invert": true,
+              "operator": "null"
+            },
+            {
+              "target": "body",
+              "modifier": "SourceBBID",
+              "value": "^\\w{12}$",
+              "invert": false,
+              "operator": "regex"
+            },
+            {
+              "target": "body",
+              "modifier": "Beneficiaries",
+              "value": "",
+              "invert": true,
+              "operator": "null"
+            },
+            {
+              "target": "body",
+              "modifier": "Beneficiaries.0.PayeeFunctionalID",
+              "value": "^\\w{20}$",
+              "invert": false,
+              "operator": "regex"
+            }
+          ],
+          "rulesOperator": "AND",
+          "disableTemplating": false,
+          "fallbackTo404": false,
+          "default": false
+        },
+        {
+          "uuid": "e8bacc91-936e-4709-a677-a75916f797ca",
+          "body": "{\n  \"ResponseCode\": \"01\",\n  \"ResponseDescription\": \"Error\",\n  \"RequestID\": \"{{bodyRaw 'RequestID'}}\"\n}",
+          "latency": 0,
+          "statusCode": 400,
+          "label": "Unable to update beneficiary details",
+          "headers": [],
+          "bodyType": "INLINE",
+          "filePath": "",
+          "databucketID": "",
+          "sendFileAsBody": false,
+          "rules": [],
+          "rulesOperator": "OR",
+          "disableTemplating": false,
+          "fallbackTo404": false,
+          "default": true
+        }
+      ],
+      "enabled": true,
+      "responseMode": null,
+      "type": "http"
+    },
+    {
       "uuid": "a5a1aab6-080f-4957-af6c-d7f99805126e",
       "type": "http",
       "documentation": "This API is to be exposed by the Payments BB. It will be called by the Source BB to handover a batch of credit instructions to be processed.",
