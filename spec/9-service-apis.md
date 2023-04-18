@@ -10,6 +10,23 @@ The APIs defined here establish a blueprint for how the Building Block will inte
 
 The [GovStack non-functional requirements document](https://govstack.gitbook.io/specification/architecture-and-nonfunctional-requirements/6-onboarding) provides additional information on how 'adaptors' may be used to translate an existing API to the patterns described here.
 
+The payments BB APIs are listed below
+
+| 1  | <p>make_G2P_payment (Payer ID, Payee ID, Amounts, Currency, [Modality], Date)</p><p>make_G2P_payment (PayerID: <em>12345</em>, </p><p></p><p>Payee ID: <em>ABCD</em>, Amounts: <em>100</em>, Currency: <em>USD</em>, [Modality: <em>MoMo</em>], Date: <em>12/06/2022</em>)</p>                 | Returns success code after payment confirmation or else returns failure status with error code                                                     |
+| -- | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | -------------------------------------------------------------------------------------------------------------------------------------------------- |
+| 2  | <p>Create_transaction (Payer ID, Payee ID, BillReferenceID, Amount, Currency, Date)</p><p> </p><p>create_transaction (PayerID: <em>12345</em>, Payee ID: <em>ABCD</em>, BillReferenceID: <em>0001243</em>, Amount: <em>10</em>, Currency: <em>USD</em>, Date: <em>12/06/2022</em>)</p><p> </p> | Returns success code after payment confirmation or else returns failure status with error code                                                     |
+| 3  | <p>view_transaction(PayerID, PayeeID, FromDate, ToDate, [status]).</p><p> </p><p>view_transaction(PayerID: <em>12345</em>, PayeeID: <em>ABCD</em>, FromDate: <em>01/01/2022</em>, ToDate: <em>01/06/2022</em>, [status]).</p>                                                                  | Returns success code along with payments history or else returns failure status with error code.                                                   |
+| 4  | register\_beneficiary(payee\_functionalID, Modality, fsp\_id, account\_info)                                                                                                                                                                                                                   | Returns success code after creating entry along with mapperID.                                                                                     |
+| 5  | update\_beneficiary(payee\_functionalID, Modality, fsp\_id, account\_info)                                                                                                                                                                                                                     | Returns success code after updating entry along with new mapperID.                                                                                 |
+| 6  | get\_paymentaccount\_info(payee\_functionalID)                                                                                                                                                                                                                                                 | Returns success code along with mapperID in tokenised format.                                                                                      |
+| 7  | VoucherPreactivation (InstructionID, amount, Group\_Code, currency, Expiry\_DTTM, FunctionalID, Description)                                                                                                                                                                                   | Returns success code with voucher number, voucher serial number and expiry date.                                                                   |
+| 8  | VoucherActivation(voucher\_number)                                                                                                                                                                                                                                                             | Returns success code. After this point the voucher may be redeemed.                                                                                |
+| 9  | VoucherRedemption(voucher\_number, voucher\_serial\_number,\[OC1] )                                                                                                                                                                                                                            | Returns success code and payment reference from the payment gateway. After this point the voucher CANNOT be used again as the system will fail it. |
+| 10 | VoucherStatusCheck(serial\_number)                                                                                                                                                                                                                                                             | Returns success code with the status of the voucher which may be either of Pre-Activated, Activated, Suspended, Blocked or Not Existing            |
+| 11 | VoucherCancellation(voucher\_serial\_number)                                                                                                                                                                                                                                                   | Returns a success code if the voucher has been successfully cancelled.                                                                             |
+
+
+
 ## 8.1 Person-to-Government APIs (P2G) <a href="#docs-internal-guid-83db42bd-7fff-3768-b76a-9586be4ab890" id="docs-internal-guid-83db42bd-7fff-3768-b76a-9586be4ab890"></a>
 
 The implementation will be such that a “Request to Pay” API is exposed and the Government Ministry (entity) is treated as a type of Biller.
@@ -18,21 +35,9 @@ The implementation will be such that a “Request to Pay” API is exposed and t
 
 This API is designed for the government entity to initiate a request to the Financial Service Provider (FSP) and will be credited when the payer approves the request.
 
-{% swagger src=".gitbook/assets/Mobile_Money_API_v1.1.2-Specification_Definition (1) (1).yaml" path="/transactions" method="post" %}
-[Mobile_Money_API_v1.1.2-Specification_Definition (1) (1).yaml](<.gitbook/assets/Mobile_Money_API_v1.1.2-Specification_Definition (1) (1).yaml>)
-{% endswagger %}
-
-{% swagger src=".gitbook/assets/Mobile_Money_API_v1.1.2-Specification_Definition (1) (1).yaml" path="/transactions/{transactionReference}" method="get" %}
-[Mobile_Money_API_v1.1.2-Specification_Definition (1) (1).yaml](<.gitbook/assets/Mobile_Money_API_v1.1.2-Specification_Definition (1) (1).yaml>)
-{% endswagger %}
-
 ### 8.1.2 P2G Bill Payments <a href="#docs-internal-guid-bfb99f40-7fff-cdda-fef1-dd6367f348ff" id="docs-internal-guid-bfb99f40-7fff-cdda-fef1-dd6367f348ff"></a>
 
 The Bill Payments APIs allow government entities to accept bill payments from persons on digital platforms like mobile money.
-
-{% swagger src=".gitbook/assets/Mobile_Money_API_v1.1.2-Specification_Definition (1) (1).yaml" path="/accounts/{accountId}/bills/{billReference}/payments" method="post" %}
-[Mobile_Money_API_v1.1.2-Specification_Definition (1) (1).yaml](<.gitbook/assets/Mobile_Money_API_v1.1.2-Specification_Definition (1) (1).yaml>)
-{% endswagger %}
 
 ## 8.2 Government to Person payments <a href="#docs-internal-guid-f78d8d0a-7fff-33bf-2d15-aced73dc0f65" id="docs-internal-guid-f78d8d0a-7fff-33bf-2d15-aced73dc0f65"></a>
 
@@ -84,8 +89,8 @@ This is the API that is called by the Information Mediator BB when the Registrat
 | PaymentModality   | String (2)  | No       | 00 for Bank Account, 01 for Mobile Money, 02 for Voucher, 03 for Digital Wallet, 04 for Proxy                                                                                  |
 | FinancialAddress  | String (30) | No       | Destination Account Number, ideally an IBAN if available, otherwise wallet destination accounts could be phone numbers as well, other Financial Addresses such as Aliases etc. |
 
-{% swagger src=".gitbook/assets/UpdateBeneficiary.yaml" path="/update-beneficiary-details" method="post" %}
-[UpdateBeneficiary.yaml](.gitbook/assets/UpdateBeneficiary.yaml)
+{% swagger src="../api/UpdateBeneficiary.yaml" path="/update-beneficiary-details" method="post" %}
+[UpdateBeneficiary.yaml](../api/UpdateBeneficiary.yaml)
 {% endswagger %}
 
 #### Response Parameters
@@ -114,8 +119,8 @@ This API is to be exposed by the Payments BB; the prepayment validation API, cal
 | Currency           | String (3)  | Yes      | Transaction Currency Code                              |
 | Narration          | String (50) | No       | Description of Payment                                 |
 
-{% swagger src=".gitbook/assets/Prepaymentvalidation.yaml" path="/prepayment-validation" method="post" %}
-[Prepaymentvalidation.yaml](.gitbook/assets/Prepaymentvalidation.yaml)
+{% swagger src="../api/Prepaymentvalidation.yaml" path="/prepayment-validation" method="post" %}
+[Prepaymentvalidation.yaml](../api/Prepaymentvalidation.yaml)
 {% endswagger %}
 
 | Field               | Type         | Required | Description                |
@@ -142,8 +147,8 @@ This API is to be exposed by the Payments BB; it will be called by the Source BB
 | Currency           | String (3)  | Yes      | Transaction Currency Code                              |
 | Narration          | String (50) | No       | Description of Payment                                 |
 
-{% swagger src=".gitbook/assets/bulkpayment.yaml" path="/bulk-payment" method="post" %}
-[bulkpayment.yaml](.gitbook/assets/bulkpayment.yaml)
+{% swagger src="../api/bulkpayment.yaml" path="/bulk-payment" method="post" %}
+[bulkpayment.yaml](../api/bulkpayment.yaml)
 {% endswagger %}
 
 #### Response Parameters
@@ -162,16 +167,16 @@ The first API in the section below is used to request for a voucher with a speci
 
 The VoucherPreActivation API is used by non-Payment Building Blocks in the GovStack Framework to request for a voucher to be used. This call reserves the voucher (for a period, which is to be implemented). This API requests a single voucher from the voucher server that can be used for a future redemption process. The caller sends an amount, a voucher group (depending on the use case), the currency, and the name of the calling GovStack Building Block. If the API call is successful, the Payment Building Block will respond with a voucher number, a voucher serial number, and an expiry date.
 
-{% swagger src=".gitbook/assets/VoucherAPIS.json" path="/vouchers/voucher_preactivation" method="post" %}
-[VoucherAPIS.json](.gitbook/assets/VoucherAPIS.json)
+{% swagger src="../api/VMS-API2-VMS-API2-GS_P_VMS_API-1.0.2-1.0.3-resolved_asynch (1) (1).json" path="/vouchers/voucher_preactivation" method="post" %}
+[VMS-API2-VMS-API2-GS_P_VMS_API-1.0.2-1.0.3-resolved_asynch (1) (1).json](<../api/VMS-API2-VMS-API2-GS_P_VMS_API-1.0.2-1.0.3-resolved_asynch (1) (1).json>)
 {% endswagger %}
 
 ### 8.6.2 VoucherActivation API <a href="#docs-internal-guid-53943e9f-7fff-ee8a-93a6-10bc57857bd7" id="docs-internal-guid-53943e9f-7fff-ee8a-93a6-10bc57857bd7"></a>
 
 The VoucherActivation API is used by non-Payments Building Blocks in the GovStack Framework to activate a pre-activated voucher. This second function call is intended to ensure that the voucher is only activated when it is disbursed. This API requests for the activation of a voucher when the caller sends the voucher number to be activated. If the API call is successful, the activation is confirmed, and the voucher can now be used by the beneficiary.
 
-{% swagger src=".gitbook/assets/VoucherAPIS.json" path="/vouchers/voucher_activation" method="patch" %}
-[VoucherAPIS.json](.gitbook/assets/VoucherAPIS.json)
+{% swagger src="../api/VMS-API2-VMS-API2-GS_P_VMS_API-1.0.2-1.0.3-resolved_asynch (1) (1).json" path="/vouchers/voucher_activation" method="patch" %}
+[VMS-API2-VMS-API2-GS_P_VMS_API-1.0.2-1.0.3-resolved_asynch (1) (1).json](<../api/VMS-API2-VMS-API2-GS_P_VMS_API-1.0.2-1.0.3-resolved_asynch (1) (1).json>)
 {% endswagger %}
 
 ### 8.6.3 BatchVoucherActivation API <a href="#docs-internal-guid-97c3ee48-7fff-63bc-1eda-a2af444b93bb" id="docs-internal-guid-97c3ee48-7fff-63bc-1eda-a2af444b93bb"></a>
@@ -188,16 +193,16 @@ The calling building block will dispense the vouchers as needed using an appropr
 
 The VoucherRedemption API is used by non-Payment Building Blocks in the GovStack Framework to redeem a voucher. The calling Building Block will capture the voucher number and the voucher serial number from the merchant point. The external Building Block will also acquire the merchant name and payment details from the merchant registry. The calling Building Block will then send the voucher number, the voucher serial number, the merchant’s name, and payment details. The Payment Building Block will verify that the voucher has been activated and has not been used or blocked or canceled. If so, the Payment Building Block will then send a payment request to the funding agency/Financial Services Provider. The Payment Gateway of the Payments Building Block will facilitate the debit of the funding account, and the credit of the merchant as well as handle any intermediary fees. Once the payment has been successfully done the Payment Building Block will mark the voucher as consumed and notify the merchant (and beneficiary if possible).
 
-{% swagger src=".gitbook/assets/VoucherAPIS.json" path="/vouchers/voucher_redeemption" method="post" %}
-[VoucherAPIS.json](.gitbook/assets/VoucherAPIS.json)
+{% swagger src="../api/VMS-API2-VMS-API2-GS_P_VMS_API-1.0.2-1.0.3-resolved_asynch (1) (1).json" path="/vouchers/voucher_redeemption" method="post" %}
+[VMS-API2-VMS-API2-GS_P_VMS_API-1.0.2-1.0.3-resolved_asynch (1) (1).json](<../api/VMS-API2-VMS-API2-GS_P_VMS_API-1.0.2-1.0.3-resolved_asynch (1) (1).json>)
 {% endswagger %}
 
 ### 8.6.5 VoucherStatus API <a href="#docs-internal-guid-14288f23-7fff-3b24-f10e-6fb6e3200147" id="docs-internal-guid-14288f23-7fff-3b24-f10e-6fb6e3200147"></a>
 
 The VoucherStatus API is used by non-Payment Building Blocks in the GovStack Framework to check the status of a voucher. The calling Building Block will capture the voucher number and send it to the Payments Building Block to determine the status of a voucher. The Payments Building Block will respond with one of the statuses of Pre-Activated, Activated, Suspended, Blocked, or Not Existing.
 
-{% swagger src=".gitbook/assets/VoucherAPIS.json" path="/vouchers/voucherstatuscheck/{voucherserialnumber}" method="get" %}
-[VoucherAPIS.json](.gitbook/assets/VoucherAPIS.json)
+{% swagger src="../api/VMS-API2-VMS-API2-GS_P_VMS_API-1.0.2-1.0.3-resolved_asynch (1) (1).json" path="/vouchers/voucherstatuscheck/{voucherserialnumber}" method="get" %}
+[VMS-API2-VMS-API2-GS_P_VMS_API-1.0.2-1.0.3-resolved_asynch (1) (1).json](<../api/VMS-API2-VMS-API2-GS_P_VMS_API-1.0.2-1.0.3-resolved_asynch (1) (1).json>)
 {% endswagger %}
 
 ### 8.6.6 VoucherCancellation API <a href="#docs-internal-guid-ceb6fd44-7fff-a34f-207b-6fc5be1638fa" id="docs-internal-guid-ceb6fd44-7fff-a34f-207b-6fc5be1638fa"></a>

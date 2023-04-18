@@ -36,15 +36,15 @@ Payments orchestration is used to configure the Payments Building Block function
 
 ### 6.1.3 Voucher Management System
 
-The voucher management system is responsible for provisioning, storage, issuance, activation, redemption, validation, suspension, unsuspension, purging, and reporting on vouchers.
+The voucher management system is responsible for prectivation, storage, activation, redemption, validation, suspension, unsuspension, purging, and reporting on vouchers.
 
 #### **6.1.3.1 Voucher Provisioning**
 
 This process traditionally involves the generation of group vouchers against some authorized value (budget release or allotment).
 
-* Each voucher should have a unique secret voucher number, a unique identification number (voucher serial number) indicating its position in an inventory of issued vouchers, and is linked to a fixed amount of value in a particular currency. Vouchers will also be associated with a voucher group during provisioning. Voucher serial numbers will be unique across currencies should there be vouchers of multiple currencies.
+* Each voucher should have a unique secret voucher number, a unique identification number (voucher serial number) indicating its position in an inventory of pre-activated ~~issued~~ vouchers, and is linked to a fixed amount of value in a particular currency. Vouchers will also be associated with a voucher group during ~~provisioning~~ pre-activation. Voucher serial numbers will be unique across currencies should there be vouchers of multiple currencies.
 * The vouchers should be created with an expiry date and MUST be stored securely. All vouchers will be expected to have the same duration of expiry and this expiry period will be from the moment the voucher is activated.
-* Alternative design options include dynamically creating a voucher at transaction time and creating variable amounts, but this increases complexity and requires tighter operational controls.
+* Alternative design options include dynamically ~~creating~~ pre-activating a voucher at transaction time and creating variable amounts, but this increases complexity and requires tighter operational controls.
 
 #### **6.1.3.2 Voucher Issuance**
 
@@ -233,7 +233,7 @@ At the transport layer:
 
 The bulk payment service is invoked in the case of G2P bulk disbursement
 
-#### 6.1.19.1  G2P Bulk disbursement
+#### 6.1.19.1 G2P Bulk disbursement
 
 The following are the prerequisites required before bulk payments can be initiated:
 
@@ -257,7 +257,7 @@ There are three options for the disbursement:
 
 <figure><img src=".gitbook/assets/image20.png" alt=""><figcaption></figcaption></figure>
 
-&#x20;**Option 2**: Retail payments are accessed via a payment web portal by the Payment Service Provider. The advice/electronic fund transfer request, or paper-based check is issued from the Financial Management Information System to the Trusted Single Account (TSA) -holding Bank.\
+**Option 2**: Retail payments are accessed via a payment web portal by the Payment Service Provider. The advice/electronic fund transfer request, or paper-based check is issued from the Financial Management Information System to the Trusted Single Account (TSA) -holding Bank.\
 Based on this advice, the Bank disburses funds from the TSA into the digital payments system of the FSP which transfers the corresponding funds to the recipient’s account. For the retail payment scrolls, where each agency is responsible for running the payment system - payroll, social welfare payments, etc. - the payment details are not stored in those systems. Instead, the beneficiary’s payment token is retrieved from the Centralised Account Lookup Directory Service and kept in the government payment portal. The payment lists are only shared with the program account holder institution/FSP, Payment Service Provider (PSP), via the government payment portal. The FSP/PSP can log in on the government web portal to access the directory for payments that the FSP needs to effect for each G2P Program.
 
 <figure><img src=".gitbook/assets/image2.png" alt=""><figcaption></figcaption></figure>
@@ -270,7 +270,7 @@ Bulk payments require the functionality of a Payments Gateway and the functional
 
 **6.1.19.2 Interaction with Other Building Blocks**
 
-The diagram below shows the  interaction with the registries Building Blocks.
+The diagram below shows the interaction with the registries Building Blocks.
 
 At a high level, the payment components used for bulk payments are shown in the figure below.
 
@@ -279,8 +279,6 @@ At a high level, the payment components used for bulk payments are shown in the 
 Figure: Key digital requirements of Bulk Payments expressed as a high-level block diagram. Dotted line for required components.
 
 <figure><img src=".gitbook/assets/Picture2.png" alt=""><figcaption></figcaption></figure>
-
-
 
 ### 6.1.20 Data Protection
 
