@@ -68,7 +68,7 @@ Government-to-person (G2P) payments architecture should strive to achieve the fo
 * Beneficiaries can easily access their funds. They are able to cash out their funds at any time at a wide range of conveniently close financial access points. At a reasonable and clearly communicated withdrawal fee or at no cost.
 * Beneficiaries are included regardless of gender, race, or other immutable characteristics, through at least one of the payment methods used; gender gaps are considered in the design.
 
-### 4.2.1.2  Infrastructure and Systems-related Principles
+### 4.2.1.2 Infrastructure and Systems-related Principles
 
 * The leveraged infrastructures and systems are shared across G2P programs and payment streams, as well as other use cases, avoiding the implementation of systems to exclusively deliver G2P payments. They are scalable and have cyber security arrangements in place.
 * Common ID provides access to multiple programs; the national ID system has high coverage and quality; it allows government agencies and payment service providers to validate recipients’ identities; it enables data sharing across government agencies.
@@ -76,8 +76,23 @@ Government-to-person (G2P) payments architecture should strive to achieve the fo
 * The payment systems are interoperable to maximize the potential of the available infrastructure to recipients; interoperability arrangements exist for Integrated Financial Management Information System (IFMIS), Treasury Single Account (TSA), banks, and non-banks covering most channels and instruments.
 * There is no manual intervention in the disbursement process and the entire payments flow is Straight-Through-Processing, including the reconciliation of payments. Payments are made without delays.
 
-### 4.2.1.3  Payment Services Provider-related Principles
+### 4.2.1.3 Payment Services Provider-related Principles
 
 * Payment service providers have a strong and long-term, predictable business case or incentives to deliver payments and provide choice.
 * A large variety of bank and non-bank financial institutions operating in a competitive market are used to deliver G2P payments.
 * Agents of bank and non-bank financial institutions are accessible to G2P payment recipients.
+
+## 2.6 Out of Scope Assumptions\*\*WIP <a href="#docs-internal-guid-39459612-7fff-54dd-0f25-ddf61408bb48" id="docs-internal-guid-39459612-7fff-54dd-0f25-ddf61408bb48"></a>
+
+* Payment scheme creation is outside of the scope.
+* Government to Business and Government to Government Payments are out of scope for the first phase and will be considered in the second phase.
+* Identity systems are separate and outside the Payments Building Block, with key implications for KYC(Know Your Customer)/CDD(Customer Due Diligence) in the banking system.
+* Consent of people eligible as beneficiaries of G2P programs for their personal details (i.e. National ID and payments details) to be stored in the tokenized form in the centralized mapper (where the government has to implement the mapper).
+* Delegation of authority - Consent of the recipient for payment of G2P to be made to a third party (next of kin) is outside the scope of the Payments Building Block. It should be handled by the consent management building block at the time of beneficiary registration for the G2P program.
+* For social benefits G2P payments, social registries are an essential Building Block that will implement the registration and determination of potential eligibility of citizens for one or more social programs. As such, they are a separate Building Block and are outside the Payments Building Block.
+* An Integrated Financial Management Information System (IFMIS) and a Treasury Single Account (TSA) are essential components in improving the safety and efficiency of government payment programs. The TSA, in particular, ensures effective aggregate control over government cash balances and facilitates the reconciliation between banking and account data. It is assumed that these components exist at the level of the government as they are outside the scope of the Payments Building Block.
+* Settlement systems are outside of the scope, Settlement allows the flow of money between participants and can be done on a Pre-funding basis which allows incoming transactions if the sending Digital Financial Service Provider (DFSP) has already deposited sufficient liquidity with them. Alternatively, settlement can be on a Clearing-base where FSPs allow incoming transactions before receiving the funds.
+* Pricing. This generally revolves around processing fees (for each transaction a fixed fee is paid to the entity processing the transaction) and interchange (where one participant agrees to pay the other).
+* Dispute resolution mechanisms allow FSPs to reach a consensus on a transaction’s status and financial liabilities in the case of a dispute. There are two main dispute resolution mechanisms: the consensus option where parties must agree on a transaction’s status; and the arbitration option where one party has authority over a transaction’s status.
+* Governance defines sets of rules on how participants make decisions.
+* Development of the voucher management ecosystem that is outside the technical specification of the Payments Building Block, including but not restricted to recruitment and registration of merchants/agents for the redemption of vouchers, etc.
