@@ -10,6 +10,7 @@ module.exports = {
     value: 'application/json',
   },
   bulkPaymentEndpoint: 'bulk-payment',
+  prepaymentValidationEndpoint: 'prepayment-validation',
   registerBeneficiaryEndpoint: 'register-beneficiary',
   updateBeneficiaryDetailsEndpoint: 'update-beneficiary-details',
   g2pResponseSchema: {
