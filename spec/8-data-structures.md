@@ -6,135 +6,69 @@ description: >-
 
 # 7 Data Structures
 
-### 7.1 Voucher Resource Model <a href="#docs-internal-guid-2e7883c1-7fff-2230-02ab-f41e68a34a31" id="docs-internal-guid-2e7883c1-7fff-2230-02ab-f41e68a34a31"></a>
+## 7.1 Resource Model
 
-The voucher resource model is shown below.
+![Voucher Resource Model](.gitbook/assets/image10.png)
 
-![](.gitbook/assets/image10.png)
+## 7.2 Data Structures <a href="#docs-internal-guid-8d4f18ff-7fff-2f74-3bc3-2f4c2a3f0a1b" id="docs-internal-guid-8d4f18ff-7fff-2f74-3bc3-2f4c2a3f0a1b"></a>
 
-### 7.1.1 Minimum Required Data
+### 7.2.1 Voucher provisioning
 
-| **Data element**    | **Description**                                                   | **Type** | **Required** |
-| ------------------- | ----------------------------------------------------------------- | -------- | ------------ |
-| Vouchers ID         | Unique voucher identifier                                         | Int64    | yes          |
-| Voucher\_Number     | Secret voucher number                                             | Varchar  | Yes          |
-| Voucher\_serial\_no | Unique voucher identifier for external parties                    | Varchar  | Yes          |
-| Currency            | Voucher currency                                                  | Varchar  | Yes          |
-| Create\_date        | Date when the voucher was created                                 | Date     | Yes          |
-| Activate\_date      | Date when the voucher was activated                               | Date     | Yes          |
-| Expiry\_date        | Date when voucher will expire                                     | Date     | Yes          |
-| Voucher\_group      | Voucher group                                                     | Varchar  | Yes          |
-| Status              | Status of the voucher (e.g. ACTIVATED, SUSPENDED, CONSUMED, etc.) | Varchar  | Yes          |
-| Value               | Value of the Voucher                                              | Double   | Yes          |
+**Fields:**
 
-### 7.1.2 Voucher Groups
+<table data-header-hidden><thead><tr><th>Name</th><th>Type</th><th>description</th><th>notes</th><th data-hidden>required</th><th data-hidden>standard</th></tr></thead><tbody><tr><td><strong>Name</strong></td><td><strong>Type</strong></td><td><strong>Description</strong></td><td><strong>Notes</strong></td><td></td><td></td></tr><tr><td>voucher_amount</td><td>Integer</td><td>Denomination of the voucher required</td><td>Input</td><td>Y</td><td></td></tr><tr><td>voucher_currency</td><td>String</td><td>The currency of the voucher (ISO 4217 Standard)</td><td>Input</td><td>Y</td><td></td></tr><tr><td>voucher_group</td><td>String</td><td>The group of the voucher</td><td>Input</td><td>Y</td><td></td></tr><tr><td>voucher_number</td><td>Integer: 64-bit</td><td>The voucher number (PIN). This is the secret number of the voucher.</td><td>Output</td><td>Y</td><td></td></tr><tr><td>voucher_serial_number</td><td>Integer: 64-bit</td><td>The voucher serial number</td><td>Output</td><td>Y</td><td></td></tr><tr><td>expiry_date</td><td>String: date-time</td><td>The expiry date of the voucher</td><td>Output</td><td>Y</td><td></td></tr><tr><td>status</td><td>String</td><td>The status of the process: SUCCESSFUL or FAILED</td><td>Output</td><td>Y</td><td></td></tr><tr><td>Merchant_group</td><td>String</td><td>The group of the merchant is captured in the registry</td><td>Input</td><td>Y</td><td></td></tr><tr><td>Gov_Stack_BB</td><td>String</td><td>Calling GOV Stack Building Block</td><td>Input</td><td>Y</td><td></td></tr><tr><td>merchant_bank_details</td><td>String</td><td>Merchant/agent payment details</td><td>Input</td><td>Y</td><td></td></tr><tr><td>merchant_name</td><td>String</td><td>Merchant name</td><td>Input</td><td>Y</td><td></td></tr><tr><td>Override</td><td>Boolean</td><td>Override</td><td>Input</td><td>Y</td><td></td></tr><tr><td>Result_Status</td><td>String</td><td>Result of the process</td><td>Output</td><td>Y</td><td></td></tr></tbody></table>
 
-| **Data element**     | **Description**                 | **Type** | **Required** |
-| -------------------- | ------------------------------- | -------- | ------------ |
-| Vouchers ID          | Unique voucher group identifier | Int64    | Yes          |
-| Voucher\_group       | Voucher group short code        | Varchar  | Yes          |
-| Voucher\_group\_desc | Voucher description             | Varchar  | Yes          |
+### 7.2.2 Register Beneficiary
 
-## 7.2 Incoming Government Payments Resource
+**Fields:**
 
-| **Name**                                       | **Description**                                                                                                                                                                                                      | **Type**  | Required           |
-| ---------------------------------------------- | -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | --------- | ------------------ |
-| **transactionReference**                       | Unique reference for the transaction. This is returned in the response by FSP.                                                                                                                                       | string    | <p>→ NA<br>← M</p> |
-| **requestingOrganisationTransactionReference** | A reference provided by the requesting organisation that is to be associated with the transaction.                                                                                                                   | string    | <p>→ O<br>← O</p>  |
-| **originalTransactionReference**               | For reversals and refunds, this field indicates the transaction which is the subject of the reversal.                                                                                                                | string    | <p>→ O<br>← O</p>  |
-| **creditParty**                                | A series of key/value pairs that enable the credit party to be identified. Keys include MSISDN and Wallet Identifier.                                                                                                | array     | <p>→ C<br>← C</p>  |
-| **debitParty**                                 | A collection of key/value pairs that enable the debit party to be identified. Keys include MSISDN and Wallet Identifier.                                                                                             | array     | <p>→ C<br>← C</p>  |
-| **type**                                       | The harmonised Transaction Type (not required if passed in the URL)                                                                                                                                                  | string    | <p>→ M<br>← M</p>  |
-| **subType**                                    | A non-harmonised sub-classification of the type of transaction. Values are not fixed, and usage will vary according to Provider.                                                                                     | string    | <p>→ O<br>← O</p>  |
-| **transactionStatus**                          | Indicates the status of the transaction as stored by the API provider.                                                                                                                                               | string    | <p>→ NA<br>← M</p> |
-| **amount**                                     | The transaction amount.                                                                                                                                                                                              | string    | <p>→ M<br>← M</p>  |
-| **currency**                                   | Currency of the transaction amount.                                                                                                                                                                                  | string    | <p>→ M<br>← M</p>  |
-| **descriptionText**                            | Free format text description of the transaction provided by the client. This can be provided as a reference for the receiver on a notification SMS and on an account statement.                                      | string    | <p>→ O<br>← O</p>  |
-| **fees**                                       | Allows the passing and/or returning of all fees pertaining to the transaction.                                                                                                                                       | array     | <p>→ O<br>← O</p>  |
-| **geoCode**                                    | Indicates the geographic location from where the transaction was initiated.                                                                                                                                          | string    | <p>→ O<br>← O</p>  |
-| **oneTimeCode**                                | A one-time code that can be supplied in the request or can be generated in the response depending upon the use case. An authorisation code can be supplied in this field for requests that have been pre-authorised. | string    | <p>→ O<br>← O</p>  |
-| **requestingOrganisation**                     | The originating organisation of the request.                                                                                                                                                                         | object    | <p>→ O<br>← O</p>  |
-| **servicingIdentity**                          | The field is used to identify the servicing identity for transactions, e.g. till, POS ID, assistant ID.                                                                                                              | string    | <p>→ O<br>← O</p>  |
-| **transactionReceipt**                         | Transaction receipt number as notified to the parties. This may differ from the Transaction Reference.                                                                                                               | string    | <p>→ NA<br>← O</p> |
-| **creationDate**                               | Date and time when the transaction was created by the API Provider                                                                                                                                                   | date-time | <p>→ NA<br>← O</p> |
-| **modificationDate**                           | Date and time when the transaction was modified by the API Provider                                                                                                                                                  | date-time | <p>→ NA<br>← O</p> |
-| **requestDate**                                | The creation date and time of the transaction as supplied by the client.                                                                                                                                             | date-time | <p>→ O<br>← O</p>  |
-| **customData**                                 | A collection of key/value pairs that can be used for provider specific fields.                                                                                                                                       | string    | <p>→ O<br>← O</p>  |
-| **metadata**                                   | A collection of key/value pairs. These can be used to populate additional transaction fields.                                                                                                                        | array     | <p>→ O<br>← O</p>  |
+| **Name**          | **Type** | **Description**                                                                                                                                                               | **Notes** |
+| ----------------- | -------- | ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | --------- |
+| RequestID         | String   | Globally unique ID                                                                                                                                                            |           |
+| SourceBBID        | String   | To identify the origination of the request.                                                                                                                                   |           |
+| Beneficiaries     | Object   | JSON Array                                                                                                                                                                    |           |
+| PayeeFunctionalID | String   | The functional Id of the beneficiary.                                                                                                                                         |           |
+| PaymentModality   | String   | <p>00 for Bank Account</p><p>01 for Mobile Money</p><p>02 for Voucher</p><p>03 for Digital Wallet</p><p>04 for Proxy</p>                                                      |           |
+| FinancialAddress  | String   | Destination Account Number, ideally an IBAN if available otherwise wallet destination accounts could be phone numbers as well, other Financial Addresses such as Aliases etc. |           |
+
+### 7.2.3 Update Beneficiary details
+
+**Fields:**
+
+<table><thead><tr><th>Name</th><th>Type</th><th>Description</th><th></th><th data-hidden>Required</th></tr></thead><tbody><tr><td><strong>Name</strong></td><td><strong>Type</strong></td><td><strong>Description</strong></td><td><strong>Notes</strong></td><td></td></tr><tr><td>RequestID</td><td>String</td><td>Globally unique ID</td><td></td><td>Y</td></tr><tr><td>SourceBBID</td><td>String</td><td>To identify the origination of the request.</td><td></td><td>Y</td></tr><tr><td>Beneficiaries</td><td>Object</td><td>JSON Array</td><td></td><td></td></tr><tr><td>PayeeFunctionalID</td><td>String</td><td>The functional Id of the beneficiary.</td><td></td><td>Y</td></tr><tr><td>PaymentModality</td><td>String</td><td><p>00 for Bank Account</p><p>01 for Mobile Money</p><p>02 for Voucher</p><p>03 for Digital Wallet</p><p>04 for Proxy</p></td><td></td><td></td></tr><tr><td>FinancialAddress</td><td>String</td><td>Destination Account Number, ideally an IBAN if available otherwise wallet destination accounts could be phone numbers as well, other Financial Addresses such as Aliases etc.</td><td></td><td></td></tr></tbody></table>
+
+### 7.2.4 Prepayment validation
+
+**Fields:**&#x20;
+
+<table><thead><tr><th>Name</th><th>Type</th><th>Description</th><th></th><th data-hidden>Required</th></tr></thead><tbody><tr><td><strong>Name</strong></td><td><strong>Type</strong></td><td><strong>Description</strong></td><td><strong>Notes</strong></td><td></td></tr><tr><td>RequestID</td><td>String</td><td>Globally unique ID</td><td></td><td>Y</td></tr><tr><td>SourceBBID</td><td>String</td><td>To identify the origination of the request.</td><td></td><td>Y</td></tr><tr><td>BatchID</td><td>String</td><td>BatchID for batch that is submitted by the Source Building Block.</td><td></td><td>Y</td></tr><tr><td>CreditInstructions</td><td>Object</td><td>JSON Array</td><td></td><td></td></tr><tr><td>InstructionID</td><td>String</td><td>Individual ID for each instruction in the Credit Batch</td><td></td><td>Y</td></tr><tr><td>PayeeFunctionalID</td><td>String</td><td>The functional Id of the beneficiary.</td><td></td><td>Y</td></tr><tr><td>Amount</td><td>Float</td><td>Amount to be Credited</td><td></td><td>Y</td></tr><tr><td>Currency</td><td>String</td><td>Transaction Currency Code</td><td></td><td>Y</td></tr><tr><td>Narration</td><td>String</td><td>Description of Payment</td><td></td><td></td></tr></tbody></table>
+
+### 7.2.5 Bulk payment
+
+**Fields:**&#x20;
+
+<table><thead><tr><th>Name</th><th>Type</th><th>Description</th><th>Notes</th><th data-hidden>Required</th></tr></thead><tbody><tr><td><strong>Name</strong></td><td><strong>Type</strong></td><td><strong>Description</strong></td><td><strong>Notes</strong></td><td></td></tr><tr><td>RequestID</td><td>String</td><td>Globally unique ID</td><td></td><td>Y</td></tr><tr><td>SourceBBID</td><td>String</td><td>To identify the origination of the request.</td><td></td><td>Y</td></tr><tr><td>BatchID</td><td>String</td><td>BatchID for batch that is submitted by the Source Building Block.</td><td></td><td>Y</td></tr><tr><td>CreditInstructions</td><td>Object</td><td>JSON Array</td><td></td><td></td></tr><tr><td>InstructionID</td><td>String</td><td>Individual ID for each instruction in the Credit Batch.</td><td></td><td>Y</td></tr><tr><td>PayeeFunctionalID</td><td>String</td><td>The functional Id of the beneficiary.</td><td></td><td>Y</td></tr><tr><td>Amount</td><td>Float</td><td>Amount to be Credited.</td><td></td><td>Y</td></tr><tr><td>Currency</td><td>String</td><td>Transaction Currency Code.</td><td></td><td>Y</td></tr><tr><td>Narration</td><td>String</td><td>Description of Payment.</td><td></td><td></td></tr></tbody></table>
+
+### 7.2.6 Minimum Required Data
+
+**Fields:**&#x20;
+
+<table data-header-hidden><thead><tr><th>Name</th><th>Type</th><th>Description</th><th>Notes</th><th data-hidden></th></tr></thead><tbody><tr><td><strong>Name</strong></td><td><strong>Type</strong></td><td><strong>Description</strong></td><td><strong>Notes</strong></td><td><strong>Required</strong></td></tr><tr><td>Vouchers ID</td><td>Int64</td><td>Unique voucher identifier</td><td></td><td>yes</td></tr><tr><td>Voucher_Number</td><td>Varchar</td><td>Secret voucher number</td><td></td><td>Yes</td></tr><tr><td>Voucher_serial_no</td><td>Varchar</td><td>Unique voucher identifier for external parties</td><td></td><td>Yes</td></tr><tr><td>Currency</td><td>Varchar</td><td>Voucher currency</td><td></td><td>Yes</td></tr><tr><td>Create_date</td><td>Date</td><td>Date when the voucher was created</td><td></td><td>Yes</td></tr><tr><td>Activate_date</td><td>Date</td><td>Date when the voucher was activated</td><td></td><td>Yes</td></tr><tr><td>Expiry_date</td><td>Date</td><td>Date when voucher will expire</td><td></td><td>Yes</td></tr><tr><td>Voucher_group</td><td>Varchar</td><td>Voucher group</td><td></td><td>Yes</td></tr><tr><td>Status</td><td>Varchar</td><td>Status of the voucher (e.g. ACTIVATED, SUSPENDED, CONSUMED, etc.)</td><td></td><td>Yes</td></tr><tr><td>Value</td><td>Double</td><td>Value of the Voucher</td><td></td><td>Yes</td></tr></tbody></table>
+
+### 7.2.7 Voucher Groups
+
+**Fields:**&#x20;
+
+| **Name**             | **Type** | **Description**                 | **Notes** |
+| -------------------- | -------- | ------------------------------- | --------- |
+| Vouchers ID          | Int64    | Unique voucher group identifier |           |
+| Voucher\_group       | Varchar  | Voucher group short code        |           |
+| Voucher\_group\_desc | Varchar  | Voucher description             |           |
+
+### 7.2.8 Incoming Government Payments Resource
+
+**Fields:**&#x20;
+
+<table data-header-hidden><thead><tr><th>Name</th><th>Type</th><th>Description</th><th>Notas</th><th data-hidden>Required</th></tr></thead><tbody><tr><td><strong>Name</strong></td><td><strong>Type</strong></td><td><strong>Description</strong></td><td><strong>Notas</strong></td><td><strong>Required</strong></td></tr><tr><td><strong>transactionReference</strong></td><td>string</td><td>Unique reference for the transaction. This is returned in the response by Financial Service Provider.</td><td></td><td>→ NA<br>← M</td></tr><tr><td><strong>requestingOrganisationTransactionReference</strong></td><td>string</td><td>A reference provided by the requesting organisation that is to be associated with the transaction.</td><td></td><td>→ O<br>← O</td></tr><tr><td><strong>originalTransactionReference</strong></td><td>string</td><td>For reversals and refunds, this field indicates the transaction which is the subject of the reversal.</td><td></td><td>→ O<br>← O</td></tr><tr><td><strong>creditParty</strong></td><td>array</td><td>A series of key/value pairs that enable the credit party to be identified. Keys include Mobile Station Integrated Services Digital Network (MSISDN) and Wallet Identifier.</td><td></td><td>→ C<br>← C</td></tr><tr><td><strong>debitParty</strong></td><td>array</td><td>A collection of key/value pairs that enable the debit party to be identified. Keys include MSISDN and Wallet Identifier.</td><td></td><td>→ C<br>← C</td></tr><tr><td><strong>type</strong></td><td>string</td><td>The harmonised Transaction Type (not required if passed in the URL)</td><td></td><td>→ M<br>← M</td></tr><tr><td><strong>subType</strong></td><td>string</td><td>A non-harmonised sub-classification of the type of transaction. Values are not fixed, and usage will vary according to Provider.</td><td></td><td>→ O<br>← O</td></tr><tr><td><strong>transactionStatus</strong></td><td>string</td><td>Indicates the status of the transaction as stored by the API provider.</td><td></td><td>→ NA<br>← M</td></tr><tr><td><strong>amount</strong></td><td>string</td><td>The transaction amount.</td><td></td><td>→ M<br>← M</td></tr><tr><td><strong>currency</strong></td><td>string</td><td>Currency of the transaction amount.</td><td></td><td>→ M<br>← M</td></tr><tr><td><strong>descriptionText</strong></td><td>string</td><td>Free format text description of the transaction provided by the client. This can be provided as a reference for the receiver on a notification SMS and on an account statement.</td><td></td><td>→ O<br>← O</td></tr><tr><td><strong>fees</strong></td><td>array</td><td>Allows the passing and/or returning of all fees pertaining to the transaction.</td><td></td><td>→ O<br>← O</td></tr><tr><td><strong>geoCode</strong></td><td>string</td><td>Indicates the geographic location from where the transaction was initiated.</td><td></td><td>→ O<br>← O</td></tr><tr><td><strong>oneTimeCode</strong></td><td>string</td><td>A one-time code that can be supplied in the request or can be generated in the response depending upon the use case. An authorisation code can be supplied in this field for requests that have been pre-authorised.</td><td></td><td>→ O<br>← O</td></tr><tr><td><strong>requestingOrganisation</strong></td><td>object</td><td>The originating organisation of the request.</td><td></td><td>→ O<br>← O</td></tr><tr><td><strong>servicingIdentity</strong></td><td>string</td><td>The field is used to identify the servicing identity for transactions, e.g. till, Point of Service (POS) ID, assistant ID.</td><td></td><td>→ O<br>← O</td></tr><tr><td><strong>transactionReceipt</strong></td><td>string</td><td>Transaction receipt number as notified to the parties. This may differ from the Transaction Reference.</td><td></td><td>→ NA<br>← O</td></tr><tr><td><strong>creationDate</strong></td><td>date-time</td><td>Date and time when the transaction was created by the API Provider.</td><td></td><td>→ NA<br>← O</td></tr><tr><td><strong>modificationDate</strong></td><td>date-time</td><td>Date and time when the transaction was modified by the API Provider.</td><td></td><td>→ NA<br>← O</td></tr><tr><td><strong>requestDate</strong></td><td>date-time</td><td>The creation date and time of the transaction as supplied by the client.</td><td></td><td>→ O<br>← O</td></tr><tr><td><strong>customData</strong></td><td>string</td><td>A collection of key/value pairs that can be used for provider specific fields.</td><td></td><td>→ O<br>← O</td></tr><tr><td><strong>metadata</strong></td><td>array</td><td>A collection of key/value pairs. These can be used to populate additional transaction fields.</td><td></td><td>→ O<br>← O</td></tr></tbody></table>
 
 #### [#](https://developer.mobilemoneyapi.io/use-cases/merchant-payments/api-service-definition.html#reversals-api) <a href="#reversals-api" id="reversals-api"></a>
-
-\
-
-
-
-
-## 7.3 Data Elements <a href="#docs-internal-guid-8d4f18ff-7fff-2f74-3bc3-2f4c2a3f0a1b" id="docs-internal-guid-8d4f18ff-7fff-2f74-3bc3-2f4c2a3f0a1b"></a>
-
-### 7.3.1 API Name: Voucher provisioning
-
-| **Name**                | **Description**                                                     | **Type**          | **Required** | Standard | Notes  |
-| ----------------------- | ------------------------------------------------------------------- | ----------------- | ------------ | -------- | ------ |
-| voucher\_amount         | Denomination of the voucher required                                | Integer           | Y            |          | Input  |
-| voucher\_currency       | The currency of the voucher                                         | String            | Y            | ISO 4217 | Input  |
-| voucher\_group          | The group of the voucher                                            | String            | Y            |          | Input  |
-| voucher\_number         | The voucher number (PIN). This is the secret number of the voucher. | Integer: 64-bit   | Y            |          | Output |
-| voucher\_serial\_number | The voucher serial number                                           | Integer: 64-bit   | Y            |          | Output |
-| expiry\_date            | The expiry date of the voucher                                      | String: date-time | Y            |          | Output |
-| status                  | The status of the process: SUCCESSFUL or FAILED                     | String            | Y            |          | Output |
-| Merchant\_group         | The group of the merchant is captured in the registry               | String            | Y            |          | Input  |
-| Gov\_Stack\_BB          | Calling GOV Stack Building Block                                    | String            | Y            |          | Input  |
-| merchant\_bank\_details | Merchant/agent payment details                                      | String            | Y            |          | Input  |
-| merchant\_name          | Merchant name                                                       | String            | Y            |          | Input  |
-| Override                | Override                                                            | Boolean           | Y            |          | Input  |
-| Result\_Status          | Result of the process                                               | String            | Y            |          | Output |
-
-### 7.3.2 API Name: Register Beneficiary
-
-| **Field**         | **Description**                                                                                                                                                               | **Type** | **Required** |
-| ----------------- | ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | -------- | ------------ |
-| RequestID         | Globally unique ID                                                                                                                                                            | String   | Y            |
-| SourceBBID        | To identify the origination of the request.                                                                                                                                   | String   | Y            |
-| Beneficiaries     | JSON Array                                                                                                                                                                    | Object   | Y            |
-| PayeeFunctionalID | The functional Id of the beneficiary.                                                                                                                                         | String   | Y            |
-| PaymentModality   | <p>00 for Bank Account</p><p>01 for Mobile Money</p><p>02 for Voucher</p><p>03 for Digital Wallet</p><p>04 for Proxy</p>                                                      | String   |              |
-| FinancialAddress  | Destination Account Number, ideally an IBAN if available otherwise wallet destination accounts could be phone numbers as well, other Financial Addresses such as Aliases etc. | String   |              |
-
-### 7.3.2 API name: Update Beneficiary details
-
-| Field             | Description                                                                                                                                                                   | Type    | Required |
-| ----------------- | ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ------- | -------- |
-| RequestID         | Globally unique ID                                                                                                                                                            | String  | Y        |
-| SourceBBID        | To identify the origination of the request.                                                                                                                                   | String  | Y        |
-| Beneficiaries     | JSON Array                                                                                                                                                                    | Object  |          |
-| PayeeFunctionalID | The functional Id of the beneficiary.                                                                                                                                         | String  | Y        |
-| PaymentModality   | <p>00 for Bank Account</p><p>01 for Mobile Money</p><p>02 for Voucher</p><p>03 for Digital Wallet</p><p>04 for Proxy</p>                                                      | String  |          |
-| FinancialAddress  | Destination Account Number, ideally an IBAN if available otherwise wallet destination accounts could be phone numbers as well, other Financial Addresses such as Aliases etc. | String  |          |
-
-### **7.3.3  API Name: Prepayment validation**
-
-| Field              | Description                                            | Type    | Required |
-| ------------------ | ------------------------------------------------------ | ------- | -------- |
-| RequestID          | Globally unique ID                                     | String  | Y        |
-| SourceBBID         | To identify the origination of the request.            | String  | Y        |
-| BatchID            | BatchID for batch that is submitted by the Source BB.  | String  | Y        |
-| CreditInstructions | JSON Array                                             | Object  |          |
-|     InstructionID  | Individual ID for each instruction in the Credit Batch | String  | Y        |
-| PayeeFunctionalID  | The functional Id of the beneficiary.                  | String  | Y        |
-| Amount             | Amount to be Credited                                  | Float   | Y        |
-| Currency           | Transaction Currency Code                              | String  | Y        |
-| Narration          | Description of Payment                                 | String  |          |
-
-### 7.3.4 API name: Bulk payment
-
-| Field              | Description                                            | Type    | Required |
-| ------------------ | ------------------------------------------------------ | ------- | -------- |
-| RequestID          | Globally unique ID                                     | String  | Y        |
-| SourceBBID         | To identify the origination of the request.            | String  | Y        |
-| BatchID            | BatchID for batch that is submitted by the Source BB.  | String  | Y        |
-| CreditInstructions | JSON Array                                             | Object  |          |
-| InstructionID      | Individual ID for each instruction in the Credit Batch | String  | Y        |
-| PayeeFunctionalID  | The functional Id of the beneficiary.                  | String  | Y        |
-| Amount             | Amount to be Credited                                  | Float   | Y        |
-| Currency           | Transaction Currency Code                              | String  | Y        |
-| Narration          | Description of Payment                                 | String  |          |
