@@ -122,34 +122,6 @@ Then(
       .to.be.equals(requestID)
 );
 
-// Scenario: Unable to update beneficiary details because of empty payload in the request
-// Others Given, When, Then are written in the aforementioned example
-When(
-  /^POST request to update beneficiary details is sent without payload$/,
-  () =>
-    specUpdateBeneficiaryDetails
-      .post(baseUrl)
-      .withHeaders(acceptHeader.key, acceptHeader.value)
-);
-
-// Scenario: Unable to update beneficiary details because of missing required RequestID in the payload
-// Others Given, When, Then are written in the aforementioned example
-When(
-  /^POST request to update beneficiary details with given "([^"]*)" as SourceBBID and "([^"]*)" as PayeeFunctionalID is sent$/,
-  (sourceBBID, payeeFunctionalID) =>
-    specUpdateBeneficiaryDetails
-      .post(baseUrl)
-      .withHeaders(acceptHeader.key, acceptHeader.value)
-      .withJson({
-        SourceBBID: sourceBBID,
-        Beneficiaries: [
-          {
-            PayeeFunctionalID: payeeFunctionalID,
-          },
-        ],
-      })
-);
-
 // Scenario: Unable to update beneficiary details because of missing required SourceBBID in the payload
 // Others Given, When, Then are written in the aforementioned example
 When(
@@ -182,6 +154,12 @@ When(
         Beneficiaries: [],
       })
 );
+
+// Scenario: Unable to update beneficiary details because of invalid SourceBBID value in the payload
+// Given, When, Then are written in the aforementioned example
+
+// Scenario: Unable to update beneficiary details because of invalid PayeeFunctionalID value in the payload
+// Given, When, Then are written in the aforementioned example
 
 After(endpointTag, () => {
   specUpdateBeneficiaryDetails.end();

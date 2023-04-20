@@ -1532,10 +1532,10 @@
       "responses": [
         {
           "uuid": "17325161-8b34-4ef3-84a6-dce5986a7c8c",
-          "body": "{\n  \"ResponseCode\": \"00\",\n  \"ResponseDescription\": \"Successfully updated beneficiary details\",\n  \"RequestID\": \"{{bodyRaw 'RequestID'}}\"\n}",
+          "body": "{\n  \"ResponseCode\": \"00\",\n  \"ResponseDescription\": \"Request successfully acknowledged by Pay-BB\",\n  \"RequestID\": \"{{bodyRaw 'RequestID'}}\"\n}",
           "latency": 0,
           "statusCode": 200,
-          "label": "Successfully updated beneficiary details",
+          "label": "Request successfully acknowledged by Pay-BB",
           "headers": [],
           "bodyType": "INLINE",
           "filePath": "",
@@ -1592,10 +1592,10 @@
         },
         {
           "uuid": "e8bacc91-936e-4709-a677-a75916f797ca",
-          "body": "{\n  \"ResponseCode\": \"01\",\n  \"ResponseDescription\": \"Error\",\n  \"RequestID\": \"{{bodyRaw 'RequestID'}}\"\n}",
+          "body": "{\n  \"ResponseCode\": \"01\",\n  \"ResponseDescription\": \"Request not acknowledged by Pay-BB\",\n  \"RequestID\": \"{{bodyRaw 'RequestID'}}\"\n}",
           "latency": 0,
           "statusCode": 400,
-          "label": "Unable to update beneficiary details",
+          "label": "Request not acknowledged by Pay-BB",
           "headers": [],
           "bodyType": "INLINE",
           "filePath": "",
