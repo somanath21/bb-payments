@@ -1070,13 +1070,13 @@
       "type": "http"
     },
     {
-      "uuid": "515109eb-e23e-411b-8c87-3d2130a102d9",
+      "uuid": "539da980-8549-47a2-91d2-6b80599f27f3",
       "documentation": "Request for voucher activation by sending the voucher serial number",
       "method": "patch",
       "endpoint": "vouchers/voucher_activation/",
       "responses": [
         {
-          "uuid": "f7441b96-4395-4916-9016-cff25bc0201b",
+          "uuid": "81855a8c-7115-4f66-b0c9-d241c2a75876",
           "body": "{\n  \"result_status\": \"Successfully activated voucher\"\n}",
           "latency": 0,
           "statusCode": 200,
@@ -1134,7 +1134,7 @@
           "default": false
         },
         {
-          "uuid": "505d1925-e777-4cc0-be30-7d5d83bb6cc9",
+          "uuid": "8c86f90c-25ec-47be-8646-8f2c1c86d01f",
           "body": "{\n  \"message\": \"Invalid request\"\n}",
           "latency": 0,
           "statusCode": 400,
@@ -1159,7 +1159,7 @@
           "default": true
         },
         {
-          "uuid": "e8342e9d-b01f-4582-90c1-05499dba8e97",
+          "uuid": "597ed537-219c-41aa-aa1d-cfb83a0f8373",
           "body": "{\n  \"message\": \"Invalid voucher serial number\"\n}",
           "latency": 0,
           "statusCode": 456,
@@ -1198,7 +1198,7 @@
           "default": false
         },
         {
-          "uuid": "5386ef88-f218-4708-82e6-8ff625ba6062",
+          "uuid": "01c52c81-f364-4ac5-bfb3-2c039049b52b",
           "body": "{\n  \"message\": \"Gov Stack Building Block does not exist\"\n}",
           "latency": 0,
           "statusCode": 460,
@@ -1235,13 +1235,13 @@
       "type": "http"
     },
     {
-      "uuid": "f858f3da-b4cc-4a02-9114-6f47b30bf211",
+      "uuid": "40bbdad2-0df1-4bbb-85f9-514e8df6bc78",
       "documentation": "Check the status of the Voucher. The API will respond with Not Pre-Activated, Pre-Activated, Activated, Suspended, Blocked, Purged or Not Existing",
       "method": "get",
       "endpoint": "vouchers/voucherstatuscheck/:voucherserialnumber",
       "responses": [
         {
-          "uuid": "bfdf96c5-e76a-493b-8bab-473933cf8c47",
+          "uuid": "96602690-c95a-4fc2-9e33-20d4f8c19989",
           "body": "{\n  \"message\": \"Invalid request\"\n}",
           "latency": 0,
           "statusCode": 400,
@@ -1271,7 +1271,7 @@
           "default": true
         },
         {
-          "uuid": "6e22018b-8ac3-4df8-8c9c-d0461d6a9eed",
+          "uuid": "dbdb7e10-08c7-42bb-97f5-d52fe239304c",
           "body": "{\n  \"message\": \"Invalid voucher number\"\n}",
           "latency": 0,
           "statusCode": 456,
@@ -1322,7 +1322,7 @@
           "default": false
         },
         {
-          "uuid": "344bed54-3ea0-4129-a5ea-f1032497796d",
+          "uuid": "e14155cf-b6f8-4367-aa19-7dddba2d9c13",
           "body": "{\n  \"message\": \"Voucher number already used\"\n}",
           "latency": 0,
           "statusCode": 458,
@@ -1373,7 +1373,7 @@
           "default": false
         },
         {
-          "uuid": "75a8d071-1814-41b6-bbf9-31bd83f409ce",
+          "uuid": "ccffe742-779e-4c5b-9b7b-ac771344efe5",
           "body": "{\n  \"message\": \"Voucher has expired\"\n}",
           "latency": 0,
           "statusCode": 459,
@@ -1424,7 +1424,7 @@
           "default": false
         },
         {
-          "uuid": "739948a5-6d51-4c9a-ac51-18645d338bcc",
+          "uuid": "1a9a185f-6851-4ffe-bd04-94d83a57940d",
           "body": "{\n  \"message\": \"Gov Stack Building Block does not exist\"\n}",
           "latency": 0,
           "statusCode": 460,
@@ -1475,7 +1475,7 @@
           "default": false
         },
         {
-          "uuid": "718a9350-9f54-4354-8962-36b2382d1003",
+          "uuid": "779b427b-f97e-404a-807a-a54c50fa7140",
           "body": "{\n  \"voucher_status\": \"Not Pre-Activated\",\n  \"voucher_amount\": \"string\"\n}",
           "latency": 0,
           "statusCode": 200,
@@ -1517,6 +1517,158 @@
           "disableTemplating": false,
           "fallbackTo404": false,
           "default": false
+        }
+      ],
+      "enabled": true,
+      "responseMode": null,
+      "type": "http"
+    },
+    {
+      "uuid": "a5a1aab6-080f-4957-af6c-d7f99805126e",
+      "type": "http",
+      "documentation": "This API is to be exposed by the Payments BB. It will be called by the Source BB to handover a batch of credit instructions to be processed.",
+      "method": "post",
+      "endpoint": "bulk-payment",
+      "responses": [
+        {
+          "uuid": "3f2e29c5-b21f-4fc6-b76d-022399e5ee8f",
+          "body": "{\n  \"ResponseCode\": \"00\",\n  \"ResponseDescription\": \"Request successfully acknowledged\",\n  \"RequestID\": \"{{bodyRaw 'RequestID'}}\"\n}",
+          "latency": 0,
+          "statusCode": 200,
+          "label": "Request successfully acknowledged",
+          "headers": [],
+          "bodyType": "INLINE",
+          "filePath": "",
+          "databucketID": "",
+          "sendFileAsBody": false,
+          "rules": [
+            {
+              "target": "body",
+              "modifier": "RequestID",
+              "value": "",
+              "invert": true,
+              "operator": "null"
+            },
+            {
+              "target": "body",
+              "modifier": "RequestID",
+              "value": "^.{12}$",
+              "invert": false,
+              "operator": "regex"
+            },
+            {
+              "target": "body",
+              "modifier": "SourceBBID",
+              "value": "",
+              "invert": true,
+              "operator": "null"
+            },
+            {
+              "target": "body",
+              "modifier": "SourceBBID",
+              "value": "^.{12}$",
+              "invert": false,
+              "operator": "regex"
+            },
+            {
+              "target": "body",
+              "modifier": "BatchID",
+              "value": "",
+              "invert": true,
+              "operator": "null"
+            },
+            {
+              "target": "body",
+              "modifier": "BatchID",
+              "value": "^.{12}$",
+              "invert": false,
+              "operator": "regex"
+            },
+            {
+              "target": "body",
+              "modifier": "CreditInstructions.0.InstructionID",
+              "value": "",
+              "invert": true,
+              "operator": "null"
+            },
+            {
+              "target": "body",
+              "modifier": "CreditInstructions.0.InstructionID",
+              "value": "^.{16}$",
+              "invert": false,
+              "operator": "regex"
+            },
+            {
+              "target": "body",
+              "modifier": "CreditInstructions.0.PayeeFunctionalID",
+              "value": "",
+              "invert": true,
+              "operator": "null"
+            },
+            {
+              "target": "body",
+              "modifier": "CreditInstructions.0.PayeeFunctionalID",
+              "value": "^.{20}$",
+              "invert": false,
+              "operator": "regex"
+            },
+            {
+              "target": "body",
+              "modifier": "CreditInstructions.0.Amount",
+              "value": "",
+              "invert": true,
+              "operator": "null"
+            },
+            {
+              "target": "body",
+              "modifier": "CreditInstructions.0.Amount",
+              "value": "^[-+]?[0-9]*\\.?[0-9]+([eE][-+]?[0-9]+)?$",
+              "invert": false,
+              "operator": "regex"
+            },
+            {
+              "target": "body",
+              "modifier": "CreditInstructions.0.Currency",
+              "value": "",
+              "invert": true,
+              "operator": "null"
+            },
+            {
+              "target": "body",
+              "modifier": "CreditInstructions.0.Currency",
+              "value": "^.{3}$",
+              "invert": false,
+              "operator": "regex"
+            },
+            {
+              "target": "body",
+              "modifier": "CreditInstructions",
+              "value": "",
+              "invert": true,
+              "operator": "null"
+            }
+          ],
+          "rulesOperator": "AND",
+          "disableTemplating": false,
+          "fallbackTo404": false,
+          "default": false
+        },
+        {
+          "uuid": "95b7e7b1-a19b-44ce-a70c-c172e34c458d",
+          "body": "{}",
+          "latency": 0,
+          "statusCode": 400,
+          "label": "Request not acknowledged",
+          "headers": [],
+          "bodyType": "INLINE",
+          "filePath": "",
+          "databucketID": "",
+          "sendFileAsBody": false,
+          "rules": [],
+          "rulesOperator": "OR",
+          "disableTemplating": false,
+          "fallbackTo404": false,
+          "default": true
         }
       ],
       "enabled": true,
@@ -1660,15 +1812,15 @@
     },
     {
       "type": "route",
-      "uuid": "515109eb-e23e-411b-8c87-3d2130a102d9"
+      "uuid": "539da980-8549-47a2-91d2-6b80599f27f3"
     },
     {
       "type": "route",
-      "uuid": "f858f3da-b4cc-4a02-9114-6f47b30bf211"
+      "uuid": "40bbdad2-0df1-4bbb-85f9-514e8df6bc78"
     },
     {
       "type": "route",
-      "uuid": "1d40ba69-ccab-4577-8249-9c1ea5275e30"
+      "uuid": "a5a1aab6-080f-4957-af6c-d7f99805126e"
     }
   ]
 }
