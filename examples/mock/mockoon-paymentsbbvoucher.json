@@ -1,11 +1,11 @@
 {
   "uuid": "e94a4170-6ef6-4b0a-978d-be91893e9a64",
-  "lastMigration": 24,
+  "lastMigration": 27,
   "name": "PaymentsBBVoucherAPI",
   "endpointPrefix": "",
   "latency": 0,
   "port": 3003,
-  "hostname": "0.0.0.0",
+  "hostname": "",
   "routes": [
     {
       "uuid": "658ca4d8-4e46-4b3c-af0d-eabdd9733dff",
@@ -410,7 +410,8 @@
         }
       ],
       "enabled": true,
-      "responseMode": null
+      "responseMode": null,
+      "type": "http"
     },
     {
       "uuid": "0290c505-f27d-41b3-86aa-c85e18e036a6",
@@ -652,7 +653,8 @@
         }
       ],
       "enabled": true,
-      "responseMode": null
+      "responseMode": null,
+      "type": "http"
     },
     {
       "uuid": "236f74d1-94d9-4a39-9d0c-17fb74e68302",
@@ -1062,19 +1064,19 @@
           "fallbackTo404": false,
           "default": true
         }
-        
       ],
       "enabled": true,
-      "responseMode": null
+      "responseMode": null,
+      "type": "http"
     },
     {
-      "uuid": "d8879a90-3938-4eb4-ab32-f224b3f3f3e1",
+      "uuid": "515109eb-e23e-411b-8c87-3d2130a102d9",
       "documentation": "Request for voucher activation by sending the voucher serial number",
       "method": "patch",
       "endpoint": "vouchers/voucher_activation/",
       "responses": [
         {
-          "uuid": "c7d8a76f-a410-467f-81e4-9749f6629f69",
+          "uuid": "f7441b96-4395-4916-9016-cff25bc0201b",
           "body": "{\n  \"result_status\": \"Successfully activated voucher\"\n}",
           "latency": 0,
           "statusCode": 200,
@@ -1132,7 +1134,7 @@
           "default": false
         },
         {
-          "uuid": "911765ac-06fd-4243-9bcf-61411601ef6a",
+          "uuid": "505d1925-e777-4cc0-be30-7d5d83bb6cc9",
           "body": "{\n  \"message\": \"Invalid request\"\n}",
           "latency": 0,
           "statusCode": 400,
@@ -1157,7 +1159,7 @@
           "default": true
         },
         {
-          "uuid": "822b9489-69b5-4fe5-9bbd-18e0aee00ebe",
+          "uuid": "e8342e9d-b01f-4582-90c1-05499dba8e97",
           "body": "{\n  \"message\": \"Invalid voucher serial number\"\n}",
           "latency": 0,
           "statusCode": 456,
@@ -1196,7 +1198,7 @@
           "default": false
         },
         {
-          "uuid": "e38c51a0-6bf0-4bad-a089-0dafd4f37299",
+          "uuid": "5386ef88-f218-4708-82e6-8ff625ba6062",
           "body": "{\n  \"message\": \"Gov Stack Building Block does not exist\"\n}",
           "latency": 0,
           "statusCode": 460,
@@ -1229,16 +1231,17 @@
         }
       ],
       "enabled": true,
-      "responseMode": null
+      "responseMode": null,
+      "type": "http"
     },
     {
-      "uuid": "11e0eb75-3513-4c7c-9a33-bdc4c9405d42",
+      "uuid": "f858f3da-b4cc-4a02-9114-6f47b30bf211",
       "documentation": "Check the status of the Voucher. The API will respond with Not Pre-Activated, Pre-Activated, Activated, Suspended, Blocked, Purged or Not Existing",
       "method": "get",
       "endpoint": "vouchers/voucherstatuscheck/:voucherserialnumber",
       "responses": [
         {
-          "uuid": "cd774659-0642-48d6-9636-1207a9ca9066",
+          "uuid": "bfdf96c5-e76a-493b-8bab-473933cf8c47",
           "body": "{\n  \"message\": \"Invalid request\"\n}",
           "latency": 0,
           "statusCode": 400,
@@ -1268,7 +1271,7 @@
           "default": true
         },
         {
-          "uuid": "e0d54c47-f7c9-42f9-9a50-e03b765ffc4e",
+          "uuid": "6e22018b-8ac3-4df8-8c9c-d0461d6a9eed",
           "body": "{\n  \"message\": \"Invalid voucher number\"\n}",
           "latency": 0,
           "statusCode": 456,
@@ -1319,7 +1322,7 @@
           "default": false
         },
         {
-          "uuid": "6943cbd5-4a40-43b9-9e31-ddae3e9213a0",
+          "uuid": "344bed54-3ea0-4129-a5ea-f1032497796d",
           "body": "{\n  \"message\": \"Voucher number already used\"\n}",
           "latency": 0,
           "statusCode": 458,
@@ -1370,7 +1373,7 @@
           "default": false
         },
         {
-          "uuid": "9e5832f1-0574-4630-9df7-5753b08f45e7",
+          "uuid": "75a8d071-1814-41b6-bbf9-31bd83f409ce",
           "body": "{\n  \"message\": \"Voucher has expired\"\n}",
           "latency": 0,
           "statusCode": 459,
@@ -1421,7 +1424,7 @@
           "default": false
         },
         {
-          "uuid": "e5850d88-cc27-4e57-8e1c-7ee43fefd386",
+          "uuid": "739948a5-6d51-4c9a-ac51-18645d338bcc",
           "body": "{\n  \"message\": \"Gov Stack Building Block does not exist\"\n}",
           "latency": 0,
           "statusCode": 460,
@@ -1472,7 +1475,7 @@
           "default": false
         },
         {
-          "uuid": "8f7b4800-b1a4-491c-97ec-04b83df506de",
+          "uuid": "718a9350-9f54-4354-8962-36b2382d1003",
           "body": "{\n  \"voucher_status\": \"Not Pre-Activated\",\n  \"voucher_amount\": \"string\"\n}",
           "latency": 0,
           "statusCode": 200,
@@ -1517,6 +1520,95 @@
         }
       ],
       "enabled": true,
+      "responseMode": null,
+      "type": "http"
+    },
+    {
+      "uuid": "1d40ba69-ccab-4577-8249-9c1ea5275e30",
+      "type": "http",
+      "documentation": "The Register Beneficiary API is invoked by the Information Mediator BB,  which is triggered when the Registration BB is registering beneficiaries into the Payments BB's ID Mapper.",
+      "method": "post",
+      "endpoint": "register-beneficiary",
+      "responses": [
+        {
+          "uuid": "4783065c-fd19-4cbb-923b-2162c6cc9749",
+          "body": "{\n  \"ResponseCode\": \"00\",\n  \"ResponseDescription\": \"Request successfully acknowledged by Pay-BB\",\n  \"RequestID\": \"{{bodyRaw 'RequestID'}}\"\n}",
+          "latency": 0,
+          "statusCode": 200,
+          "label": "Request successfully acknowledged by Pay-BB",
+          "headers": [],
+          "bodyType": "INLINE",
+          "filePath": "",
+          "databucketID": "",
+          "sendFileAsBody": false,
+          "rules": [
+            {
+              "target": "body",
+              "modifier": "RequestID",
+              "value": "",
+              "invert": true,
+              "operator": "null"
+            },
+            {
+              "target": "body",
+              "modifier": "RequestID",
+              "value": "^.{12}$",
+              "invert": false,
+              "operator": "regex"
+            },
+            {
+              "target": "body",
+              "modifier": "SourceBBID",
+              "value": "",
+              "invert": true,
+              "operator": "null"
+            },
+            {
+              "target": "body",
+              "modifier": "SourceBBID",
+              "value": "^.{12}$",
+              "invert": false,
+              "operator": "regex"
+            },
+            {
+              "target": "body",
+              "modifier": "Beneficiaries",
+              "value": "",
+              "invert": true,
+              "operator": "null"
+            },
+            {
+              "target": "body",
+              "modifier": "Beneficiaries.0.PayeeFunctionalID",
+              "value": "^.{20}$",
+              "invert": false,
+              "operator": "regex"
+            }
+          ],
+          "rulesOperator": "AND",
+          "disableTemplating": false,
+          "fallbackTo404": false,
+          "default": false
+        },
+        {
+          "uuid": "29b519b7-d2e5-4492-965b-50a55c15c521",
+          "body": "{\n  \"ResponseCode\": \"01\",\n  \"ResponseDescription\": \"Request not acknowledged by Pay-BB\",\n  \"RequestID\": \"{{bodyRaw 'RequestID'}}\"\n}",
+          "latency": 0,
+          "statusCode": 400,
+          "label": "Request not acknowledged by Pay-BB",
+          "headers": [],
+          "bodyType": "INLINE",
+          "filePath": "",
+          "databucketID": "",
+          "sendFileAsBody": false,
+          "rules": [],
+          "rulesOperator": "OR",
+          "disableTemplating": false,
+          "fallbackTo404": false,
+          "default": true
+        }
+      ],
+      "enabled": true,
       "responseMode": null
     }
   ],
@@ -1551,5 +1643,32 @@
       "value": ""
     }
   ],
-  "data": []
+  "data": [],
+  "folders": [],
+  "rootChildren": [
+    {
+      "type": "route",
+      "uuid": "658ca4d8-4e46-4b3c-af0d-eabdd9733dff"
+    },
+    {
+      "type": "route",
+      "uuid": "0290c505-f27d-41b3-86aa-c85e18e036a6"
+    },
+    {
+      "type": "route",
+      "uuid": "236f74d1-94d9-4a39-9d0c-17fb74e68302"
+    },
+    {
+      "type": "route",
+      "uuid": "515109eb-e23e-411b-8c87-3d2130a102d9"
+    },
+    {
+      "type": "route",
+      "uuid": "f858f3da-b4cc-4a02-9114-6f47b30bf211"
+    },
+    {
+      "type": "route",
+      "uuid": "1d40ba69-ccab-4577-8249-9c1ea5275e30"
+    }
+  ]
 }
