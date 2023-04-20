@@ -111,41 +111,6 @@ Then(
       .to.be.equals(requestID)
 );
 
-// Scenario: Unable to retrieves eligible Functional IDs from the account mapper for credit transfers because of missing required RequestID in the payload
-// Others Given, Then are written in the aforementioned example
-When(
-  'POST request with required body with given {string} as SourceBBID, {string} as BatchID, {string} as InstructionID, {string} as PayeeFunctionalID, {string} as Amount, {string} as Currency, {string} as Narration is sent',
-  (
-    SourceBBID,
-    BatchID,
-    InstructionID,
-    PayeeFunctionalID,
-    Amount,
-    Currency,
-    Narration
-  ) =>
-    specPrePaymentValidation
-      .post(baseUrl)
-      .withHeaders('Accept', 'application/json')
-      .withJson({
-        SourceBBID: SourceBBID,
-        BatchID: BatchID,
-        CreditInstructions: [
-          {
-            InstructionID: InstructionID,
-            PayeeFunctionalID: PayeeFunctionalID,
-            Amount: Number(Amount),
-            Currency: Currency,
-            Narration: Narration,
-          },
-        ],
-      })
-);
-
-Then('The \\/prepayment-validation response should have status 400', () =>
-  specPrePaymentValidation.response().to.have.status(400)
-);
-
 // Scenario: Unable to retrieves eligible Functional IDs from the account mapper for credit transfers because of missing required SourceBBID in the payload
 // Others Given, Then are written in the aforementioned example
 When(
@@ -358,6 +323,150 @@ When(
             PayeeFunctionalID: PayeeFunctionalID,
             Amount: Number(Amount),
             Currency: Currency,
+          },
+        ],
+      })
+);
+
+// Scenario: Unable to retrieves eligible Functional IDs from the account mapper for credit transfers because of invalid SourceBBID paramater in payload
+// Others Given, Then are written in the aforementioned example
+When(
+  'POST request with required body with given {string} as invalid SourceBBID parameter is sent',
+  sourceBBID =>
+    specPrePaymentValidation
+      .post(baseUrl)
+      .withHeaders('Accept', 'application/json')
+      .withJson({
+        RequestID: 'abcdef123456',
+        SourceBBID: sourceBBID,
+        BatchID: 'batchID12345',
+        CreditInstructions: [
+          {
+            InstructionID: 'instructionID123',
+            PayeeFunctionalID: 'PayeeFunctionalID123',
+            Amount: Number('100'),
+            Currency: 'USD',
+            Narration: 'Narration',
+          },
+        ],
+      })
+);
+
+// Scenario: Unable to retrieves eligible Functional IDs from the account mapper for credit transfers because of invalid BatchID paramater in payload
+// Others Given, Then are written in the aforementioned example
+When(
+  'POST request with required body with given {string} as invalid BatchID parameter is sent',
+  batchID =>
+    specPrePaymentValidation
+      .post(baseUrl)
+      .withHeaders('Accept', 'application/json')
+      .withJson({
+        RequestID: 'abcdef123456',
+        SourceBBID: 'sourceBBID12',
+        BatchID: batchID,
+        CreditInstructions: [
+          {
+            InstructionID: 'instructionID123',
+            PayeeFunctionalID: 'PayeeFunctionalID123',
+            Amount: Number('100'),
+            Currency: 'USD',
+            Narration: 'Narration',
+          },
+        ],
+      })
+);
+
+// Scenario: Unable to retrieves eligible Functional IDs from the account mapper for credit transfers because of invalid instructionID paramater in payload
+// Others Given, Then are written in the aforementioned example
+When(
+  'POST request with required body with given {string} as invalid InstructionID parameter is sent',
+  instructionID =>
+    specPrePaymentValidation
+      .post(baseUrl)
+      .withHeaders('Accept', 'application/json')
+      .withJson({
+        RequestID: 'abcdef123456',
+        SourceBBID: 'sourceBBID12',
+        BatchID: 'batchID12345',
+        CreditInstructions: [
+          {
+            InstructionID: instructionID,
+            PayeeFunctionalID: 'PayeeFunctionalID123',
+            Amount: Number('100'),
+            Currency: 'USD',
+            Narration: 'Narration',
+          },
+        ],
+      })
+);
+
+// Scenario: Unable to retrieves eligible Functional IDs from the account mapper for credit transfers because of invalid PayeeFunctionalID paramater in payload
+// Others Given, Then are written in the aforementioned example
+When(
+  'POST request with required body with given {string} as invalid PayeeFunctionalID parameter is sent',
+  payeeFunctionalID =>
+    specPrePaymentValidation
+      .post(baseUrl)
+      .withHeaders('Accept', 'application/json')
+      .withJson({
+        RequestID: 'abcdef123456',
+        SourceBBID: 'sourceBBID12',
+        BatchID: 'batchID12345',
+        CreditInstructions: [
+          {
+            InstructionID: 'instructionID123',
+            PayeeFunctionalID: payeeFunctionalID,
+            Amount: Number('100'),
+            Currency: 'USD',
+            Narration: 'Narration',
+          },
+        ],
+      })
+);
+
+// Scenario: Unable to retrieves eligible Functional IDs from the account mapper for credit transfers because of invalid Amount paramater in payload
+// Others Given, Then are written in the aforementioned example
+When(
+  'POST request with required body with given {string} as invalid Amount parameter is sent',
+  amount =>
+    specPrePaymentValidation
+      .post(baseUrl)
+      .withHeaders('Accept', 'application/json')
+      .withJson({
+        RequestID: 'abcdef123456',
+        SourceBBID: 'sourceBBID12',
+        BatchID: 'batchID12345',
+        CreditInstructions: [
+          {
+            InstructionID: 'instructionID123',
+            PayeeFunctionalID: 'PayeeFunctionalID123',
+            Amount: Number(amount),
+            Currency: 'USD',
+            Narration: 'Narration',
+          },
+        ],
+      })
+);
+
+// Scenario: Unable to retrieves eligible Functional IDs from the account mapper for credit transfers because of invalid Currency paramater in payload
+// Others Given, Then are written in the aforementioned example
+When(
+  'POST request with required body with given {string} as invalid Currency parameter is sent',
+  currency =>
+    specPrePaymentValidation
+      .post(baseUrl)
+      .withHeaders('Accept', 'application/json')
+      .withJson({
+        RequestID: 'abcdef123456',
+        SourceBBID: 'sourceBBID12',
+        BatchID: 'batchID12345',
+        CreditInstructions: [
+          {
+            InstructionID: 'instructionID123',
+            PayeeFunctionalID: 'PayeeFunctionalID123',
+            Amount: Number('100'),
+            Currency: currency,
+            Narration: 'Narration',
           },
         ],
       })

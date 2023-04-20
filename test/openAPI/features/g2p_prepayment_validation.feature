@@ -24,17 +24,6 @@ Feature: Pre-payment validation
         And The /prepayment-validation response ResponseCode field should be "00"
         And The /prepayment-validation response RequestID field should be "abcdef123456"
 
-    # @unit @negative
-    # Scenario: Unable to retrieves eligible Functional IDs from the account mapper for credit transfers because of missing required RequestID in the payload
-    #     Given Wants to retrieves eligible Functional IDs from the account mapper for credit transfers
-    #     When POST request with required body with given "sourceBBID12" as SourceBBID, "batchID12345" as BatchID, "instructionID123" as InstructionID, "PayeeFunctionalID123" as PayeeFunctionalID, "100" as Amount, "USD" as Currency, "Narration" as Narration is sent
-    #     Then The response from the /prepayment-validation is received
-    #     And The /prepayment-validation response should be returned in a timely manner 15000ms
-    #     And The /prepayment-validation response should have status 400
-    #     And The /prepayment-validation response should have content-type: application/json header
-    #     And The /prepayment-validation response should match json schema
-    #     And The /prepayment-validation response ResponseCode field should be "01"
-
     @unit @negative
     Scenario: Unable to retrieves eligible Functional IDs from the account mapper for credit transfers because of missing required SourceBBID in the payload
         Given Wants to retrieves eligible Functional IDs from the account mapper for credit transfers
@@ -111,3 +100,70 @@ Feature: Pre-payment validation
         And The /prepayment-validation response should have content-type: application/json header
         And The /prepayment-validation response should match json schema
         And The /prepayment-validation response ResponseCode field should be "01"
+
+    @unit @negative
+    Scenario: Unable to retrieves eligible Functional IDs from the account mapper for credit transfers because of invalid SourceBBID paramater in payload
+        Given Wants to retrieves eligible Functional IDs from the account mapper for credit transfers
+        When POST request with required body with given "sourceBBID" as invalid SourceBBID parameter is sent
+        Then The response from the /prepayment-validation is received
+        And The /prepayment-validation response should be returned in a timely manner 15000ms
+        And The /prepayment-validation response should have status 400
+        And The /prepayment-validation response should have content-type: application/json header
+        And The /prepayment-validation response should match json schema
+        And The /prepayment-validation response ResponseCode field should be "01"
+
+    @unit @negative
+    Scenario: Unable to retrieves eligible Functional IDs from the account mapper for credit transfers because of invalid BatchID paramater in payload
+        Given Wants to retrieves eligible Functional IDs from the account mapper for credit transfers
+        When POST request with required body with given "batchID" as invalid BatchID parameter is sent
+        Then The response from the /prepayment-validation is received
+        And The /prepayment-validation response should be returned in a timely manner 15000ms
+        And The /prepayment-validation response should have status 400
+        And The /prepayment-validation response should have content-type: application/json header
+        And The /prepayment-validation response should match json schema
+        And The /prepayment-validation response ResponseCode field should be "01"
+
+    @unit @negative
+    Scenario: Unable to retrieves eligible Functional IDs from the account mapper for credit transfers because of invalid InstructionID paramater in payload
+        Given Wants to retrieves eligible Functional IDs from the account mapper for credit transfers
+        When POST request with required body with given "instructionID" as invalid InstructionID parameter is sent
+        Then The response from the /prepayment-validation is received
+        And The /prepayment-validation response should be returned in a timely manner 15000ms
+        And The /prepayment-validation response should have status 400
+        And The /prepayment-validation response should have content-type: application/json header
+        And The /prepayment-validation response should match json schema
+        And The /prepayment-validation response ResponseCode field should be "01"
+
+    @unit @negative
+    Scenario: Unable to retrieves eligible Functional IDs from the account mapper for credit transfers because of invalid PayeeFunctionalID paramater in payload
+        Given Wants to retrieves eligible Functional IDs from the account mapper for credit transfers
+        When POST request with required body with given "PayeeFunctionalID" as invalid PayeeFunctionalID parameter is sent
+        Then The response from the /prepayment-validation is received
+        And The /prepayment-validation response should be returned in a timely manner 15000ms
+        And The /prepayment-validation response should have status 400
+        And The /prepayment-validation response should have content-type: application/json header
+        And The /prepayment-validation response should match json schema
+        And The /prepayment-validation response ResponseCode field should be "01"
+
+    @unit @negative
+    Scenario: Unable to retrieves eligible Functional IDs from the account mapper for credit transfers because of invalid Amount paramater in payload
+        Given Wants to retrieves eligible Functional IDs from the account mapper for credit transfers
+        When POST request with required body with given "100.10.1" as invalid Amount parameter is sent
+        Then The response from the /prepayment-validation is received
+        And The /prepayment-validation response should be returned in a timely manner 15000ms
+        And The /prepayment-validation response should have status 400
+        And The /prepayment-validation response should have content-type: application/json header
+        And The /prepayment-validation response should match json schema
+        And The /prepayment-validation response ResponseCode field should be "01"
+
+    @unit @negative
+    Scenario: Unable to retrieves eligible Functional IDs from the account mapper for credit transfers because of invalid Currency paramater in payload
+        Given Wants to retrieves eligible Functional IDs from the account mapper for credit transfers
+        When POST request with required body with given "US" as invalid Currency parameter is sent
+        Then The response from the /prepayment-validation is received
+        And The /prepayment-validation response should be returned in a timely manner 15000ms
+        And The /prepayment-validation response should have status 400
+        And The /prepayment-validation response should have content-type: application/json header
+        And The /prepayment-validation response should match json schema
+        And The /prepayment-validation response ResponseCode field should be "01"
+           
