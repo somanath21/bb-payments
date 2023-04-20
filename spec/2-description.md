@@ -37,6 +37,37 @@ Generally, the Building Block is supportive of multiple types of payment use cas
 
 Government to Business payments (G2B) and Government to Government (G2G) are not covered in this specification and will be covered in the second phase.
 
+## Government-to-Person Payment Principles <a href="#docs-internal-guid-c38a9447-7fff-fcb5-e6eb-c6419072f004" id="docs-internal-guid-c38a9447-7fff-fcb5-e6eb-c6419072f004"></a>
+
+The implementation of the Payments Building Block should adhere to the following principles, particularly as it relates to Government-to-Person (G2P) payments:
+
+### Beneficiary/Recipient-related Principles
+
+* Beneficiaries can receive their payment through a fully functional account that allows them to save and make payments using an associated payment instrument with general acceptance.
+* They can choose the payment service provider and payment instrument through which they receive their payments based on their informed choice; they can use the same account for multiple G2P payments, make Person-to-government (P2G) payments and easily switch if desired.
+* Onboarding to their payment method is low cost and easy with account opening requirements that are available to recipients and with no opening fees; a payment instrument is provided to the recipient at no cost.
+* The Integrated Financial Management Information System (IFMIS) is used to process government payments against budgetary allocations. It supports:
+  * the Treasury Single Account (TSA) that aggregates all incoming government receipts and disburses all government payments;
+  * budget management to ensure budget compliance, tracking, and reporting. The IFMIS provides the Ministry of Finance with a unified view of the government’s budget execution.
+* The payment instrument is easy-to-use and generally accepted, and the overall costs for using it do not result in increased costs for the beneficiary in comparison to other forms of payment.
+* Beneficiaries are well informed, their account/data is protected, and have access to redress. They know when, where, and how many payments will be made and understand how their payment method works, its costs, how to use their payment instrument, and how to access their payment. They can access and know how to access effective grievance redressal mechanisms, their funds are secured, and their data privacy is ensured.
+* Beneficiaries can easily access their funds. They are able to cash out their funds at any time at a wide range of conveniently close financial access points. At a reasonable and clearly communicated withdrawal fee or at no cost.
+* Beneficiaries are included regardless of gender, race, or other immutable characteristics, through at least one of the payment methods used; gender gaps are considered in the design.
+
+### Infrastructure and Systems-related Principles
+
+* The leveraged infrastructures and systems are shared across G2P programs and payment streams, as well as other use cases, avoiding the implementation of systems to exclusively deliver G2P payments. They are scalable and have cyber security arrangements in place.
+* Common ID provides access to multiple programs; the national ID system has high coverage and quality; it allows government agencies and payment service providers to validate recipients’ identities; it enables data sharing across government agencies.
+* Payment processing systems unlike social protection management information systems, pension, and payroll systems will not include gender-disaggregated data.
+* The payment systems are interoperable to maximize the potential of the available infrastructure to recipients; interoperability arrangements exist for Integrated Financial Management Information System (IFMIS), Treasury Single Account (TSA), banks, and non-banks covering most channels and instruments.
+* There is no manual intervention in the disbursement process and the entire payments flow is Straight-Through-Processing, including the reconciliation of payments. Payments are made without delays.
+
+### Payment Services Provider-related Principles
+
+* Payment service providers have a strong and long-term, predictable business case or incentives to deliver payments and provide choice.
+* A large variety of bank and non-bank financial institutions operating in a competitive market are used to deliver G2P payments.
+* Agents of bank and non-bank financial institutions are accessible to G2P payment recipients.
+
 ## Mapping Based on Level of Maturity <a href="#docs-internal-guid-03083e3a-7fff-0a23-35b3-cf8f18b3f1a2" id="docs-internal-guid-03083e3a-7fff-0a23-35b3-cf8f18b3f1a2"></a>
 
 The [DIAL use cases](https://drive.google.com/drive/folders/1JYdcmeUhJrwl7TfSuVtBJ9a0C335VbRg) can be mapped to the Payments Building Block capabilities as follows.
