@@ -18,7 +18,3 @@ description: >-
 ### 10.3 Out-of-Scope Assumptions <a href="#docs-internal-guid-39459612-7fff-54dd-0f25-ddf61408bb48" id="docs-internal-guid-39459612-7fff-54dd-0f25-ddf61408bb48"></a>
 
 [A list of functions out of the scope of this Building Block](https://govstack-global.atlassian.net/l/cp/6ERMn830).
-
-### 10.3 Out-of-Scope Assumptions <a href="#docs-internal-guid-39459612-7fff-54dd-0f25-ddf61408bb48" id="docs-internal-guid-39459612-7fff-54dd-0f25-ddf61408bb48"></a>
-
-[A list of functions out of the scope of this Building Block](https://govstack-global.atlassian.net/l/cp/SqkvQ8nE).

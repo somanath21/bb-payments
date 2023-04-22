@@ -40,7 +40,7 @@ The Bill Payments APIs allow government entities to accept bill payments from pe
 
 These APIs link Source BB to the Payments Building Block for bulk payment processing, identity verification, and bank/wallet mapping. Third-party providers may add extra APIs depending on the country's payment landscape.
 
-## 8.2.1 Beneficiary onboarding API
+## 8.2.1 Beneficiary Onboarding API
 
 Once a new G2P beneficiary is onboarded by a G2P Program and assigned a Functional ID, they can be added to the Account Mapper in Payments BB after their eligibility for the social benefit program has been verified.
 
