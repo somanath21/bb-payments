@@ -76,3 +76,78 @@ The [DIAL use cases](https://drive.google.com/drive/folders/1JYdcmeUhJrwl7TfSuVt
 | ---------------- | ----------------------------------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------- | --------------------------------------------------- |
 | G2P              | Scenario 1-4 & 6                    | <p>Payment - Unconditional Social Cash Transfer (direct payment based on family relationship)</p><p><br></p><p><a href="https://solutions.dial.community/use_cases/unconditional_social_cash_transf">Payment - Unconditional Social Cash Transfer (bank payments)</a></p><p><br></p><p>Payment - Unconditional Social Cash Transfer (non-electronic/cash payments)</p> | <p>a). Beneficiary payment, Incentive payment to mother.</p><p><br></p><p>b) Government Salary payment</p><p><br></p><p>c) Unconditional cash transfer</p> | Voucher payment, Mobile Money, direct bank transfer |
 | P2G              | Scenario 1-4 & 6                    | [Postpartum care](https://solutions.dial.community/use\_cases/postpartum\_and\_infant\_care)                                                                                                                                                                                                                                                                           | Payment - registration of birth (Postpartum and Infant Care)                                                                                               | Mobile Money.                                       |
+
+## Payment Infrastructure Deployment Scenarios
+
+### Regional Switch vs Country Switch <a href="#docs-internal-guid-cd102025-7fff-69cb-65c6-c81f89b706c2" id="docs-internal-guid-cd102025-7fff-69cb-65c6-c81f89b706c2"></a>
+
+Domestic payment switches have specific economic characteristics and may not reach adequate economies of scale. Whilst costs can be passed onto customers, without sufficiently low charges, volumes may remain perennially low. Domestic switches facing this scenario thus remain under-utilized, costly, and under-capitalized. In recent years, the concept of Regional payment switches has gained some traction with new efforts realized or underway across the Southern African Development Community (SADC), West African Monetary and Economic Union (UEMOA), East African Community (EAC), and Economic and Monetary Community of Central Africa (CEMAC).
+
+Regional switches (which may serve as a common resource for multiple countries) often rely on pre-existing arrangements between Central Banks, regional Commercial Banks, or a combination thereof. When multiple currencies are in play, a reference currency or a basket of currencies must be chosen for regional settlement accounts to be viable. Settlement arrangements are vital to the viability of a regional switch. A Regional switch may also integrate financial transactions from countries that already have domestic payment switches (like a switch of switches).
+
+Regional switches may take on any and all use cases or may be restricted to specific use cases, for example, Large Value Transfer or B2B trade. Because regional trade drives economic activity, regional switches often go hand in hand with the portability of business and consumer credentials (i.e. relating to Customer Due Diligence), trade policy, and movement of labor.
+
+### Payment infrastructure scenarios
+
+The Payments Building Block sits between the government account systems (i.e. at the Ministry of Finance or Central Bank) and the public or private switching available in the market. As such the Payments Building Block is assumed in each, but not shown. The primary focus in describing these scenarios is on the relationship between payment schemes, banking institutions, and government institutions. This section describes what is available in-country.
+
+| **Infrastructure Scenarios**                                                                                                                                                                                       | **Suggested Approach**                                                                                                                                                                                                                                                                                                                                                                                                                                                                                |
+| ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ | ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| <p><strong>Payment Infrastructure Scenario 1</strong><br>Regional Switch (or a switch of switches) connects financial service providers including banks and non-banks in different countries in a region.</p>      | Government should leverage the regional payments switch (scheme) to enable all use-cases. This may also imply important developments of a standardized Customer Due Diligence (CDD). Note that while a State owned bank is shown in the diagram below, the option exists for the Government to designate a specific Commercial bank, or to have the funds flow directly from the Ministry of Finance (Treasury) assuming such Treasury payment functionality can be supported by the Regional Switch. |
+| <p><strong>Payment Infrastructure Scenario 2</strong><br>A payment switch connecting financial service providers such as banks to non-banks including mobile money providers is in place and actively working.</p> | Government should leverage the existing switch to enable payments use-cases to reach mobile money providers. There may be a State Owned Bank (2-A) or not (2-B).                                                                                                                                                                                                                                                                                                                                      |
+| <p><strong>Payment Infrastructure Scenario 3</strong><br>A payment switch is in place in the country or is in the process to be deployed but non-banks, including mobile providers are not connected to it.</p>    | <p>Government should leverage third-party aggregators or bilateral integrations to enable payment use-cases to reach mobile money providers.</p><p><br></p>                                                                                                                                                                                                                                                                                                                                           |
+| <p><strong>Payment Infrastructure Scenario 4</strong><br>A payment switch is not place or in the process of being deployed</p>                                                                                     | Government should leverage third-party aggregators or bilateral connections to enable payment use-cases to reach mobile money providers                                                                                                                                                                                                                                                                                                                                                               |
+| <p><strong>Payment Infrastructure Scenario 5</strong><br>Government makes G2P payments using Central Bank Digital Currency (CBDC) .</p>                                                                            | The Central Bank distributes the funds for the CBDC accounts via regulated entities (e.g. Payment Service Providers).                                                                                                                                                                                                                                                                                                                                                                                 |
+| <p><strong>Payment Infrastructure Scenario 6</strong><br>Citizens have CBDC accounts directly with the Central Bank or other accounts with other payment service providers</p>                                     | The Central Bank sets up limited accounts for each person, providing a base level of access and functionality. Such accounts may be denominated in country currency (fiat) or CBDCs. This scenario places more responsibility on government structures and is not often considered (outside of Postal Banks and the like).                                                                                                                                                                            |
+
+Under each of these scenarios, there are different setups possible that relate the key roles played by the Programmatic Ministries (e.g. Ministry of Education or Pension Program), the Ministry of Finance, the Central Bank, and the existing Payment Switch.
+
+The flow of funds and the flow of data are separate but equally important and they have a number of interactions.
+
+#### Payment Infrastructure Scenario 1 <a href="#docs-internal-guid-63a4041d-7fff-d235-eb9b-1b216215b6e9" id="docs-internal-guid-63a4041d-7fff-d235-eb9b-1b216215b6e9"></a>
+
+Regional Switch (or a switch of switches) connects financial service providers including banks and non-banks.
+
+![Payments building block diagrams.drawio - diagrams.net](.gitbook/assets/image19.png)
+
+#### Payment Infrastructure Scenario 2-A <a href="#docs-internal-guid-d25fd375-7fff-8960-0f04-e0264cd1ef40" id="docs-internal-guid-d25fd375-7fff-8960-0f04-e0264cd1ef40"></a>
+
+Scenario 2-A and Scenario 2-B cover the concept of separating flows of data from accounting flows.
+
+The Central Bank receives the funds transfer advice from the Treasury and the data from the Ministry of Health and does the steps of breaking it into bulk, based on rules of capacity of source and destination systems. Payments are then routed “on-us” or to the external financial providers “off-us” via a payment switch or similar mechanism.
+
+![Payments building block diagrams.drawio - diagrams.net](.gitbook/assets/image18.png)
+
+#### Payment Infrastructure Scenario 2-B <a href="#docs-internal-guid-17ea0a05-7fff-b78a-f66d-b1db5a50b0ac" id="docs-internal-guid-17ea0a05-7fff-b78a-f66d-b1db5a50b0ac"></a>
+
+The Central Bank plays a key role as a participant in the Payment scheme and routes the payment details and funds via a shared service of the payment switch. The same logic of break-bulk applies and with all transactions effectively “off-us”.
+
+![Payments building block diagrams.drawio - diagrams.net](.gitbook/assets/image31.png)
+
+#### Payment infrastructure scenario 3 <a href="#docs-internal-guid-f20210d1-7fff-6f46-031b-a7efd42f0e27" id="docs-internal-guid-f20210d1-7fff-6f46-031b-a7efd42f0e27"></a>
+
+Government should leverage third-party aggregators to enable payment use cases to reach mobile money providers
+
+![Payments building block diagrams.drawio - diagrams.net](.gitbook/assets/image5.png)
+
+#### Payment Infrastructure Scenario 4 <a href="#docs-internal-guid-f33d82c3-7fff-6366-eea9-62a6308c58de" id="docs-internal-guid-f33d82c3-7fff-6366-eea9-62a6308c58de"></a>
+
+A payment switch is not in place or in the process of being deployed. Government should leverage third-party aggregators or bilateral connections to enable payment use cases to reach mobile money providers. In the bilateral connection scenario, each mobile money provider in the country would connect to the government portal through APIs, enabling a seamless transfer of funds to end users (in the case of G2P payments) or the receiving of funds from end users (in the case of P2G payments) and facilitate reporting, reconciliation and settlement processes.
+
+![Payments building block diagrams.drawio - diagrams.net](<.gitbook/assets/image17 (1) (1) (2).png>)
+
+#### Payment Infrastructure Scenario 5 <a href="#docs-internal-guid-69c7a646-7fff-5eeb-a45c-645b0d3ee524" id="docs-internal-guid-69c7a646-7fff-5eeb-a45c-645b0d3ee524"></a>
+
+The Central Bank mints digital currency and distributes funds via regulated entities (e.g. Payment Service Providers), and in the case of G2P sends funds to destination accounts known to the Ministry of Finance. Account information is unitary and unique for all beneficiaries (e.g. citizens) but the Central Bank does not “hold” account balances on an individual basis.
+
+![Payments building block diagrams.drawio - diagrams.net](.gitbook/assets/image14.png)
+
+#### Payment Infrastructure Scenario 6 <a href="#docs-internal-guid-4df537db-7fff-1474-df07-653ff0c8025e" id="docs-internal-guid-4df537db-7fff-1474-df07-653ff0c8025e"></a>
+
+The Central Bank directly provides Digital Accounts for all people (Citizens) and Treasury routes funds to the relevant accounts (uniquely and unitarily held by people).
+
+![Payments building block diagrams.drawio - diagrams.net](.gitbook/assets/Picture1.jpg)
+
+* For this payment use case, the most common scenarios currently in place are 1 to 4, scenario 5 and 6 could be envisaged later.
+* In Scenario 2B it is assumed that the Payment Switch is run by the Central Bank.
+* In Scenario 2A and 3, it is assumed that the Payment Switch is an independent part outside the Central Bank.
