@@ -3,7 +3,7 @@ info:
   title: PrePayment Validation API
   version: 1.0.0
 servers:
-  - url: http://api.example.com/v1
+  - url: 
 paths:
   /prepayment-validation:
     post:
