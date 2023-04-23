@@ -10,7 +10,7 @@ The APIs defined here establish a blueprint for how the Building Block will inte
 
 The [GovStack non-functional requirements document](https://govstack.gitbook.io/specification/v/1.0/architecture-and-nonfunctional-requirements/6-onboarding) provides additional information on how 'adaptors' may be used to translate an existing API to the patterns described here.
 
-## 4.1 Payment Orchestration
+## 8.1 Payment Orchestration
 
 ## 8.1 Person-to-Government APIs (P2G) <a href="#docs-internal-guid-83db42bd-7fff-3768-b76a-9586be4ab890" id="docs-internal-guid-83db42bd-7fff-3768-b76a-9586be4ab890"></a>
 
@@ -156,7 +156,7 @@ This API is to be exposed by the Payments BB; it will be called by the Source BB
 | ResponseDescription | String (200) | Yes      |                            |
 | RequestID           | String (12)  | Yes      | Echoed from Request        |
 
-## 8.6 Voucher APIs <a href="#docs-internal-guid-9cf2815f-7fff-7e39-e7ed-207134468ff3" id="docs-internal-guid-9cf2815f-7fff-7e39-e7ed-207134468ff3"></a>
+## 8.6 Voucher APIs/Voucher Management <a href="#docs-internal-guid-9cf2815f-7fff-7e39-e7ed-207134468ff3" id="docs-internal-guid-9cf2815f-7fff-7e39-e7ed-207134468ff3"></a>
 
 The first API in the section below is used to request for a voucher with a specific value, currency, and purpose. The server responds with a voucher number, serial number, and expiry date. The second call activates the pre-activated voucher. The third call processes voucher redemption, crediting the merchant if valid. A fourth API enables batch voucher activation through encrypted files. Additional APIs allow for voucher status checks and cancellations.
 
