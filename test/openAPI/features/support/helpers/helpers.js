@@ -1,16 +1,17 @@
 module.exports = {
   localhost: 'http://localhost:3333/',
-  defaultExpectedResponseTime: 15000,
-  contentTypeHeader: {
-    key: 'content-type',
-    value: 'application/json; charset=utf-8',
-  },
+  defaultResponseTime: 15000,
   acceptHeader: {
     key: 'Accept',
     value: 'application/json',
   },
+  contentTypeHeader: {
+    key: 'content-type',
+    value: 'application/json; charset=utf-8',
+  },
   bulkPaymentEndpoint: 'bulk-payment',
   prepaymentValidationEndpoint: 'prepayment-validation',
+  prepaymentValidationResponseEndpoint: 'prepayment-validation-response',
   registerBeneficiaryEndpoint: 'register-beneficiary',
   updateBeneficiaryDetailsEndpoint: 'update-beneficiary-details',
   g2pResponseSchema: {
@@ -34,5 +35,23 @@ module.exports = {
       },
     },
     required: ['ResponseCode', 'ResponseDescription', 'RequestID'],
+  },
+  prepaymentValidationResponseSchema: {
+    type: 'object',
+    properties: {
+      RequestID: { type: 'string' },
+      Source_BatchID: { type: 'string' },
+      NumberFailedCases: { type: 'number' },
+      FailedAccounts: {
+        type: 'array',
+        items: {
+          type: 'object',
+          properties: {
+            InstructionID: { type: 'string' },
+            FailureReason: { type: 'string' },
+          },
+        },
+      },
+    },
   },
 };

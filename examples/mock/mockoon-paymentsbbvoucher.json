@@ -1520,6 +1520,296 @@
         }
       ],
       "enabled": true,
+      "responseMode": null,
+      "type": "http"
+    },
+    {
+      "uuid": "3e4b78a1-a6ea-4b31-a46b-24b19334dd68",
+      "type": "http",
+      "documentation": "Retrieves eligible Functional IDs from the account mapper for credit transfers",
+      "method": "post",
+      "endpoint": "prepayment-validation",
+      "responses": [
+        {
+          "uuid": "cba85f9f-e07e-44c5-aae9-4c64fdd6c7a8",
+          "body": "{\n  \"ResponseCode\": \"00\",\n  \"ResponseDescription\": \"string\",\n  \"RequestID\": \"{{bodyRaw 'RequestID'}}\"\n}",
+          "latency": 0,
+          "statusCode": 200,
+          "label": "Succesfully response",
+          "headers": [
+            {
+              "key": "Content-Type",
+              "value": "application/json"
+            }
+          ],
+          "bodyType": "INLINE",
+          "filePath": "",
+          "databucketID": "",
+          "sendFileAsBody": false,
+          "rules": [
+            {
+              "target": "body",
+              "modifier": "RequestID",
+              "value": "^.{12}$",
+              "invert": false,
+              "operator": "regex"
+            },
+            {
+              "target": "body",
+              "modifier": "RequestID",
+              "value": "",
+              "invert": true,
+              "operator": "null"
+            },
+            {
+              "target": "body",
+              "modifier": "SourceBBID",
+              "value": "^.{12}$",
+              "invert": false,
+              "operator": "regex"
+            },
+            {
+              "target": "body",
+              "modifier": "SourceBBID",
+              "value": "",
+              "invert": true,
+              "operator": "null"
+            },
+            {
+              "target": "body",
+              "modifier": "BatchID",
+              "value": "^.{12}$",
+              "invert": false,
+              "operator": "regex"
+            },
+            {
+              "target": "body",
+              "modifier": "BatchID",
+              "value": "",
+              "invert": true,
+              "operator": "null"
+            },
+            {
+              "target": "body",
+              "modifier": "CreditInstructions.0.InstructionID",
+              "value": "^.{16}$",
+              "invert": false,
+              "operator": "regex"
+            },
+            {
+              "target": "body",
+              "modifier": "CreditInstructions.0.PayeeFunctionalID",
+              "value": "^.{20}$",
+              "invert": false,
+              "operator": "regex"
+            },
+            {
+              "target": "body",
+              "modifier": "CreditInstructions.0.Amount",
+              "value": "\\d+\\.\\d+",
+              "invert": false,
+              "operator": "regex"
+            },
+            {
+              "target": "body",
+              "modifier": "CreditInstructions.0.Currency",
+              "value": "^.{3}$",
+              "invert": false,
+              "operator": "regex"
+            },
+            {
+              "target": "body",
+              "modifier": "CreditInstructions.0.Narration",
+              "value": "^.{0,50}$",
+              "invert": false,
+              "operator": "regex"
+            },
+            {
+              "target": "body",
+              "modifier": "CreditInstructions.0.InstructionID",
+              "value": "",
+              "invert": true,
+              "operator": "null"
+            },
+            {
+              "target": "body",
+              "modifier": "CreditInstructions.0.PayeeFunctionalID",
+              "value": "",
+              "invert": true,
+              "operator": "null"
+            },
+            {
+              "target": "body",
+              "modifier": "CreditInstructions.0.Amount",
+              "value": "",
+              "invert": true,
+              "operator": "null"
+            },
+            {
+              "target": "body",
+              "modifier": "CreditInstructions.0.Currency",
+              "value": "",
+              "invert": true,
+              "operator": "null"
+            },
+            {
+              "target": "body",
+              "modifier": "CreditInstructions.0.NarrationCreditInstructions",
+              "value": "",
+              "invert": true,
+              "operator": "null"
+            }
+          ],
+          "rulesOperator": "AND",
+          "disableTemplating": false,
+          "fallbackTo404": false,
+          "default": true
+        },
+        {
+          "uuid": "e88f4c78-facd-49fd-8294-90a33d6afe96",
+          "body": "",
+          "latency": 0,
+          "statusCode": 400,
+          "label": "Failure response ",
+          "headers": [
+            {
+              "key": "Content-Type",
+              "value": "application/json"
+            }
+          ],
+          "bodyType": "INLINE",
+          "filePath": "",
+          "databucketID": "",
+          "sendFileAsBody": false,
+          "rules": [
+            {
+              "target": "body",
+              "modifier": "RequestID",
+              "value": "^.{12}$",
+              "invert": true,
+              "operator": "regex"
+            },
+            {
+              "target": "body",
+              "modifier": "RequestID",
+              "value": "",
+              "invert": false,
+              "operator": "null"
+            },
+            {
+              "target": "body",
+              "modifier": "SourceBBID",
+              "value": "^.{12}$",
+              "invert": true,
+              "operator": "regex"
+            },
+            {
+              "target": "body",
+              "modifier": "SourceBBID",
+              "value": "",
+              "invert": false,
+              "operator": "null"
+            },
+            {
+              "target": "body",
+              "modifier": "BatchID",
+              "value": "^.{12}$",
+              "invert": true,
+              "operator": "regex"
+            },
+            {
+              "target": "body",
+              "modifier": "BatchID",
+              "value": "",
+              "invert": false,
+              "operator": "null"
+            },
+            {
+              "target": "body",
+              "modifier": "CreditInstructions.0.InstructionID",
+              "value": "^.{16}$",
+              "invert": true,
+              "operator": "regex"
+            },
+            {
+              "target": "body",
+              "modifier": "CreditInstructions.0.PayeeFunctionalID",
+              "value": "^.{20}$",
+              "invert": true,
+              "operator": "regex"
+            },
+            {
+              "target": "body",
+              "modifier": "CreditInstructions.0.Amount",
+              "value": "^[+-]?([0-9]*[.])?[0-9]+$",
+              "invert": true,
+              "operator": "regex"
+            },
+            {
+              "target": "body",
+              "modifier": "CreditInstructions.0.Currency",
+              "value": "^.{3}$",
+              "invert": true,
+              "operator": "regex"
+            },
+            {
+              "target": "body",
+              "modifier": "CreditInstructions.0.Narration",
+              "value": "^.{0,50}$",
+              "invert": true,
+              "operator": "regex"
+            }
+          ],
+          "rulesOperator": "OR",
+          "disableTemplating": false,
+          "fallbackTo404": false,
+          "default": false
+        }
+      ],
+      "enabled": true,
+      "responseMode": null
+    },
+    {
+      "uuid": "9042d322-962d-4ee3-8633-1d114b2d8f72",
+      "type": "http",
+      "documentation": "Response to the earlier request for validation /prepayment-validation",
+      "method": "post",
+      "endpoint": "prepayment-validation-response",
+      "responses": [
+        {
+          "uuid": "2727aebf-ccf9-43ae-8eb3-66aa5a928cfc",
+          "body": "{\n  \"RequestID\": \"{{bodyRaw 'RequestID'}}\",\n  \"Source_BatchID\": \"string\",\n  \"NumberFailedCases\": 0,\n  \"FailedAccounts\": [\n    {\n      \"InstructionID\": \"string\",\n      \"FailureReason\": \"string\"\n    }\n  ]\n}",
+          "latency": 0,
+          "statusCode": 200,
+          "label": "",
+          "headers": [],
+          "bodyType": "INLINE",
+          "filePath": "",
+          "databucketID": "",
+          "sendFileAsBody": false,
+          "rules": [
+            {
+              "target": "body",
+              "modifier": "RequestID",
+              "value": "",
+              "invert": true,
+              "operator": "null"
+            },
+            {
+              "target": "body",
+              "modifier": "Source_BatchID",
+              "value": "",
+              "invert": true,
+              "operator": "null"
+            }
+          ],
+          "rulesOperator": "AND",
+          "disableTemplating": false,
+          "fallbackTo404": false,
+          "default": true
+        }
+      ],
+      "enabled": true,
       "responseMode": null
     }
   ],
@@ -1580,6 +1870,10 @@
     {
       "type": "route",
       "uuid": "3e4b78a1-a6ea-4b31-a46b-24b19334dd68"
+    },
+    {
+      "type": "route",
+      "uuid": "9042d322-962d-4ee3-8633-1d114b2d8f72"
     }
   ]
 }
