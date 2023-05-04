@@ -1524,6 +1524,333 @@
       "type": "http"
     },
     {
+      "uuid": "06ed02a6-54a9-4f28-b277-30cb02088981",
+      "type": "http",
+      "documentation": "Update beneficiary details",
+      "method": "post",
+      "endpoint": "update-beneficiary-details",
+      "responses": [
+        {
+          "uuid": "17325161-8b34-4ef3-84a6-dce5986a7c8c",
+          "body": "{\n  \"ResponseCode\": \"00\",\n  \"ResponseDescription\": \"Request successfully acknowledged by Pay-BB\",\n  \"RequestID\": \"{{bodyRaw 'RequestID'}}\"\n}",
+          "latency": 0,
+          "statusCode": 200,
+          "label": "Request successfully acknowledged by Pay-BB",
+          "headers": [],
+          "bodyType": "INLINE",
+          "filePath": "",
+          "databucketID": "",
+          "sendFileAsBody": false,
+          "rules": [
+            {
+              "target": "body",
+              "modifier": "RequestID",
+              "value": "",
+              "invert": true,
+              "operator": "null"
+            },
+            {
+              "target": "body",
+              "modifier": "RequestID",
+              "value": "^\\w{12}$",
+              "invert": false,
+              "operator": "regex"
+            },
+            {
+              "target": "body",
+              "modifier": "SourceBBID",
+              "value": "",
+              "invert": true,
+              "operator": "null"
+            },
+            {
+              "target": "body",
+              "modifier": "SourceBBID",
+              "value": "^\\w{12}$",
+              "invert": false,
+              "operator": "regex"
+            },
+            {
+              "target": "body",
+              "modifier": "Beneficiaries",
+              "value": "",
+              "invert": true,
+              "operator": "null"
+            },
+            {
+              "target": "body",
+              "modifier": "Beneficiaries.0.PayeeFunctionalID",
+              "value": "^\\w{20}$",
+              "invert": false,
+              "operator": "regex"
+            }
+          ],
+          "rulesOperator": "AND",
+          "disableTemplating": false,
+          "fallbackTo404": false,
+          "default": false
+        },
+        {
+          "uuid": "e8bacc91-936e-4709-a677-a75916f797ca",
+          "body": "{\n  \"ResponseCode\": \"01\",\n  \"ResponseDescription\": \"Request not acknowledged by Pay-BB\",\n  \"RequestID\": \"{{bodyRaw 'RequestID'}}\"\n}",
+          "latency": 0,
+          "statusCode": 400,
+          "label": "Request not acknowledged by Pay-BB",
+          "headers": [],
+          "bodyType": "INLINE",
+          "filePath": "",
+          "databucketID": "",
+          "sendFileAsBody": false,
+          "rules": [],
+          "rulesOperator": "OR",
+          "disableTemplating": false,
+          "fallbackTo404": false,
+          "default": true
+        }
+      ],
+      "enabled": true,
+      "responseMode": null
+    },
+    {
+      "uuid": "a5a1aab6-080f-4957-af6c-d7f99805126e",
+      "type": "http",
+      "documentation": "This API is to be exposed by the Payments BB. It will be called by the Source BB to handover a batch of credit instructions to be processed.",
+      "method": "post",
+      "endpoint": "bulk-payment",
+      "responses": [
+        {
+          "uuid": "3f2e29c5-b21f-4fc6-b76d-022399e5ee8f",
+          "body": "{\n  \"ResponseCode\": \"00\",\n  \"ResponseDescription\": \"Request successfully acknowledged\",\n  \"RequestID\": \"{{bodyRaw 'RequestID'}}\"\n}",
+          "latency": 0,
+          "statusCode": 200,
+          "label": "Request successfully acknowledged",
+          "headers": [],
+          "bodyType": "INLINE",
+          "filePath": "",
+          "databucketID": "",
+          "sendFileAsBody": false,
+          "rules": [
+            {
+              "target": "body",
+              "modifier": "RequestID",
+              "value": "",
+              "invert": true,
+              "operator": "null"
+            },
+            {
+              "target": "body",
+              "modifier": "RequestID",
+              "value": "^.{12}$",
+              "invert": false,
+              "operator": "regex"
+            },
+            {
+              "target": "body",
+              "modifier": "SourceBBID",
+              "value": "",
+              "invert": true,
+              "operator": "null"
+            },
+            {
+              "target": "body",
+              "modifier": "SourceBBID",
+              "value": "^.{12}$",
+              "invert": false,
+              "operator": "regex"
+            },
+            {
+              "target": "body",
+              "modifier": "BatchID",
+              "value": "",
+              "invert": true,
+              "operator": "null"
+            },
+            {
+              "target": "body",
+              "modifier": "BatchID",
+              "value": "^.{12}$",
+              "invert": false,
+              "operator": "regex"
+            },
+            {
+              "target": "body",
+              "modifier": "CreditInstructions.0.InstructionID",
+              "value": "",
+              "invert": true,
+              "operator": "null"
+            },
+            {
+              "target": "body",
+              "modifier": "CreditInstructions.0.InstructionID",
+              "value": "^.{16}$",
+              "invert": false,
+              "operator": "regex"
+            },
+            {
+              "target": "body",
+              "modifier": "CreditInstructions.0.PayeeFunctionalID",
+              "value": "",
+              "invert": true,
+              "operator": "null"
+            },
+            {
+              "target": "body",
+              "modifier": "CreditInstructions.0.PayeeFunctionalID",
+              "value": "^.{20}$",
+              "invert": false,
+              "operator": "regex"
+            },
+            {
+              "target": "body",
+              "modifier": "CreditInstructions.0.Amount",
+              "value": "",
+              "invert": true,
+              "operator": "null"
+            },
+            {
+              "target": "body",
+              "modifier": "CreditInstructions.0.Amount",
+              "value": "^[-+]?[0-9]*\\.?[0-9]+([eE][-+]?[0-9]+)?$",
+              "invert": false,
+              "operator": "regex"
+            },
+            {
+              "target": "body",
+              "modifier": "CreditInstructions.0.Currency",
+              "value": "",
+              "invert": true,
+              "operator": "null"
+            },
+            {
+              "target": "body",
+              "modifier": "CreditInstructions.0.Currency",
+              "value": "^.{3}$",
+              "invert": false,
+              "operator": "regex"
+            },
+            {
+              "target": "body",
+              "modifier": "CreditInstructions",
+              "value": "",
+              "invert": true,
+              "operator": "null"
+            }
+          ],
+          "rulesOperator": "AND",
+          "disableTemplating": false,
+          "fallbackTo404": false,
+          "default": false
+        },
+        {
+          "uuid": "95b7e7b1-a19b-44ce-a70c-c172e34c458d",
+          "body": "{}",
+          "latency": 0,
+          "statusCode": 400,
+          "label": "Request not acknowledged",
+          "headers": [],
+          "bodyType": "INLINE",
+          "filePath": "",
+          "databucketID": "",
+          "sendFileAsBody": false,
+          "rules": [],
+          "rulesOperator": "OR",
+          "disableTemplating": false,
+          "fallbackTo404": false,
+          "default": true
+        }
+      ],
+      "enabled": true,
+      "responseMode": null
+    },
+    {
+      "uuid": "1d40ba69-ccab-4577-8249-9c1ea5275e30",
+      "type": "http",
+      "documentation": "The Register Beneficiary API is invoked by the Information Mediator BB,  which is triggered when the Registration BB is registering beneficiaries into the Payments BB's ID Mapper.",
+      "method": "post",
+      "endpoint": "register-beneficiary",
+      "responses": [
+        {
+          "uuid": "4783065c-fd19-4cbb-923b-2162c6cc9749",
+          "body": "{\n  \"ResponseCode\": \"00\",\n  \"ResponseDescription\": \"Request successfully acknowledged by Pay-BB\",\n  \"RequestID\": \"{{bodyRaw 'RequestID'}}\"\n}",
+          "latency": 0,
+          "statusCode": 200,
+          "label": "Request successfully acknowledged by Pay-BB",
+          "headers": [],
+          "bodyType": "INLINE",
+          "filePath": "",
+          "databucketID": "",
+          "sendFileAsBody": false,
+          "rules": [
+            {
+              "target": "body",
+              "modifier": "RequestID",
+              "value": "",
+              "invert": true,
+              "operator": "null"
+            },
+            {
+              "target": "body",
+              "modifier": "RequestID",
+              "value": "^.{12}$",
+              "invert": false,
+              "operator": "regex"
+            },
+            {
+              "target": "body",
+              "modifier": "SourceBBID",
+              "value": "",
+              "invert": true,
+              "operator": "null"
+            },
+            {
+              "target": "body",
+              "modifier": "SourceBBID",
+              "value": "^.{12}$",
+              "invert": false,
+              "operator": "regex"
+            },
+            {
+              "target": "body",
+              "modifier": "Beneficiaries",
+              "value": "",
+              "invert": true,
+              "operator": "null"
+            },
+            {
+              "target": "body",
+              "modifier": "Beneficiaries.0.PayeeFunctionalID",
+              "value": "^.{20}$",
+              "invert": false,
+              "operator": "regex"
+            }
+          ],
+          "rulesOperator": "AND",
+          "disableTemplating": false,
+          "fallbackTo404": false,
+          "default": false
+        },
+        {
+          "uuid": "29b519b7-d2e5-4492-965b-50a55c15c521",
+          "body": "{\n  \"ResponseCode\": \"01\",\n  \"ResponseDescription\": \"Request not acknowledged by Pay-BB\",\n  \"RequestID\": \"{{bodyRaw 'RequestID'}}\"\n}",
+          "latency": 0,
+          "statusCode": 400,
+          "label": "Request not acknowledged by Pay-BB",
+          "headers": [],
+          "bodyType": "INLINE",
+          "filePath": "",
+          "databucketID": "",
+          "sendFileAsBody": false,
+          "rules": [],
+          "rulesOperator": "OR",
+          "disableTemplating": false,
+          "fallbackTo404": false,
+          "default": true
+        }
+      ],
+      "enabled": true,
+      "responseMode": null
+    },
+    {
       "uuid": "3e4b78a1-a6ea-4b31-a46b-24b19334dd68",
       "type": "http",
       "documentation": "Retrieves eligible Functional IDs from the account mapper for credit transfers",
@@ -1606,7 +1933,7 @@
             {
               "target": "body",
               "modifier": "CreditInstructions.0.Amount",
-              "value": "\\d+\\.\\d+",
+              "value": "^[-+]?[0-9]*\\.?[0-9]+([eE][-+]?[0-9]+)?$",
               "invert": false,
               "operator": "regex"
             },
@@ -1666,11 +1993,11 @@
           "default": true
         },
         {
-          "uuid": "e88f4c78-facd-49fd-8294-90a33d6afe96",
-          "body": "",
+          "uuid": "1c84ba13-b547-427f-981d-1b9eefac6c0b",
+          "body": "{\n  \"ResponseCode\": \"01\",\n  \"ResponseDescription\": \"string\",\n  \"RequestID\": \"{{bodyRaw 'RequestID'}}\"\n}",
           "latency": 0,
-          "statusCode": 400,
-          "label": "Failure response ",
+          "statusCode": 200,
+          "label": "Response code 01",
           "headers": [
             {
               "key": "Content-Type",
@@ -1741,7 +2068,7 @@
             {
               "target": "body",
               "modifier": "CreditInstructions.0.Amount",
-              "value": "^[+-]?([0-9]*[.])?[0-9]+$",
+              "value": "^[-+]?[0-9]*\\.?[0-9]+([eE][-+]?[0-9]+)?$",
               "invert": true,
               "operator": "regex"
             },
@@ -1758,6 +2085,41 @@
               "value": "^.{0,50}$",
               "invert": true,
               "operator": "regex"
+            },
+            {
+              "target": "body",
+              "modifier": "CreditInstructions.0.InstructionID",
+              "value": "",
+              "invert": false,
+              "operator": "null"
+            },
+            {
+              "target": "body",
+              "modifier": "CreditInstructions.0.PayeeFunctionalID",
+              "value": "",
+              "invert": false,
+              "operator": "null"
+            },
+            {
+              "target": "body",
+              "modifier": "CreditInstructions.0.Amount",
+              "value": "",
+              "invert": false,
+              "operator": "null"
+            },
+            {
+              "target": "body",
+              "modifier": "CreditInstructions.0.Currency",
+              "value": "",
+              "invert": false,
+              "operator": "null"
+            },
+            {
+              "target": "body",
+              "modifier": "CreditInstructions.0.NarrationCreditInstructions",
+              "value": "",
+              "invert": false,
+              "operator": "null"
             }
           ],
           "rulesOperator": "OR",
@@ -1861,11 +2223,23 @@
     },
     {
       "type": "route",
-      "uuid": "d8879a90-3938-4eb4-ab32-f224b3f3f3e1"
+      "uuid": "539da980-8549-47a2-91d2-6b80599f27f3"
     },
     {
       "type": "route",
-      "uuid": "11e0eb75-3513-4c7c-9a33-bdc4c9405d42"
+      "uuid": "40bbdad2-0df1-4bbb-85f9-514e8df6bc78"
+    },
+    {
+      "type": "route",
+      "uuid": "a5a1aab6-080f-4957-af6c-d7f99805126e"
+    },
+    {
+      "type": "route",
+      "uuid": "06ed02a6-54a9-4f28-b277-30cb02088981"
+    },
+    {
+      "type": "route",
+      "uuid": "1d40ba69-ccab-4577-8249-9c1ea5275e30"
     },
     {
       "type": "route",

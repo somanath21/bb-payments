@@ -53,5 +53,6 @@ module.exports = {
         },
       },
     },
+    required: ['RequestID', 'Source_BatchID'],
   },
 };

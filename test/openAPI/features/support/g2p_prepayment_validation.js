@@ -98,7 +98,7 @@ Then('The \\/prepayment-validation response should match json schema', () =>
 );
 
 When(
-  'POST \\/prepayment-validation-response request with required body with given {string} as RequestID, {string} as Source_BatchID',
+  'POST \\/prepayment-validation-response request with required body with given {string} as RequestID, {string} as Source_BatchID is sent',
   (requestID, sourceBatchID) =>
     specPrePaymentValidationResponse
       .post(baseUrlValidationResponse)
