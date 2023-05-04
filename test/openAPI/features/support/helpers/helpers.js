@@ -9,6 +9,7 @@ module.exports = {
     key: 'Accept',
     value: 'application/json',
   },
+  bulkPaymentEndpoint: 'bulk-payment',
   registerBeneficiaryEndpoint: 'register-beneficiary',
   g2pResponseSchema: {
     type: 'object',
