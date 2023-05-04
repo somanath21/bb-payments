@@ -11,6 +11,7 @@ module.exports = {
   },
   bulkPaymentEndpoint: 'bulk-payment',
   registerBeneficiaryEndpoint: 'register-beneficiary',
+  updateBeneficiaryDetailsEndpoint: 'update-beneficiary-details',
   g2pResponseSchema: {
     type: 'object',
     properties: {
