@@ -1981,7 +1981,7 @@
             },
             {
               "target": "body",
-              "modifier": "CreditInstructions.0.NarrationCreditInstructions",
+              "modifier": "CreditInstructions.0.Narration",
               "value": "",
               "invert": true,
               "operator": "null"
@@ -2116,7 +2116,7 @@
             },
             {
               "target": "body",
-              "modifier": "CreditInstructions.0.NarrationCreditInstructions",
+              "modifier": "CreditInstructions.0.Narration",
               "value": "",
               "invert": false,
               "operator": "null"
