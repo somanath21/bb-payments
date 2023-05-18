@@ -40,7 +40,17 @@ The Bill Payments APIs allow government entities to accept bill payments from pe
 
 These APIs link Source BB to the Payments Building Block for bulk payment processing, identity verification, and bank/wallet mapping. Third-party providers may add extra APIs depending on the country's payment landscape.
 
-## 8.2.1 Beneficiary Onboarding API
+### Collaboration with G2PConnect on G2P Payments
+
+GovStack is collaborating with G2P Connect to make it easier for countries to understand, find, and implement the optimal tools for executing digital payments for the aim of sustainable development. For those familiar with the GovStack initiative, it is no surprise we are collaborating with G2P Connect, as we share a common mission (to provide the technological tools to facilitate sustainable development) and similar methods (developing technical specifications and guidance).
+
+G2P Connect is an open-source effort to enable G2P digital payments, built with interoperable standards and design templates. It offers a technology blueprint with a plug-and-play architecture with built in privacy and security; a set of integration specifications to ensure interoperability across the systems supporting G2P delivery; and an integration sandbox to support the development of solutions adhering to the blueprint and specifications.
+
+As G2PConnect is focused exclusively on G2P payments, this is a cogent area of collaboration for the GovStack Payments building block workstream. Our joint objective is to develop synergies with specific use cases for G2P digital payments so that these use cases can also be implemented using GovStack APIs and building blocks. We will share best practices and lessons learned through defining the technical specifications and architecture components for G2P payments use cases. We will also integrate and test the APIs for G2P payments use cases in an integrated sandbox adhering to the G2P Connect and GovStack Payments building block specifications.
+
+These valuable resources will then enable any country to implement G2P payments with digital sovereignty and minimal effort. Countries can choose to use our open specifications to make existing systems compatible, procure an open-source DPG, or even a proprietary solution compliant with the specifications. This approach gives countries agency, allowing them to constantly improve their solutions according to evolving needs.
+
+### 8.2.1 Beneficiary Onboarding API
 
 Once a new G2P beneficiary is onboarded by a G2P Program and assigned a Functional ID, they can be added to the Account Mapper in Payments BB after their eligibility for the social benefit program has been verified.
 
@@ -71,7 +81,7 @@ The Register Beneficiary API is invoked by the Information Mediator BB, which is
 | ResponseDescription | String (200) | Yes      |                            |
 | RequestID           | String (12)  | Yes      | Echoed from Request        |
 
-## 8.2.2 Update Beneficiary Details API
+### 8.2.2 Update Beneficiary Details API
 
 This is the API that is called by the Information Mediator BB when the Registration BB in turn calls its API for registering beneficiaries into the ID Mapper of the Payments BB.
 
@@ -98,7 +108,7 @@ This is the API that is called by the Information Mediator BB when the Registrat
 | ResponseDescription | String (200) | Yes      |                            |
 | RequestID           | String (12)  | Yes      | Echoed from Request        |
 
-## 8.2.2 Pre Payment Validation API
+### 8.2.2 Pre Payment Validation API
 
 This API is to be exposed by the Payments BB; the prepayment validation API, called by Source BB, retrieves eligible Functional IDs from the account mapper for credit transfers.
 
@@ -126,7 +136,7 @@ This API is to be exposed by the Payments BB; the prepayment validation API, cal
 | ResponseDescription | String (200) | Yes      |                            |
 | RequestID           | String (12)  | Yes      | Echoed from Request        |
 
-## 8.2.2 Bulk disbursement APIs
+### 8.2.2 Bulk disbursement APIs
 
 This API is to be exposed by the Payments BB; it will be called by the Source BB to handover a batch of credit instructions to be processed.
 
