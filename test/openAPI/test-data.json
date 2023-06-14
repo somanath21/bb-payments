@@ -1,0 +1,191 @@
+{
+  "g2p": [
+    {
+      "RequestID": "RequestID111",
+      "SourceBBID": "SourceBBID11",
+      "BatchID": "BatchID11111",
+      "Beneficiaries": [
+        {
+          "InstructionID": "InstructionID111",
+          "PayeeFunctionalID": "PayeeFunctionalID111",
+          "FinancialAddress": "NL87ABNA4193835510"
+        }
+      ]
+    },
+    {
+      "RequestID": "RequestID222",
+      "SourceBBID": "SourceBBID22",
+      "BatchID": "BatchID22222",
+      "Beneficiaries": [
+        {
+          "InstructionID": "InstructionID222",
+          "PayeeFunctionalID": "PayeeFunctionalID222",
+          "FinancialAddress": "NL64ABNA6201350640"
+        }
+      ]
+    },
+    {
+      "RequestID": "abcdef123456",
+      "SourceBBID": "SourceBBID22",
+      "BatchID": "BatchID22222",
+      "Beneficiaries": [
+        {
+          "InstructionID": "InstructionID222",
+          "PayeeFunctionalID": "PayeeFunctionalID222",
+          "FinancialAddress": "NL64ABNA6201350640"
+        }
+      ]
+    },
+    {
+      "RequestID": "d5267933-c71b-46ee-885c-9fd97e215e45",
+      "SourceBBID": "e680db9f-2235-41dc-990b-03a6c60864f3",
+      "BatchID": "aa4533fc-018a-44af-95c1-c7c73f8194fd",
+      "Beneficiaries": [
+        {
+          "InstructionID": "0947d8d7-0bdb-40b5-bf48-a429e88abf3e",
+          "PayeeFunctionalID": "a98bc16e-f724-410e-b509-5680223ac138",
+          "FinancialAddress": "LI8508800573553116542"
+        }
+      ]
+    },
+    {
+      "RequestID": "90566839-ad05-4b1c-8564-a0ae16691da3",
+      "SourceBBID": "9d9b39d4-9a0c-495b-a77d-4e52295c31c0",
+      "BatchID": "394373c3-22da-494c-a769-e7f24db53bd6",
+      "Beneficiaries": [
+        {
+          "InstructionID": "aff612fb-4234-4f4b-a9eb-eb00da7a87c4",
+          "PayeeFunctionalID": "2d042389-6410-4ec7-8fd4-623709914062",
+          "FinancialAddress": "LI4808800751423444466"
+        }
+      ]
+    },
+    {
+      "RequestID": "4a0425ef-0082-4da5-baec-19c2d31e40ab",
+      "SourceBBID": "11668d2a-a8fb-44c5-85e1-376466250b2b",
+      "BatchID": "ae9ef600-3a9a-4ddf-9d13-51e9dee361b6",
+      "Beneficiaries": [
+        {
+          "InstructionID": "b9e41e9d-d9e9-4627-a3c8-59cf39198009",
+          "PayeeFunctionalID": "2ba5ed20-0f42-4eff-8b5e-bcd60e11961e",
+          "FinancialAddress": "CZ0950517414831742493929"
+        }
+      ]
+    },
+    {
+      "RequestID": "c2b861bf-ef71-49d3-87a5-8aec96b4781a",
+      "SourceBBID": "049d8b3b-1460-413f-8dc4-2d79edebe971",
+      "BatchID": "7de891ef-58d6-4fc5-8809-0a6ac088dd3e",
+      "Beneficiaries": [
+        {
+          "InstructionID": "b49a9100-e27d-4c86-8917-72e8e64abebc",
+          "PayeeFunctionalID": "1d591f0d-eff5-424d-b0a2-cd3c3ff6b078",
+          "FinancialAddress": "CZ6550516515642174132154"
+        }
+      ]
+    },
+    {
+      "RequestID": "29517635-b46b-4119-85c8-300bffdc53ff",
+      "SourceBBID": "d459eaab-ae1c-4bc4-b67f-67ca373d3c27",
+      "BatchID": "215dc637-7085-462b-aa54-a5c950d16713",
+      "Beneficiaries": [
+        {
+          "InstructionID": "023e52cd-63df-4212-8a77-6b4afaa75594",
+          "PayeeFunctionalID": "66d2b90f-b230-4882-a7d7-42756e74141a",
+          "FinancialAddress": "CZ4150515873793513322865"
+        }
+      ]
+    },
+    {
+      "RequestID": "e2d40d31-802f-40c3-ae8a-a26f8023d632",
+      "SourceBBID": "54876c5b-2847-4eed-b02a-506aa5a736de",
+      "BatchID": "a4eb2b1d-8bd2-41f1-8a6f-bd5efed7b13f",
+      "Beneficiaries": [
+        {
+          "InstructionID": "e498d8f9-5270-483d-926b-8588921ae4bf",
+          "PayeeFunctionalID": "569ae0c5-8880-4f6d-9128-aa1978f213d1",
+          "FinancialAddress": "IT79U0300203280976621416214"
+        }
+      ]
+    }
+  ],
+  "vouchers": [
+    {
+      "voucher_number": "368973",
+      "voucher_serial_number": 223,
+      "Gov_Stack_BB": "example Gov_Stack_BB",
+      "voucher_status": "Not Pre-Activated",
+      "voucher_amount": "1000"
+    },
+    {
+      "voucher_number": "469192",
+      "voucher_serial_number": 1234,
+      "Gov_Stack_BB": "example Gov_Stack_BB",
+      "voucher_status": "Not Pre-Activated",
+      "voucher_amount": "1000"
+    },
+    {
+      "voucher_number": "810651",
+      "voucher_serial_number": 5432,
+      "Gov_Stack_BB": "example Gov_Stack_BB",
+      "voucher_status": "Not Pre-Activated",
+      "voucher_amount": "1000"
+    },
+    {
+      "voucher_number": "182352",
+      "voucher_serial_number": 4321,
+      "Gov_Stack_BB": "example Gov_Stack_BB",
+      "voucher_status": "Not Pre-Activated",
+      "voucher_amount": "1000"
+    },
+    {
+      "voucher_number": "170282",
+      "voucher_serial_number": 123456,
+      "Gov_Stack_BB": "example Gov_Stack_BB",
+      "voucher_status": "Not Pre-Activated",
+      "voucher_amount": "1000"
+    },
+    "canceled_vouchers",
+    {
+      "voucher_number": "315425",
+      "voucher_serial_number": 2134,
+      "Gov_Stack_BB": "example Gov_Stack_BB",
+      "voucher_status": "Blocked",
+      "voucher_amount": "1000"
+    }
+  ],
+  "merchants": [
+    {
+      "merchant_name": "Melissa Stephenson",
+      "merchant_bank_details": "Citizen Service Banks",
+      "merchant_voucher_group": "Payment Voucher"
+    },
+    {
+      "merchant_name": "Haroon Mcintosh",
+      "merchant_bank_details": "Paragon Bank Inc.",
+      "merchant_voucher_group": "Payment Voucher"
+    },
+    {
+      "merchant_name": "Matthew Lindsay",
+      "merchant_bank_details": "Goldleaf Trust",
+      "merchant_voucher_group": "Payment Voucher"
+    },
+    {
+      "merchant_name": "Kain Gray",
+      "merchant_bank_details": "Spotlight Corporation",
+      "merchant_voucher_group": "Payment Voucher"
+    },
+    "// insufficient funds",
+    {
+      "merchant_name": "Ronan Oliver",
+      "merchant_bank_details": "Vigor Bank Group",
+      "merchant_voucher_group": "Payment Voucher"
+    },
+    "// cannot be credited",
+    {
+      "merchant_name": "Annie Krueger",
+      "merchant_bank_details": "Omega Holding Company",
+      "merchant_voucher_group": "Payment Voucher"
+    }
+  ]
+}
