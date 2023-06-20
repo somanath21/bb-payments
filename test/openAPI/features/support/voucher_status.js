@@ -17,7 +17,7 @@ Before(() => {
 
 // Scenario: The user successfully checks the status of a voucher
 Given('The user wants to check the status of a voucher', () => {
-  voucherSerialNumber = 'validNumber';
+  voucherSerialNumber = '1236234';
   return voucherSerialNumber;
 });
 
@@ -38,7 +38,7 @@ Then('The user successfully checks the status of a voucher', async () => {
 Given(
   'The user wants to check the status of the voucher with the invalid voucher number',
   () => {
-    voucherSerialNumber = 'invalidNumber';
+    voucherSerialNumber = '0';
     return voucherSerialNumber;
   }
 );
@@ -65,7 +65,7 @@ Then(
 Given(
   'The user wants to check the status of the voucher with the already used voucher number',
   () => {
-    voucherSerialNumber = 'alreadyUsed';
+    voucherSerialNumber = '35678';
     return voucherSerialNumber;
   }
 );
@@ -90,7 +90,7 @@ Then(
 
 // Scenario: The user is not able to check the status of the expired voucher
 Given('The user wants to check the status of the expired voucher', () => {
-  voucherSerialNumber = 'expired';
+  voucherSerialNumber = '686886';
   return voucherSerialNumber;
 });
 

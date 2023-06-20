@@ -439,7 +439,7 @@
             {
               "target": "params",
               "modifier": "voucherserialnumber",
-              "value": "1234",
+              "value": "123456",
               "invert": false,
               "operator": "equals"
             },
@@ -555,7 +555,7 @@
             {
               "target": "params",
               "modifier": "voucherserialnumber",
-              "value": "3214",
+              "value": "74558687",
               "invert": false,
               "operator": "equals"
             },
@@ -712,7 +712,7 @@
             {
               "target": "body",
               "modifier": "merchant_voucher_group",
-              "value": "Voucher group",
+              "value": "Payment Voucher",
               "invert": false,
               "operator": "equals"
             },
@@ -793,7 +793,7 @@
             {
               "target": "body",
               "modifier": "merchant_voucher_group",
-              "value": "Voucher group",
+              "value": "Payment Voucher",
               "invert": false,
               "operator": "equals"
             },
@@ -867,7 +867,7 @@
             {
               "target": "body",
               "modifier": "merchant_voucher_group",
-              "value": "Voucher group",
+              "value": "Payment Voucher",
               "invert": false,
               "operator": "equals"
             },
@@ -927,7 +927,7 @@
             {
               "target": "body",
               "modifier": "merchant_name",
-              "value": "Leonard Snow",
+              "value": "Ronan Oliver",
               "invert": false,
               "operator": "equals"
             },
@@ -941,8 +941,8 @@
             {
               "target": "body",
               "modifier": "merchant_voucher_group",
-              "value": "Voucher group",
-              "invert": true,
+              "value": "insufficient funds",
+              "invert": false,
               "operator": "equals"
             },
             {
@@ -1001,8 +1001,8 @@
             {
               "target": "body",
               "modifier": "merchant_name",
-              "value": "Leonard Snow",
-              "invert": true,
+              "value": "Annie Krueger",
+              "invert": false,
               "operator": "equals"
             },
             {
@@ -1015,7 +1015,7 @@
             {
               "target": "body",
               "modifier": "merchant_voucher_group",
-              "value": "Voucher group",
+              "value": "insufficient funds",
               "invert": false,
               "operator": "equals"
             },
@@ -1297,7 +1297,7 @@
             {
               "target": "params",
               "modifier": "voucherserialnumber",
-              "value": "invalidNumber",
+              "value": "0",
               "invert": false,
               "operator": "equals"
             },
@@ -1348,7 +1348,7 @@
             {
               "target": "params",
               "modifier": "voucherserialnumber",
-              "value": "alreadyUsed",
+              "value": "35678",
               "invert": false,
               "operator": "equals"
             },
@@ -1399,7 +1399,7 @@
             {
               "target": "params",
               "modifier": "voucherserialnumber",
-              "value": "expired",
+              "value": "686886",
               "invert": false,
               "operator": "equals"
             },
@@ -1552,7 +1552,7 @@
             {
               "target": "body",
               "modifier": "RequestID",
-              "value": "^\\w{12}$",
+              "value": "^.{12}$",
               "invert": false,
               "operator": "regex"
             },
@@ -1566,7 +1566,7 @@
             {
               "target": "body",
               "modifier": "SourceBBID",
-              "value": "^\\w{12}$",
+              "value": "^.{12}$",
               "invert": false,
               "operator": "regex"
             },
@@ -1580,7 +1580,7 @@
             {
               "target": "body",
               "modifier": "Beneficiaries.0.PayeeFunctionalID",
-              "value": "^\\w{20}$",
+              "value": "^.{20}$",
               "invert": false,
               "operator": "regex"
             }
