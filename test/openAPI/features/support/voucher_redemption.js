@@ -18,11 +18,11 @@ Before(() => {
 
 // Background
 Given('The user wants to redeem the voucher', () => {
-  validVoucherNumber = 123456;
+  validVoucherNumber = 96767543;
   validGovstackBB = 'Gov_Stack_BB';
   validMerchantName = 'Leonard Snow';
-  validMerchantBankDetails = 'Bank Details';
-  validMerchantVoucherGroup = 'Voucher group';
+  validMerchantBankDetails = 'Spotlight Corporation';
+  validMerchantVoucherGroup = 'Payment Voucher';
   override = true;
   return (
     validVoucherNumber,
@@ -132,8 +132,8 @@ When(
     specVoucherRedemption.post(baseUrl).withBody({
       voucher_number: validVoucherNumber,
       Gov_Stack_BB: validGovstackBB,
-      merchant_name: validMerchantName,
-      merchant_bank_details: validMerchantBankDetails,
+      merchant_name: 'Ronan Oliver',
+      merchant_bank_details: 'Vigor Bank Group',
       merchant_voucher_group: 'insufficient funds',
       override: override,
     });
@@ -158,9 +158,9 @@ When(
     specVoucherRedemption.post(baseUrl).withBody({
       voucher_number: validVoucherNumber,
       Gov_Stack_BB: validGovstackBB,
-      merchant_name: 'Some Name',
-      merchant_bank_details: validMerchantBankDetails,
-      merchant_voucher_group: validMerchantVoucherGroup,
+      merchant_name: 'Annie Krueger',
+      merchant_bank_details: 'Omega Holding Company',
+      merchant_voucher_group: 'insufficient funds',
       override: override,
     });
   }

@@ -22,7 +22,7 @@ Before(() => {
 
 // Scenario: The user successfully cancels a voucher
 Given('The user wants to cancel a voucher', () => {
-  voucherSerialNumber = '1234';
+  voucherSerialNumber = '123456';
   voucherCancelationBody.voucherserialnumber = voucherSerialNumber;
   return voucherCancelationBody, voucherSerialNumber;
 });
@@ -46,7 +46,7 @@ Then('The user successfully cancels the voucher', async () => {
 Given(
   'The user wants to cancel the voucher with invalid voucher details',
   () => {
-    voucherSerialNumber = '5432';
+    voucherSerialNumber = '24354546';
     voucherCancelationBody.voucherserialnumber = '';
     return voucherCancelationBody, voucherSerialNumber;
   }
@@ -72,7 +72,7 @@ Then(
 
 // Scenario: The user is not able to cancel the invalid voucher
 Given('The user wants to cancel the invalid voucher', () => {
-  voucherSerialNumber = '3214';
+  voucherSerialNumber = '74558687';
   voucherCancelationBody.voucherserialnumber = voucherSerialNumber;
   return voucherCancelationBody, voucherSerialNumber;
 });
@@ -124,7 +124,7 @@ Then(
 Given(
   'The user wants to cancel the voucher without providing the voucher details',
   () => {
-    voucherSerialNumber = '4321';
+    voucherSerialNumber = '2435244546';
     voucherCancelationBody = null;
     return voucherCancelationBody, voucherSerialNumber;
   }
