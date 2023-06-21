@@ -62,4 +62,26 @@ module.exports = {
     properties: { message: { type: 'string' } },
     required: ['message'],
   },
+  voucherPreactivationEndpoint: 'vouchers/voucher_preactivation',
+  voucherPreactivationResponseSchema: {
+    required: ['expiry_date_time', 'voucher_number', 'voucher_serial_number'],
+    properties: {
+      voucher_number: {
+        maxLength: 25,
+        minLength: 16,
+        type: 'string',
+      },
+      voucher_serial_number: {
+        maxLength: 25,
+        minLength: 16,
+        type: 'string',
+      },
+      expiry_date_time: { type: 'string' },
+    },
+  },
+  voucherPreactivationResponseErrorSchema: {
+    required: ['message'],
+    type: 'object',
+    properties: { message: { type: 'string' } },
+  },
 };
