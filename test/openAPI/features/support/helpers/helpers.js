@@ -76,12 +76,12 @@ module.exports = {
         minLength: 16,
         type: 'string',
       },
-      expiry_date_time: { type: 'string' },
+      expiry_date_time: { type: 'string', format: 'date-time' },
     },
   },
   voucherPreactivationResponseErrorSchema: {
-    required: ['message'],
     type: 'object',
     properties: { message: { type: 'string' } },
+    required: ['message'],
   },
 };

@@ -70,7 +70,7 @@
           "uuid": "eca34d9f-de40-427b-9cc4-1fbed7d98307",
           "body": "{\n  \"message\": \"Invalid payload, voucher_amount is invalid\"\n}",
           "latency": 0,
-          "statusCode": 400,
+          "statusCode": 452,
           "label": "Invalid request - invalid amount",
           "headers": [],
           "bodyType": "INLINE",
@@ -121,7 +121,7 @@
         },
         {
           "uuid": "a9ba7ad2-5630-468e-906b-ccfb955e66ee",
-          "body": "{\n  \"Invalid payload, voucher_currency is invalid\"\n}",
+          "body": "{\n  \"message\": \"Invalid payload, voucher_currency is invalid\"\n}",
           "latency": 0,
           "statusCode": 453,
           "label": "Invalid request - invalid currency",
@@ -195,7 +195,7 @@
         },
         {
           "uuid": "577baa3c-abf1-4179-a2e3-0769a80720ce",
-          "body": "{\n  \"Invalid payload, voucher_group is invalid\"\n}",
+          "body": "{\n  \"message\": \"Invalid payload, voucher_group is invalid\"\n}",
           "latency": 0,
           "statusCode": 454,
           "label": "Invalid request - invalid voucher group",
@@ -269,7 +269,7 @@
         },
         {
           "uuid": "a77a507e-6d10-4e73-aa4f-00c6e8c064d0",
-          "body": "{\n  \"Invalid payload, Gov Stack Building Block does not exist\"\n}",
+          "body": "{\n  \"message\": \"Invalid payload, Gov Stack Building Block does not exist\"\n}",
           "latency": 0,
           "statusCode": 460,
           "label": "Invalid request - Gov Stack Building Block does not exist",
@@ -283,7 +283,7 @@
               "target": "body",
               "modifier": "voucher_amount",
               "value": "",
-              "invert": false,
+              "invert": true,
               "operator": "null"
             },
             {
@@ -317,16 +317,9 @@
             {
               "target": "body",
               "modifier": "Gov_Stack_BB",
-              "value": "",
+              "value": "^Gov_Stack_BB$",
               "invert": true,
-              "operator": "null"
-            },
-            {
-              "target": "body",
-              "modifier": "Gov_Stack_BB",
-              "value": "Gov_Stack_BB",
-              "invert": true,
-              "operator": "equals"
+              "operator": "regex"
             },
             {
               "target": "body",
@@ -339,11 +332,11 @@
           "rulesOperator": "AND",
           "disableTemplating": false,
           "fallbackTo404": false,
-          "default": true
+          "default": false
         },
         {
           "uuid": "4e01c1d6-1d3b-47ab-a8f4-007edc927bc0",
-          "body": "{\n  \"Invalid request - body can not be empty\"\n}",
+          "body": "{\n  \"message\": \"Invalid request - body can not be empty\"\n}",
           "latency": 0,
           "statusCode": 400,
           "label": "Invalid request - body is empty",
@@ -364,7 +357,7 @@
           "rulesOperator": "AND",
           "disableTemplating": false,
           "fallbackTo404": false,
-          "default": false
+          "default": true
         }
       ],
       "enabled": true,
