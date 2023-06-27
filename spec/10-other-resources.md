@@ -13,4 +13,8 @@ description: >-
 
 ### 10.2 Future Considerations <a href="#10.3-future-considerations" id="10.3-future-considerations"></a>
 
-[A list of topics that may be relevant to future versions of this Building Block](https://govstack-global.atlassian.net/wiki/spaces/GH/pages/183402524/Future+Considerations+Payments).&#x20;
+[A list of topics that may be relevant to future versions of this Building Block](https://govstack-global.atlassian.net/wiki/spaces/GH/pages/183402524/Future+Considerations+Payments).
+
+### 10.3 Out-of-Scope Assumptions <a href="#docs-internal-guid-39459612-7fff-54dd-0f25-ddf61408bb48" id="docs-internal-guid-39459612-7fff-54dd-0f25-ddf61408bb48"></a>
+
+[A list of functions out of the scope of this Building Block](https://govstack-global.atlassian.net/l/cp/6ERMn830).

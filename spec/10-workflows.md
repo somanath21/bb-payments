@@ -412,7 +412,8 @@ The above model requires that the payer must provide two pieces of information t
 * As the bill payment is invoked by inputting the reference number which prompts the retrieval of the payment details in real-time from the registration building block, a failed transaction could be triggered by a session time-out or a wrong PIN. In both cases, the payer would have to re-initiate the transaction.
 * In the P2G payment in the flow above, the government holds an account with the Financial Services Provider which would collect the payments on the government's behalf and transfer them to the single treasury account on a defined timeline (i.e. daily) in an aggregated way. For reconciliation purposes, the Registration Building Block would need to notify the government of a successful/unsuccessful payment.
 
-### 9.3.2 P2G Payment Initiated by Payee (e.g USSD push payment) workflow
+
+### 9.3.2 P2G Payment Initiated by Payee (e.g USSD push payment) sequence diagram
 
 ```mermaid
 sequenceDiagram
@@ -524,13 +525,13 @@ Bill Aggregator -->> Government agency: Send payment reference
 
 1. The Government Agency sends an invoice to the payer, detailing the amount owed.
 2. The Government Agency also sends a copy of the invoice to the designated Bill Aggregator.
-3. The Bill Aggregator then sends the invoice reference number to the Payments Building Block (Payments BB).
-4. The payer, upon receiving the invoice, provides the invoice reference number to their preferred Collection Financial Service Provider (Collection FSP).
-5. The Collection FSP requests transaction details, including the amount to be paid, from the Payments BB using the invoice reference number.
-6. The Payments BB, in turn, requests the transaction details from the Bill Aggregator.
-7. The Bill Aggregator provides the requested transaction details to the Payments BB.
-8. The Payments BB forwards the transaction details to the Collection FSP.
+3. The Bill Aggregator then sends the invoice reference number to the Payments Building Block (Payments Building Block).
+4. The payer, upon receiving the invoice, provides the invoice reference number to their preferred Collection Financial Service Provider (Collection Financial Services Provider).
+5. The Collection Financial Services Provider (FSP) requests transaction details, including the amount to be paid, from the Payments Building Block using the invoice reference number.
+6. The Payments Building Block, in turn, requests the transaction details from the Bill Aggregator.
+7. The Bill Aggregator provides the requested transaction details to the Payments Building Block.
+8. The Payments Building Block forwards the transaction details to the Collection FSP.
 9. The Collection FSP executes the payment based on the transaction details provided.
-10. After completing the payment, the Collection FSP sends the payment reference to the Payments BB.
-11. The Payments BB forwards the payment reference to the Bill Aggregator.
+10. After completing the payment, the Collection FSP sends the payment reference to the Payments Building Block.
+11. The Payments Building Block forwards the payment reference to the Bill Aggregator.
 12. Finally, the Bill Aggregator sends the payment reference to the Government Agency, confirming the completion of the payment.

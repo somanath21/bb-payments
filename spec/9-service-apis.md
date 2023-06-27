@@ -8,7 +8,11 @@ description: >-
 
 The APIs defined here establish a blueprint for how the Building Block will interact with other Building Blocks. Additional APIs may be implemented by the Building Block, but the listed APIs define a minimal set of functionality that should be provided by any implementation of this Building Block.
 
-The [GovStack non-functional requirements document](https://govstack.gitbook.io/specification/architecture-and-nonfunctional-requirements/6-onboarding) provides additional information on how 'adaptors' may be used to translate an existing API to the patterns described here.
+The [GovStack non-functional requirements document](https://govstack.gitbook.io/specification/v/1.0/architecture-and-nonfunctional-requirements/6-onboarding) provides additional information on how 'adaptors' may be used to translate an existing API to the patterns described here. This section also provides guidance on how candidate products are tested and how GovStack validates a product's API against the API specifications defined here.&#x20;
+
+The tests for the Payments Building Block can be found in [this GitHub repository](https://github.com/GovStackWorkingGroup/bb-payments/tree/main/test/openAPI).
+
+## 8.1 Payment Orchestration
 
 The payments BB APIs are listed below
 
@@ -43,7 +47,17 @@ The Bill Payments APIs allow government entities to accept bill payments from pe
 
 These APIs link Source BB to the Payments Building Block for bulk payment processing, identity verification, and bank/wallet mapping. Third-party providers may add extra APIs depending on the country's payment landscape.
 
-## 8.2.1 Beneficiary onboarding API
+### Collaboration with G2PConnect on G2P Payments
+
+GovStack is collaborating with G2P Connect to make it easier for countries to understand, find, and implement the optimal tools for executing digital payments for the aim of sustainable development. For those familiar with the GovStack initiative, it is no surprise we are collaborating with G2P Connect, as we share a common mission (to provide the technological tools to facilitate sustainable development) and similar methods (developing technical specifications and guidance).
+
+G2P Connect is an open-source effort to enable G2P digital payments, built with interoperable standards and design templates. It offers a technology blueprint with a plug-and-play architecture with built in privacy and security; a set of integration specifications to ensure interoperability across the systems supporting G2P delivery; and an integration sandbox to support the development of solutions adhering to the blueprint and specifications.
+
+As G2PConnect is focused exclusively on G2P payments, this is a cogent area of collaboration for the GovStack Payments building block workstream. Our joint objective is to develop synergies with specific use cases for G2P digital payments so that these use cases can also be implemented using GovStack APIs and building blocks. We will share best practices and lessons learned through defining the technical specifications and architecture components for G2P payments use cases. We will also integrate and test the APIs for G2P payments use cases in an integrated sandbox adhering to the G2P Connect and GovStack Payments building block specifications.
+
+These valuable resources will then enable any country to implement G2P payments with digital sovereignty and minimal effort. Countries can choose to use our open specifications to make existing systems compatible, procure an open-source DPG, or even a proprietary solution compliant with the specifications. This approach gives countries agency, allowing them to constantly improve their solutions according to evolving needs.
+
+### 8.2.1 Beneficiary Onboarding API
 
 Once a new G2P beneficiary is onboarded by a G2P Program and assigned a Functional ID, they can be added to the Account Mapper in Payments BB after their eligibility for the social benefit program has been verified.
 
@@ -74,7 +88,7 @@ The Register Beneficiary API is invoked by the Information Mediator BB, which is
 | ResponseDescription | String (200) | Yes      |                            |
 | RequestID           | String (12)  | Yes      | Echoed from Request        |
 
-## 8.2.2 Update Beneficiary Details API
+### 8.2.2 Update Beneficiary Details API
 
 This is the API that is called by the Information Mediator BB when the Registration BB in turn calls its API for registering beneficiaries into the ID Mapper of the Payments BB.
 
@@ -101,7 +115,7 @@ This is the API that is called by the Information Mediator BB when the Registrat
 | ResponseDescription | String (200) | Yes      |                            |
 | RequestID           | String (12)  | Yes      | Echoed from Request        |
 
-## 8.2.2 Pre Payment Validation API
+### 8.2.2 Pre Payment Validation API
 
 This API is to be exposed by the Payments BB; the prepayment validation API, called by Source BB, retrieves eligible Functional IDs from the account mapper for credit transfers.
 
@@ -129,7 +143,7 @@ This API is to be exposed by the Payments BB; the prepayment validation API, cal
 | ResponseDescription | String (200) | Yes      |                            |
 | RequestID           | String (12)  | Yes      | Echoed from Request        |
 
-## 8.2.2 Bulk disbursement APIs
+### 8.2.2 Bulk disbursement APIs
 
 This API is to be exposed by the Payments BB; it will be called by the Source BB to handover a batch of credit instructions to be processed.
 
@@ -159,7 +173,7 @@ This API is to be exposed by the Payments BB; it will be called by the Source BB
 | ResponseDescription | String (200) | Yes      |                            |
 | RequestID           | String (12)  | Yes      | Echoed from Request        |
 
-## 8.6 Voucher APIs <a href="#docs-internal-guid-9cf2815f-7fff-7e39-e7ed-207134468ff3" id="docs-internal-guid-9cf2815f-7fff-7e39-e7ed-207134468ff3"></a>
+## 8.6 Voucher APIs/Voucher Management <a href="#docs-internal-guid-9cf2815f-7fff-7e39-e7ed-207134468ff3" id="docs-internal-guid-9cf2815f-7fff-7e39-e7ed-207134468ff3"></a>
 
 The first API in the section below is used to request for a voucher with a specific value, currency, and purpose. The server responds with a voucher number, serial number, and expiry date. The second call activates the pre-activated voucher. The third call processes voucher redemption, crediting the merchant if valid. A fourth API enables batch voucher activation through encrypted files. Additional APIs allow for voucher status checks and cancellations.
 
