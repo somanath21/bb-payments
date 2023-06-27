@@ -51,15 +51,15 @@ Payments orchestration is used to configure the Payments Building Block function
 
 ## 6.2 Voucher Management
 
-The voucher management system is responsible for provisioning, storage, issuance, activation, redemption, validation, suspension, unsuspension, purging, and reporting on vouchers.
+The voucher management system is responsible for prectivation, storage, activation, redemption, validation, suspension, unsuspension, purging, and reporting on vouchers.
 
 ### **6.2.1 Voucher Provisioning**&#x20;
 
 This process traditionally involves the generation of group vouchers against some authorized value (budget release or allotment).
 
-* Each voucher should have a unique secret voucher number, a unique identification number (voucher serial number) indicating its position in an inventory of issued vouchers, and is linked to a fixed amount of value in a particular currency. Vouchers will also be associated with a voucher group during provisioning. Voucher serial numbers will be unique across currencies should there be vouchers of multiple currencies (RECOMMENDED)
-* The vouchers should be created with an expiry date and must be stored securely. All vouchers will be expected to have the same duration of expiry and this expiry period will be from the moment the voucher is activated (REQUIRED)
-* Alternative design options include dynamically creating a voucher at transaction time and creating variable amounts, but this increases complexity and requires tighter operational controls (RECOMMENDED)
+* Each voucher should have a unique secret voucher number, a unique identification number (voucher serial number) indicating its position in an inventory of pre-activated ~~issued~~ vouchers, and is linked to a fixed amount of value in a particular currency. Vouchers will also be associated with a voucher group during ~~provisioning~~ pre-activation. Voucher serial numbers will be unique across currencies should there be vouchers of multiple currencies.
+* The vouchers should be created with an expiry date and MUST be stored securely. All vouchers will be expected to have the same duration of expiry and this expiry period will be from the moment the voucher is activated.
+* Alternative design options include dynamically pre-activating a voucher at transaction time and creating variable amounts, but this increases complexity and requires tighter operational controls.
 
 ### **6.2.2 Voucher Issuance**
 

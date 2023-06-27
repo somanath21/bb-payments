@@ -86,7 +86,7 @@ This flow ensures that the accounts involved in a bulk disbursement transaction 
 
 ### **9.1.3** Bulk Disbursement into a Financial Address pre-registered in the Account Mapper
 
-The flow depicted in the sequence diagram illustrates the process of bulk disbursement into financial addresses, such as bank accounts or mobile wallets, that are pre-registered in the Account Mapper. This use case is triggered when the Source BB submits a batch for processing of payments to the Payments BB.
+The workflow depicted below illustrates the process of bulk disbursement into financial addresses, such as bank accounts or mobile wallets, that are pre-registered in the Account Mapper. This use case is triggered when the Source BB submits a batch for processing of payments to the Payments BB.
 
 Pre-conditions: Functional IDs intended to be recipients of funds must be pre-registered in the Account Mapper. All the financial addresses must be validated before a payment is disbursed.
 
@@ -134,7 +134,13 @@ These use cases and the relationship between each one of them are shown and furt
 
 The use cases are described in the diagram below:
 
-![Payments building block diagrams.drawio - diagrams.net](.gitbook/assets/image15.png)
+```mermaid
+graph TD
+
+Voucher_provisioning --> Voucher_Printing --> Merchant_Redemption
+Voucher_Printing --> Agent_Cashout
+Merchant_registration --> Merchant_Redemption
+```
 
 ### **9.2.1 Voucher administration**
 
@@ -155,7 +161,7 @@ The Admin processes for the Voucher Management Server cover the lifecycle of the
 * Voucher Issuing\
   Voucher issuing is triggered by the Registration Building Block which will determine whether the conditions of issuance have been met. The calling Block will determine the denomination and voucher group of the voucher to be issued. The voucher number and the voucher serial number that is issued can be presented to the beneficiary in multiple ways including but not restricted to encoding in the form of QR codes, bar codes, printed vouchers, or even SMS. This is outside the scope of the Payments Building Block. It is expected that Building Blocks through which the voucher is redeemed will also be able to decode the voucher.
 
-### **9.2.2 Voucher Activation sequence diagram**
+### **9.2.2 Voucher Activation workflow**
 
 The voucher activation flow is shown in the diagram below.
 
@@ -218,7 +224,7 @@ Alternative: the voucher could be activated immediately on being requested. This
 * Post-Condition\
   The calling Building Block may invoke another payment Building Block API, e.g. initiating an incentive payment for the agent.
 
-### **9.2.3 Voucher Redemption sequence diagram**
+### **9.2.3 Voucher Redemption workflow**
 
 The voucher redemption process is shown in the diagram below.
 
@@ -305,7 +311,7 @@ Note:
 
 In the case of a physical voucher, the voucher number or the secret number is hidden behind some material that must be scratched away to see the number. The voucher number is also commonly known as the PIN.
 
-### **9.2.4 Voucher Cancellation sequence diagram**
+### **9.2.4 Voucher Cancellation workflow**
 
 The voucher cancellation flow is shown in the diagram below.
 
@@ -406,6 +412,7 @@ The above model requires that the payer must provide two pieces of information t
 * As the bill payment is invoked by inputting the reference number which prompts the retrieval of the payment details in real-time from the registration building block, a failed transaction could be triggered by a session time-out or a wrong PIN. In both cases, the payer would have to re-initiate the transaction.
 * In the P2G payment in the flow above, the government holds an account with the Financial Services Provider which would collect the payments on the government's behalf and transfer them to the single treasury account on a defined timeline (i.e. daily) in an aggregated way. For reconciliation purposes, the Registration Building Block would need to notify the government of a successful/unsuccessful payment.
 
+
 ### 9.3.2 P2G Payment Initiated by Payee (e.g USSD push payment) sequence diagram
 
 ```mermaid
@@ -441,7 +448,7 @@ Notes:
 * There can be no error in the above as both the merchant number and the payment reference are pushed to the phone.
 * The only risk here is a timeout on the Unstructured Supplementary Service Data or the user keying in the wrong PIN which may require the transaction to be reinitiated.
 
-### 9.3.3 P2G Payment implementation using QR Code sequence diagram
+### 9.3.3 P2G Payment implementation using QR Code workflow
 
 ```mermaid
 sequenceDiagram
