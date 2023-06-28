@@ -96,6 +96,26 @@ module.exports = {
     properties: { result_status: { type: 'string' } },
     required: ['result_status'],
   },
+  voucherStatusCheckEndpoint:
+    'vouchers/voucherstatuscheck/{voucherserialnumber}',
+  voucherStatusCheckResponseSchema: {
+    properties: {
+      voucher_status: {
+        type: 'string',
+        enum: [
+          'Not Pre-Activated',
+          'Pre-Activated',
+          'Activated',
+          'Suspended',
+          'Blocked',
+          'Purged',
+          'Not Existing',
+        ],
+      },
+      voucher_amount: { type: 'string' },
+    },
+    required: ['voucher_status', 'voucher_amount'],
+  },
   voucherResponseErrorSchema: {
     type: 'object',
     properties: { message: { type: 'string' } },
