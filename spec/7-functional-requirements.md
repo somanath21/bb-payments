@@ -4,7 +4,7 @@ description: This section lists the technical capabilities of this Building Bloc
 
 # 6 Functional Requirements
 
-## 6.1 Payment Orchestration&#x20;
+## 6.1 Payment Orchestration
 
 Payment orchestration is an overarching concern which relates different sub-components or microservices whereby it:
 
@@ -53,7 +53,7 @@ Payments orchestration is used to configure the Payments Building Block function
 
 The voucher management system is responsible for prectivation, storage, activation, redemption, validation, suspension, unsuspension, purging, and reporting on vouchers.
 
-### **6.2.1 Voucher Provisioning**&#x20;
+### **6.2.1 Voucher Provisioning**
 
 This process traditionally involves the generation of group vouchers against some authorized value (budget release or allotment).
 
@@ -114,7 +114,7 @@ In the case where there is a national payment switch, the account lookup directo
 ## 6.4 Payment Request Initiation
 
 * A request can come from either internal or external sources (REQUIRED)
-  * An external source could be another GovStack Building Block (e.g. the Registration Building Block or Social Benefits Registry Building Block or Payroll). Either source must be appropriately authenticated and authorized to initiate the request.&#x20;
+  * An external source could be another GovStack Building Block (e.g. the Registration Building Block or Social Benefits Registry Building Block or Payroll). Either source must be appropriately authenticated and authorized to initiate the request.
 * The initiation can be synchronous (typically for a single payment) or asynchronous (typically for batch payments) (REQUIRED)
 * The request must contain at a minimum: the payer identifier, the payee identifier, the amount, the currency, the policy, and the initiating source’s unique transaction ID. In the case of the internal payment request, it should also contain an ID provided by the payment orchestration module (REQUIRED)
 * Certain processes in the transaction flow might require proof of intent from the user, for example, entering the PIN/Password or pressing an ’accept‘ key to initiate the payment process. Such events and their outcomes should be recorded for audit trail purposes. However, the PINs and passwords should not be stored in logs or if they have to, PINs and passwords should be hashed out (RECOMMENDED)
@@ -142,7 +142,7 @@ The payment portal will:
 * Automate reconciliation (RECOMMENDED)
 * Provide data analytics on payments processed and their status, whether successful or not (REQUIRED)
 
-## 6.7 Event Management&#x20;
+## 6.7 Event Management
 
 This functionality supports different events related to triggering specific actions on payment outcomes such as issuing receipts upon successful payment, automating payments in case of bulk transactions, passing information to other Building Blocks as necessary, and handling exceptional cases for instance user/system errors amongst others.
 
@@ -202,7 +202,7 @@ Each component of the Payments Building Block should be capable of producing bot
 * The event logs and the transaction logs should NOT capture any sensitive data such as voucher numbers, passwords, etc. (REQUIRED)
 * There should be an individual transaction record for every payment transaction. For example, if a batch payment process is executed there should be a transaction record for each individual transaction and a separate event log for the entire batch (RECOMMENDED)
 
-### 6.12 Audit Logging
+## 6.12 Audit Logging
 
 Audit trails are required to provide assurance of the integrity of the requests received and actions taken on these requests. An audit trail is a chronological record of system activities that is sufficient to enable the reconstruction and examination of the sequence of environments and activities surrounding or leading to an operation, procedure, or event in a transaction from inception to final results. The audit trail shall comply with the following requirements:
 
@@ -221,13 +221,13 @@ Audit trails are required to provide assurance of the integrity of the requests 
   * Auditor should be able to request the decryption of encrypted data to an operator.
 * Access to the audit store must be securable, so whatever tech is chosen must implement access control mechanisms (ideally that can connect to our Identity and Access Management provider/connector) (REQUIRED)
 
-### 6.13 Reporting Services
+## 6.13 Reporting Services
 
 * The data store will be write-only from the core service and should be read-only by external components (RECOMMENDED)
 * The data model on the reporting data store can be different from the internal operational data models that the switch uses (RECOMMENDED)
 * The component provided by the switch will be translating internal events and internal data models to the external data store models. This component can be replaced (RECOMMENDED)
 
-### 6.14 Security layer
+## 6.14 Security layer
 
 Protects the system at the transport and application levels. It provides the necessary APIs for encrypting the data in transit and when stored as well as the digital signatures used for API authentication. The digital signatures are based on public key cryptography using X.509 digital certificates.
 
@@ -240,15 +240,15 @@ At the transport layer:
 * Acknowledgement receipt: this will result in creating a trusted communication path for all transactions between each party, by the end users, telecommunication companies, merchants, or banks (REQUIRED)
 * The messages concerning the payment transaction shall be authenticated (REQUIRED)
 
-### Data Protection
+## 6.15 Data Protection
 
 Use of a hardware security module (HSM) or equivalent to provide cryptographic keys for critical functions such as encryption, decryption, and authentication for the use of applications, identities, and databases.
 
-### 6.15 Bulk payment service (RECOMMENDED)
+## 6.16 Bulk payment service (RECOMMENDED)
 
 The bulk payment service is invoked in the case of G2P bulk disbursement and should provide the following functionality:
 
-#### 6.15.1 G2P Bulk disbursement (REQUIRED)
+### 6.16.1 G2P Bulk disbursement (REQUIRED)
 
 The following are the prerequisites required before bulk payments can be initiated:
 
@@ -283,7 +283,7 @@ Based on this advice, the Bank disburses funds from the TSA into the digital pay
 
 Bulk payments require the functionality of a Payments Gateway and the functionality therein. It also assumes a separate mechanism by which the recipient account address is determined. In the figure below the “account lookup directory service” functionality maps the concept of identity to the payment alias and from there to the Financial Services Provider routing address. (i.e. wallet address or account address)
 
-**6.15.2 Interaction with Other Building Blocks (REQUIRED)**
+### **6.16.2 Interaction with Other Building Blocks (REQUIRED)**
 
 The diagram below shows the interaction with the registries Building Blocks.
 
@@ -297,7 +297,7 @@ Figure: Key digital requirements of Bulk Payments expressed as a high-level bloc
 
 ###
 
-## Payments Building Block Components
+## 6.17 Payments Building Block Components
 
 The following components are needed to achieve the technical functionalities of the Payments Building Block.
 
@@ -305,9 +305,9 @@ The following components are needed to achieve the technical functionalities of 
 
 Many of the components outlined above are used to deliver the Functional Requirements for the Payments Building Block. Components which are not directly related to the delivery of these functions are described here:
 
-### API Management Gateway <a href="#docs-internal-guid-ccd3b00d-7fff-3413-9366-be54b42a4a46" id="docs-internal-guid-ccd3b00d-7fff-3413-9366-be54b42a4a46"></a>
+### 6.17.1 API Management Gateway <a href="#docs-internal-guid-ccd3b00d-7fff-3413-9366-be54b42a4a46" id="docs-internal-guid-ccd3b00d-7fff-3413-9366-be54b42a4a46"></a>
 
-The Payment Building Block provides an API Gateway to handle all the API messaging calls and API access control verification from other Building Blocks to the Payments Building Block and vice versa as well as within the Payments Building Block. All requests from other Building Blocks first go through the API gateway. The gateway then routes requests to the appropriate application/service.&#x20;
+The Payment Building Block provides an API Gateway to handle all the API messaging calls and API access control verification from other Building Blocks to the Payments Building Block and vice versa as well as within the Payments Building Block. All requests from other Building Blocks first go through the API gateway. The gateway then routes requests to the appropriate application/service.
 
 The API Management gateway will:
 

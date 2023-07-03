@@ -8,7 +8,7 @@ description: >-
 
 The APIs defined here establish a blueprint for how the Building Block will interact with other Building Blocks. Additional APIs may be implemented by the Building Block, but the listed APIs define a minimal set of functionality that should be provided by any implementation of this Building Block.
 
-The [GovStack non-functional requirements document](https://govstack.gitbook.io/specification/v/1.0/architecture-and-nonfunctional-requirements/6-onboarding) provides additional information on how 'adaptors' may be used to translate an existing API to the patterns described here. This section also provides guidance on how candidate products are tested and how GovStack validates a product's API against the API specifications defined here.&#x20;
+The [GovStack non-functional requirements document](https://govstack.gitbook.io/specification/v/1.0/architecture-and-nonfunctional-requirements/6-onboarding) provides additional information on how 'adaptors' may be used to translate an existing API to the patterns described here. This section also provides guidance on how candidate products are tested and how GovStack validates a product's API against the API specifications defined here.
 
 The tests for the Payments Building Block can be found in [this GitHub repository](https://github.com/GovStackWorkingGroup/bb-payments/tree/main/test/openAPI).
 
@@ -16,20 +16,7 @@ The tests for the Payments Building Block can be found in [this GitHub repositor
 
 The payments BB APIs are listed below
 
-| 1  | <p>make_G2P_payment (Payer ID, Payee ID, Amounts, Currency, [Modality], Date)</p><p>make_G2P_payment (PayerID: <em>12345</em>, </p><p></p><p>Payee ID: <em>ABCD</em>, Amounts: <em>100</em>, Currency: <em>USD</em>, [Modality: <em>MoMo</em>], Date: <em>12/06/2022</em>)</p>                 | Returns success code after payment confirmation or else returns failure status with error code                                                     |
-| -- | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | -------------------------------------------------------------------------------------------------------------------------------------------------- |
-| 2  | <p>Create_transaction (Payer ID, Payee ID, BillReferenceID, Amount, Currency, Date)</p><p> </p><p>create_transaction (PayerID: <em>12345</em>, Payee ID: <em>ABCD</em>, BillReferenceID: <em>0001243</em>, Amount: <em>10</em>, Currency: <em>USD</em>, Date: <em>12/06/2022</em>)</p><p> </p> | Returns success code after payment confirmation or else returns failure status with error code                                                     |
-| 3  | <p>view_transaction(PayerID, PayeeID, FromDate, ToDate, [status]).</p><p> </p><p>view_transaction(PayerID: <em>12345</em>, PayeeID: <em>ABCD</em>, FromDate: <em>01/01/2022</em>, ToDate: <em>01/06/2022</em>, [status]).</p>                                                                  | Returns success code along with payments history or else returns failure status with error code.                                                   |
-| 4  | register\_beneficiary(payee\_functionalID, Modality, fsp\_id, account\_info)                                                                                                                                                                                                                   | Returns success code after creating entry along with mapperID.                                                                                     |
-| 5  | update\_beneficiary(payee\_functionalID, Modality, fsp\_id, account\_info)                                                                                                                                                                                                                     | Returns success code after updating entry along with new mapperID.                                                                                 |
-| 6  | get\_paymentaccount\_info(payee\_functionalID)                                                                                                                                                                                                                                                 | Returns success code along with mapperID in tokenised format.                                                                                      |
-| 7  | VoucherPreactivation (InstructionID, amount, Group\_Code, currency, Expiry\_DTTM, FunctionalID, Description)                                                                                                                                                                                   | Returns success code with voucher number, voucher serial number and expiry date.                                                                   |
-| 8  | VoucherActivation(voucher\_number)                                                                                                                                                                                                                                                             | Returns success code. After this point the voucher may be redeemed.                                                                                |
-| 9  | VoucherRedemption(voucher\_number, voucher\_serial\_number,\[OC1] )                                                                                                                                                                                                                            | Returns success code and payment reference from the payment gateway. After this point the voucher CANNOT be used again as the system will fail it. |
-| 10 | VoucherStatusCheck(serial\_number)                                                                                                                                                                                                                                                             | Returns success code with the status of the voucher which may be either of Pre-Activated, Activated, Suspended, Blocked or Not Existing            |
-| 11 | VoucherCancellation(voucher\_serial\_number)                                                                                                                                                                                                                                                   | Returns a success code if the voucher has been successfully cancelled.                                                                             |
-
-
+<table data-header-hidden><thead><tr><th width="73.33333333333331"></th><th></th><th></th></tr></thead><tbody><tr><td>1</td><td><p>make_G2P_payment (Payer ID, Payee ID, Amounts, Currency, [Modality], Date)</p><p>make_G2P_payment (PayerID: <em>12345</em>,</p><p>Payee ID: <em>ABCD</em>, Amounts: <em>100</em>, Currency: <em>USD</em>, [Modality: <em>MoMo</em>], Date: <em>12/06/2022</em>)</p></td><td>Returns success code after payment confirmation or else returns failure status with error code</td></tr><tr><td>2</td><td><p>Create_transaction (Payer ID, Payee ID, BillReferenceID, Amount, Currency, Date)</p><p>create_transaction (PayerID: <em>12345</em>, Payee ID: <em>ABCD</em>, BillReferenceID: <em>0001243</em>, Amount: <em>10</em>, Currency: <em>USD</em>, Date: <em>12/06/2022</em>)</p></td><td>Returns success code after payment confirmation or else returns failure status with error code</td></tr><tr><td>3</td><td><p>view_transaction(PayerID, PayeeID, FromDate, ToDate, [status]).</p><p>view_transaction(PayerID: <em>12345</em>, PayeeID: <em>ABCD</em>, FromDate: <em>01/01/2022</em>, ToDate: <em>01/06/2022</em>, [status]).</p></td><td>Returns success code along with payments history or else returns failure status with error code.</td></tr><tr><td>4</td><td>register_beneficiary(payee_functionalID, Modality, fsp_id, account_info)</td><td>Returns success code after creating entry along with mapperID.</td></tr><tr><td>5</td><td>update_beneficiary(payee_functionalID, Modality, fsp_id, account_info)</td><td>Returns success code after updating entry along with new mapperID.</td></tr><tr><td>6</td><td>get_paymentaccount_info(payee_functionalID)</td><td>Returns success code along with mapperID in tokenised format.</td></tr><tr><td>7</td><td>VoucherPreactivation (InstructionID, amount, Group_Code, currency, Expiry_DTTM, FunctionalID, Description)</td><td>Returns success code with voucher number, voucher serial number and expiry date.</td></tr><tr><td>8</td><td>VoucherActivation(voucher_number)</td><td>Returns success code. After this point the voucher may be redeemed.</td></tr><tr><td>9</td><td>VoucherRedemption(voucher_number, voucher_serial_number,[OC1] )</td><td>Returns success code and payment reference from the payment gateway. After this point the voucher CANNOT be used again as the system will fail it.</td></tr><tr><td>10</td><td>VoucherStatusCheck(serial_number)</td><td>Returns success code with the status of the voucher which may be either of Pre-Activated, Activated, Suspended, Blocked or Not Existing</td></tr><tr><td>11</td><td>VoucherCancellation(voucher_serial_number)</td><td>Returns a success code if the voucher has been successfully cancelled.</td></tr></tbody></table>
 
 ## 8.1 Person-to-Government APIs (P2G) <a href="#docs-internal-guid-83db42bd-7fff-3768-b76a-9586be4ab890" id="docs-internal-guid-83db42bd-7fff-3768-b76a-9586be4ab890"></a>
 
@@ -67,14 +54,7 @@ The Register Beneficiary API is invoked by the Information Mediator BB, which is
 
 #### Request Parameters
 
-| Field             | Type        | Required | Description                                                                                                                                                                    |
-| ----------------- | ----------- | -------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ |
-| RequestID         | String (12) | Yes      | Globally unique ID                                                                                                                                                             |
-| SourceBBID        | String (12) | Yes      | To identify the origination of the request.                                                                                                                                    |
-| Beneficiaries     | Object      | Yes      | JSON Array                                                                                                                                                                     |
-| PayeeFunctionalID | String (20) | Yes      | The functional ID of the beneficiary.                                                                                                                                          |
-| PaymentModality   | String (2)  | No       | 00 for Bank Account, 01 for Mobile Money, 02 for Voucher, 03 for Digital Wallet, 04 for Proxy                                                                                  |
-| FinancialAddress  | String (30) | No       | Destination Account Number, ideally an IBAN if available, otherwise wallet destination accounts could be phone numbers as well, other Financial Addresses such as Aliases etc. |
+<table><thead><tr><th>Field</th><th width="166">Type</th><th width="134">Required</th><th>Description</th></tr></thead><tbody><tr><td>RequestID</td><td>String (12)</td><td>Yes</td><td>Globally unique ID</td></tr><tr><td>SourceBBID</td><td>String (12)</td><td>Yes</td><td>To identify the origination of the request.</td></tr><tr><td>Beneficiaries</td><td>Object</td><td>Yes</td><td>JSON Array</td></tr><tr><td>PayeeFunctionalID</td><td>String (20)</td><td>Yes</td><td>The functional ID of the beneficiary.</td></tr><tr><td>PaymentModality</td><td>String (2)</td><td>No</td><td>00 for Bank Account, 01 for Mobile Money, 02 for Voucher, 03 for Digital Wallet, 04 for Proxy</td></tr><tr><td>FinancialAddress</td><td>String (30)</td><td>No</td><td>Destination Account Number, ideally an IBAN if available, otherwise wallet destination accounts could be phone numbers as well, other Financial Addresses such as Aliases etc.</td></tr></tbody></table>
 
 {% swagger src=".gitbook/assets/Registerbeneficiary.yaml" path="/register-beneficiary" method="post" %}
 [Registerbeneficiary.yaml](.gitbook/assets/Registerbeneficiary.yaml)
@@ -82,11 +62,7 @@ The Register Beneficiary API is invoked by the Information Mediator BB, which is
 
 #### Response Parameters
 
-| Field               | Type         | Required | Description                |
-| ------------------- | ------------ | -------- | -------------------------- |
-| ResponseCode        | String (2)   | Yes      | 00 – Success, 01 – Failure |
-| ResponseDescription | String (200) | Yes      |                            |
-| RequestID           | String (12)  | Yes      | Echoed from Request        |
+<table><thead><tr><th>Field</th><th width="165">Type</th><th width="124">Required</th><th>Description</th></tr></thead><tbody><tr><td>ResponseCode</td><td>String (2)</td><td>Yes</td><td>00 – Success, 01 – Failure</td></tr><tr><td>ResponseDescription</td><td>String (200)</td><td>Yes</td><td></td></tr><tr><td>RequestID</td><td>String (12)</td><td>Yes</td><td>Echoed from Request</td></tr></tbody></table>
 
 ### 8.2.2 Update Beneficiary Details API
 
@@ -94,14 +70,7 @@ This is the API that is called by the Information Mediator BB when the Registrat
 
 #### Request Parameters
 
-| Field             | Type        | Required | Description                                                                                                                                                                    |
-| ----------------- | ----------- | -------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ |
-| RequestID         | String (12) | Yes      | Globally unique ID                                                                                                                                                             |
-| SourceBBID        | String (12) | Yes      | To identify the origination of the request.                                                                                                                                    |
-| Beneficiaries     | Object      | Yes      | JSON Array                                                                                                                                                                     |
-| PayeeFunctionalID | String (20) | Yes      | The functional ID of the beneficiary.                                                                                                                                          |
-| PaymentModality   | String (2)  | No       | 00 for Bank Account, 01 for Mobile Money, 02 for Voucher, 03 for Digital Wallet, 04 for Proxy                                                                                  |
-| FinancialAddress  | String (30) | No       | Destination Account Number, ideally an IBAN if available, otherwise wallet destination accounts could be phone numbers as well, other Financial Addresses such as Aliases etc. |
+<table><thead><tr><th>Field</th><th width="172">Type</th><th width="125">Required</th><th>Description</th></tr></thead><tbody><tr><td>RequestID</td><td>String (12)</td><td>Yes</td><td>Globally unique ID</td></tr><tr><td>SourceBBID</td><td>String (12)</td><td>Yes</td><td>To identify the origination of the request.</td></tr><tr><td>Beneficiaries</td><td>Object</td><td>Yes</td><td>JSON Array</td></tr><tr><td>PayeeFunctionalID</td><td>String (20)</td><td>Yes</td><td>The functional ID of the beneficiary.</td></tr><tr><td>PaymentModality</td><td>String (2)</td><td>No</td><td>00 for Bank Account, 01 for Mobile Money, 02 for Voucher, 03 for Digital Wallet, 04 for Proxy</td></tr><tr><td>FinancialAddress</td><td>String (30)</td><td>No</td><td>Destination Account Number, ideally an IBAN if available, otherwise wallet destination accounts could be phone numbers as well, other Financial Addresses such as Aliases etc.</td></tr></tbody></table>
 
 {% swagger src="../api/UpdateBeneficiary.yaml" path="/update-beneficiary-details" method="post" %}
 [UpdateBeneficiary.yaml](../api/UpdateBeneficiary.yaml)
@@ -121,27 +90,13 @@ This API is to be exposed by the Payments BB; the prepayment validation API, cal
 
 #### Request Parameters
 
-| Field              | Type        | Required | Description                                            |
-| ------------------ | ----------- | -------- | ------------------------------------------------------ |
-| RequestID          | String (12) | Yes      | Globally unique ID                                     |
-| SourceBBID         | String (12) | Yes      | To identify the origination of the request.            |
-| BatchID            | String (12) | Yes      | BatchID for batch submitted by the Source BB.          |
-| CreditInstructions | Object      | Yes      | JSON Array                                             |
-| InstructionID      | String (16) | Yes      | Individual ID for each instruction in the Credit Batch |
-| PayeeFunctionalID  | String (20) | Yes      | The functional ID of the beneficiary.                  |
-| Amount             | Float       | Yes      | Amount to be Credited                                  |
-| Currency           | String (3)  | Yes      | Transaction Currency Code                              |
-| Narration          | String (50) | No       | Description of Payment                                 |
+<table><thead><tr><th>Field</th><th width="156">Type</th><th width="128">Required</th><th>Description</th></tr></thead><tbody><tr><td>RequestID</td><td>String (12)</td><td>Yes</td><td>Globally unique ID</td></tr><tr><td>SourceBBID</td><td>String (12)</td><td>Yes</td><td>To identify the origination of the request.</td></tr><tr><td>BatchID</td><td>String (12)</td><td>Yes</td><td>BatchID for batch submitted by the Source BB.</td></tr><tr><td>CreditInstructions</td><td>Object</td><td>Yes</td><td>JSON Array</td></tr><tr><td>InstructionID</td><td>String (16)</td><td>Yes</td><td>Individual ID for each instruction in the Credit Batch</td></tr><tr><td>PayeeFunctionalID</td><td>String (20)</td><td>Yes</td><td>The functional ID of the beneficiary.</td></tr><tr><td>Amount</td><td>Float</td><td>Yes</td><td>Amount to be Credited</td></tr><tr><td>Currency</td><td>String (3)</td><td>Yes</td><td>Transaction Currency Code</td></tr><tr><td>Narration</td><td>String (50)</td><td>No</td><td>Description of Payment</td></tr></tbody></table>
 
 {% swagger src="../api/Prepaymentvalidation.yaml" path="/prepayment-validation" method="post" %}
 [Prepaymentvalidation.yaml](../api/Prepaymentvalidation.yaml)
 {% endswagger %}
 
-| Field               | Type         | Required | Description                |
-| ------------------- | ------------ | -------- | -------------------------- |
-| ResponseCode        | String (2)   | Yes      | 00 – Success, 01 – Failure |
-| ResponseDescription | String (200) | Yes      |                            |
-| RequestID           | String (12)  | Yes      | Echoed from Request        |
+<table><thead><tr><th>Field</th><th>Type</th><th width="132">Required</th><th>Description</th></tr></thead><tbody><tr><td>ResponseCode</td><td>String (2)</td><td>Yes</td><td>00 – Success, 01 – Failure</td></tr><tr><td>ResponseDescription</td><td>String (200)</td><td>Yes</td><td></td></tr><tr><td>RequestID</td><td>String (12)</td><td>Yes</td><td>Echoed from Request</td></tr></tbody></table>
 
 ### 8.2.2 Bulk disbursement APIs
 
@@ -149,17 +104,7 @@ This API is to be exposed by the Payments BB; it will be called by the Source BB
 
 #### Request Parameters
 
-| Field              | Type        | Required | Description                                            |
-| ------------------ | ----------- | -------- | ------------------------------------------------------ |
-| RequestID          | String (12) | Yes      | Globally unique ID                                     |
-| SourceBBID         | String (12) | Yes      | To identify the origination of the request.            |
-| BatchID            | String (12) | Yes      | BatchID for batch submitted by the Source BB.          |
-| CreditInstructions | Object      | Yes      | JSON Array                                             |
-| InstructionID      | String (16) | Yes      | Individual ID for each instruction in the Credit Batch |
-| PayeeFunctionalID  | String (20) | Yes      | The functional ID of the beneficiary.                  |
-| Amount             | Float       | Yes      | Amount to be Credited                                  |
-| Currency           | String (3)  | Yes      | Transaction Currency Code                              |
-| Narration          | String (50) | No       | Description of Payment                                 |
+<table><thead><tr><th>Field</th><th>Type</th><th width="131">Required</th><th>Description</th></tr></thead><tbody><tr><td>RequestID</td><td>String (12)</td><td>Yes</td><td>Globally unique ID</td></tr><tr><td>SourceBBID</td><td>String (12)</td><td>Yes</td><td>To identify the origination of the request.</td></tr><tr><td>BatchID</td><td>String (12)</td><td>Yes</td><td>BatchID for batch submitted by the Source BB.</td></tr><tr><td>CreditInstructions</td><td>Object</td><td>Yes</td><td>JSON Array</td></tr><tr><td>InstructionID</td><td>String (16)</td><td>Yes</td><td>Individual ID for each instruction in the Credit Batch</td></tr><tr><td>PayeeFunctionalID</td><td>String (20)</td><td>Yes</td><td>The functional ID of the beneficiary.</td></tr><tr><td>Amount</td><td>Float</td><td>Yes</td><td>Amount to be Credited</td></tr><tr><td>Currency</td><td>String (3)</td><td>Yes</td><td>Transaction Currency Code</td></tr><tr><td>Narration</td><td>String (50)</td><td>No</td><td>Description of Payment</td></tr></tbody></table>
 
 {% swagger src="../api/bulkpayment.yaml" path="/bulk-payment" method="post" %}
 [bulkpayment.yaml](../api/bulkpayment.yaml)
@@ -167,11 +112,7 @@ This API is to be exposed by the Payments BB; it will be called by the Source BB
 
 #### Response Parameters
 
-| Field               | Type         | Required | Description                |
-| ------------------- | ------------ | -------- | -------------------------- |
-| ResponseCode        | String (2)   | Yes      | 00 – Success, 01 – Failure |
-| ResponseDescription | String (200) | Yes      |                            |
-| RequestID           | String (12)  | Yes      | Echoed from Request        |
+<table><thead><tr><th>Field</th><th>Type</th><th width="140">Required</th><th>Description</th></tr></thead><tbody><tr><td>ResponseCode</td><td>String (2)</td><td>Yes</td><td>00 – Success, 01 – Failure</td></tr><tr><td>ResponseDescription</td><td>String (200)</td><td>Yes</td><td></td></tr><tr><td>RequestID</td><td>String (12)</td><td>Yes</td><td>Echoed from Request</td></tr></tbody></table>
 
 ## 8.6 Voucher APIs/Voucher Management <a href="#docs-internal-guid-9cf2815f-7fff-7e39-e7ed-207134468ff3" id="docs-internal-guid-9cf2815f-7fff-7e39-e7ed-207134468ff3"></a>
 
