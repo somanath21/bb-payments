@@ -274,6 +274,41 @@
       "voucher_status": "Activated",
       "voucher_amount": "1000"
     },
+    {
+      "voucher_number": "55551",
+      "voucher_serial_number": 5555,
+      "Gov_Stack_BB": "Gov_Stack_BB",
+      "voucher_status": "Activated",
+      "voucher_amount": "1000"
+    },
+    {
+      "voucher_number": "55561",
+      "voucher_serial_number": 5556,
+      "Gov_Stack_BB": "Gov_Stack_BB",
+      "voucher_status": "Activated",
+      "voucher_amount": "1000"
+    },
+    {
+      "voucher_number": "55571",
+      "voucher_serial_number": 5557,
+      "Gov_Stack_BB": "Gov_Stack_BB",
+      "voucher_status": "Activated",
+      "voucher_amount": "1000"
+    },
+    {
+      "voucher_number": "55581",
+      "voucher_serial_number": 5558,
+      "Gov_Stack_BB": "Gov_Stack_BB",
+      "voucher_status": "Activated",
+      "voucher_amount": "1000"
+    },
+    {
+      "voucher_number": "55591",
+      "voucher_serial_number": 5559,
+      "Gov_Stack_BB": "Gov_Stack_BB",
+      "voucher_status": "Activated",
+      "voucher_amount": "1000"
+    },
     "// Purged",
     {
       "voucher_number": "725743",
@@ -303,6 +338,22 @@
       "voucher_number": "315425",
       "voucher_serial_number": 2134,
       "Gov_Stack_BB": "example Gov_Stack_BB",
+      "voucher_status": "Blocked",
+      "voucher_amount": "1000"
+    },
+    "// already_used",
+    {
+      "voucher_number": "60011",
+      "voucher_serial_number": 6001,
+      "Gov_Stack_BB": "Gov_Stack_BB",
+      "voucher_status": "Blocked",
+      "voucher_amount": "1000"
+    },
+    "// expired",
+    {
+      "voucher_number": "60021",
+      "voucher_serial_number": 6002,
+      "Gov_Stack_BB": "Gov_Stack_BB",
       "voucher_status": "Blocked",
       "voucher_amount": "1000"
     }
