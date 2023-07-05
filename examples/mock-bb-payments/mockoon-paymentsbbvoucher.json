@@ -15,7 +15,7 @@
       "responses": [
         {
           "uuid": "40758b1e-2dc5-47b9-b89f-f001dfa33cfa",
-          "body": "{\n  \"voucher_number\": \"stringstringstri\",\n  \"voucher_serial_number\": \"stringstringstri\",\n  \"expiry_date_time\": \"2023-01-04T16:01:00.619Z\"\n}",
+          "body": "{\n  \"voucher_number\": \"{{faker 'random.numeric' 16}}\",\n  \"voucher_serial_number\": \"{{faker 'random.numeric' 16}}\",\n  \"expiry_date_time\": \"{{faker 'date.soon'}}\"\n}",
           "latency": 0,
           "statusCode": 200,
           "label": "Successfully pre-activated voucher",
