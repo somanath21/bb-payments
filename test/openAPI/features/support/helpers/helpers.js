@@ -55,4 +55,11 @@ module.exports = {
     },
     required: ['RequestID', 'Source_BatchID'],
   },
+  voucherCancelationEndpoint:
+    'vouchers/voucherstatuscheck/{voucherserialnumber}',
+  voucherCancelationResponseSchema: {
+    type: 'object',
+    properties: { message: { type: 'string' } },
+    required: ['message'],
+  },
 };

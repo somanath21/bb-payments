@@ -1,153 +1,181 @@
-const pactum = require('pactum');
+const chai = require('chai');
+const { spec } = require('pactum');
 const { Given, When, Then, Before, After } = require('@cucumber/cucumber');
-const { localhost } = require('./helpers/helpers');
+const {
+  localhost,
+  voucherCancelationEndpoint,
+  voucherCancelationResponseSchema,
+} = require('./helpers/helpers');
+
+chai.use(require('chai-json-schema'));
 
 let specVoucherCancelation;
-let voucherSerialNumber;
-let voucherCancelationBody = {
-  voucherserialnumber: 'exampleVoucherSerialNumber',
-  Gov_Stack_BB: 'Gov_Stack_BB',
-};
+let specVoucherReCancelation;
 
-const baseUrl = `${localhost}vouchers/voucherstatuscheck/{voucherserialnumber}`;
-const requestFunction = () =>
+const baseUrl = localhost + voucherCancelationEndpoint;
+const endpointTag = { tags: `@endpoint=/${voucherCancelationEndpoint}` };
+const GovStackBB = 'bb-digital-registries';
+let voucherSerialNumberToCancel;
+
+Before(endpointTag, () => {
+  specVoucherCancelation = spec();
+  specVoucherReCancelation = spec();
+});
+
+// Scenario: A non Payment Building Block successfully cancels a voucher smoke type test
+Given(
+  /^A non Payment Building Block wants to cancel a voucher$/,
+  () => 'A non Payment Building Block wants to cancel a voucher'
+);
+
+When(
+  /^A PATCH request to cancel the voucher with serial number = "([^"]*)" is sent$/,
+  serialNumber => {
+    voucherSerialNumberToCancel = serialNumber;
+    specVoucherCancelation
+      .patch(baseUrl)
+      .withJson({
+        voucherserialnumber: serialNumber,
+        Gov_Stack_BB: GovStackBB,
+      })
+      .withPathParams('voucherserialnumber', serialNumber);
+  }
+);
+
+Then(
+  /^The response from the voucher cancelation endpoint is received$/,
+  async () => {
+    await specVoucherCancelation.toss();
+  }
+);
+
+Then(
+  /^The voucher cancelation response should be returned in a timely manner (\d+) ms$/,
+  responseTime => {
+    specVoucherCancelation
+      .response()
+      .to.have.responseTimeLessThan(responseTime);
+  }
+);
+
+Then(
+  /^The voucher cancelation response should have status (\d+)$/,
+  statusCode => {
+    specVoucherCancelation.response().to.have.status(statusCode);
+  }
+);
+
+Then(/^The voucher cancelation response should match json schema$/, () => {
+  chai
+    .expect(specVoucherCancelation._response.json)
+    .to.be.jsonSchema(voucherCancelationResponseSchema);
+});
+
+// Scenario: A non Payment Building Block is unable to cancel a voucher that has already been canceled
+// Others Given, When, Then are written in the aforementioned example
+When(/^A PATCH request to cancel the same voucher is sent second time$/, () => {
+  specVoucherReCancelation
+    .patch(baseUrl)
+    .withJson({
+      voucherserialnumber: voucherSerialNumberToCancel,
+      Gov_Stack_BB: GovStackBB,
+    })
+    .withPathParams('voucherserialnumber', voucherSerialNumberToCancel);
+});
+
+Then(/^The response from re-cancellation is received$/, async () => {
+  await specVoucherReCancelation.toss();
+});
+
+Then(
+  /^The response from re-cancellation should be returned in a timely manner (\d+) ms$/,
+  responseTime => {
+    specVoucherReCancelation
+      .response()
+      .to.have.responseTimeLessThan(responseTime);
+  }
+);
+
+Then(
+  /^The response from re-cancellation should have status (\d+)$/,
+  statusCode => {
+    specVoucherReCancelation.response().to.have.status(statusCode);
+  }
+);
+
+Then(/^The response from re-cancellation should match json schema$/, () => {
+  chai
+    .expect(specVoucherReCancelation._response.json)
+    .to.be.jsonSchema(voucherCancelationResponseSchema);
+});
+
+// Scenario: A non Payment Building Block is unable to cancel a voucher due to providing invalid voucher serial number in the payload
+// Given and Then are written in the aforementioned example
+When(
+  /^A PATCH request to cancel the voucher with invalid serial number = "([^"]*)" is sent$/,
+  invalidSerialNumber => {
+    specVoucherCancelation
+      .patch(baseUrl)
+      .withJson({
+        voucherserialnumber: invalidSerialNumber,
+        Gov_Stack_BB: GovStackBB,
+      })
+      .withPathParams('voucherserialnumber', invalidSerialNumber);
+  }
+);
+
+// Scenario: A non Payment Building Block is unable to cancel a voucher due to providing invalid Gov Stack Building Block in the payload
+// Given and Then are written in the aforementioned example
+When(
+  /^A PATCH request to cancel the voucher with invalid Gov Stack Building Block = "([^"]*)" is sent$/,
+  invalidGovStackBB => {
+    specVoucherCancelation
+      .patch(baseUrl)
+      .withJson({
+        voucherserialnumber: '60002',
+        Gov_Stack_BB: invalidGovStackBB,
+      })
+      .withPathParams('voucherserialnumber', 60002);
+  }
+);
+
+// Scenario: A non Payment Building Block is unable to cancel a voucher due to missing required voucher serial number in the payload
+// Given and Then are written in the aforementioned example
+When(
+  /^A PATCH request to cancel the voucher is sent with missing voucher serial number in the payload$/,
+  () => {
+    specVoucherCancelation
+      .patch(baseUrl)
+      .withJson({
+        Gov_Stack_BB: GovStackBB,
+      })
+      .withPathParams('voucherserialnumber', 60003);
+  }
+);
+
+// Scenario: A non Payment Building Block is unable to cancel a voucher due to missing required Gov Stack Building Block in the payload
+// Given and Then are written in the aforementioned example
+When(
+  /^A PATCH request to cancel the voucher is sent with missing Gov Stack Building Block in the payload$/,
+  () => {
+    specVoucherCancelation
+      .patch(baseUrl)
+      .withJson({
+        voucherserialnumber: '60004',
+      })
+      .withPathParams('voucherserialnumber', 60004);
+  }
+);
+
+// Scenario: A non Payment Building Block is unable to cancel a voucher due to missing payload in the request
+// Given and Then are written in the aforementioned example
+When(/^A PATCH request to cancel the voucher is sent without payload$/, () => {
   specVoucherCancelation
     .patch(baseUrl)
-    .withBody(voucherCancelationBody)
-    .withPathParams('voucherserialnumber', voucherSerialNumber);
-
-Before(() => {
-  specVoucherCancelation = pactum.spec();
+    .withPathParams('voucherserialnumber', 60005);
 });
 
-// Scenario: The user successfully cancels a voucher
-Given('The user wants to cancel a voucher', () => {
-  voucherSerialNumber = '123456';
-  voucherCancelationBody.voucherserialnumber = voucherSerialNumber;
-  return voucherCancelationBody, voucherSerialNumber;
-});
-
-When(
-  'The user triggers an action with a valid payload to cancel a voucher',
-  () => {
-    requestFunction();
-  }
-);
-
-Then('The user successfully cancels the voucher', async () => {
-  await specVoucherCancelation.toss();
-  specVoucherCancelation.response().should.have.status(200);
-  specVoucherCancelation.response().should.have.jsonLike({
-    message: 'Voucher cancelled',
-  });
-});
-
-// Scenario: The user is not able to cancel the voucher with invalid voucher details
-Given(
-  'The user wants to cancel the voucher with invalid voucher details',
-  () => {
-    voucherSerialNumber = '24354546';
-    voucherCancelationBody.voucherserialnumber = '';
-    return voucherCancelationBody, voucherSerialNumber;
-  }
-);
-
-When(
-  'The user triggers an action with invalid voucher details to cancel the voucher',
-  () => {
-    requestFunction();
-  }
-);
-
-Then(
-  'The result of an operation returns an error because of providing invalid voucher details',
-  async () => {
-    await specVoucherCancelation.toss();
-    specVoucherCancelation.response().should.have.status(400);
-    specVoucherCancelation.response().should.have.jsonLike({
-      message: 'Invalid request',
-    });
-  }
-);
-
-// Scenario: The user is not able to cancel the invalid voucher
-Given('The user wants to cancel the invalid voucher', () => {
-  voucherSerialNumber = '74558687';
-  voucherCancelationBody.voucherserialnumber = voucherSerialNumber;
-  return voucherCancelationBody, voucherSerialNumber;
-});
-
-When(
-  'The user triggers an action with a valid payload to cancel the invalid voucher',
-  () => {
-    requestFunction();
-  }
-);
-
-Then(
-  'The result of an operation returns an error because of the invalid voucher',
-  async () => {
-    await specVoucherCancelation.toss();
-    specVoucherCancelation.response().should.have.status(463);
-    specVoucherCancelation.response().should.have.jsonLike({
-      message: 'Invalid voucher',
-    });
-  }
-);
-
-// Scenario: The user is not able to cancel the already canceled voucher
-Given('The user wants to cancel the already canceled voucher', () => {
-  voucherSerialNumber = '2134';
-  voucherCancelationBody.voucherserialnumber = voucherSerialNumber;
-  return voucherCancelationBody, voucherSerialNumber;
-});
-
-When(
-  'The user triggers an action with a valid payload to cancel the voucher that has already been canceled',
-  () => {
-    requestFunction();
-  }
-);
-
-Then(
-  'The result of an operation returns an error with Voucher already canceled message',
-  async () => {
-    await specVoucherCancelation.toss();
-    specVoucherCancelation.response().should.have.status(464);
-    specVoucherCancelation.response().should.have.jsonLike({
-      message: 'Voucher is already cancelled',
-    });
-  }
-);
-
-// Scenario: The user is not able to cancel the voucher without providing the voucher details
-Given(
-  'The user wants to cancel the voucher without providing the voucher details',
-  () => {
-    voucherSerialNumber = '2435244546';
-    voucherCancelationBody = null;
-    return voucherCancelationBody, voucherSerialNumber;
-  }
-);
-
-When(
-  'The user triggers an action to cancel the voucher without providing the voucher details',
-  () => {
-    requestFunction();
-  }
-);
-
-Then(
-  'The result of an operation returns an error because of not providing the voucher details',
-  async () => {
-    await specVoucherCancelation.toss();
-    specVoucherCancelation.response().should.have.status(400);
-    specVoucherCancelation.response().should.have.jsonLike({
-      message: 'Invalid request',
-    });
-  }
-);
-
-After(() => {
+After(endpointTag, () => {
   specVoucherCancelation.end();
+  specVoucherReCancelation.end();
 });
