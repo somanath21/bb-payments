@@ -1,29 +1,70 @@
+@method=PATCH @endpoint=/vouchers/voucherstatuscheck/{voucherserialnumber}
 Feature: The VoucherCancelation API is used to cancel a voucher
-  This operation cancels a specific voucher number.
   
-  Request endpoint: PATCH /vouchers/voucherstatuscheck/{voucherserialnumber}
+  This operation cancels a specific voucher number
+  
+  @smoke @positive
+  Scenario: A non Payment Building Block successfully cancels a voucher smoke type test
+    Given A non Payment Building Block wants to cancel a voucher
+    When A PATCH request to cancel the voucher with serial number = "60000" is sent
+    Then The response from the voucher cancelation endpoint is received
+    And The voucher cancelation response should be returned in a timely manner 15000 ms
+    And The voucher cancelation response should have status 200
+    And The voucher cancelation response should match json schema
 
-  Scenario: The user successfully cancels a voucher
-    Given The user wants to cancel a voucher
-    When The user triggers an action with a valid payload to cancel a voucher
-    Then The user successfully cancels the voucher
+  @negative
+  Scenario: A non Payment Building Block is unable to cancel a voucher that has already been canceled
+    Given A non Payment Building Block wants to cancel a voucher
+    When A PATCH request to cancel the voucher with serial number = "60001" is sent
+    Then The response from the voucher cancelation endpoint is received
+    And The voucher cancelation response should have status 200
+    When A PATCH request to cancel the same voucher is sent second time
+    Then The response from re-cancellation is received
+    And The response from re-cancellation should be returned in a timely manner 15000 ms
+    And The response from re-cancellation should have status 464
+    And The response from re-cancellation should match json schema
 
-  Scenario: The user is not able to cancel the voucher with invalid voucher details
-    Given The user wants to cancel the voucher with invalid voucher details
-    When The user triggers an action with invalid voucher details to cancel the voucher
-    Then The result of an operation returns an error because of providing invalid voucher details
+  @negative
+  Scenario: A non Payment Building Block is unable to cancel a voucher due to providing invalid voucher serial number in the payload
+    Given A non Payment Building Block wants to cancel a voucher
+    When A PATCH request to cancel the voucher with invalid serial number = "invalid_serial_number" is sent
+    Then The response from the voucher cancelation endpoint is received
+    And The voucher cancelation response should be returned in a timely manner 15000 ms
+    And The voucher cancelation response should have status 463
+    And The voucher cancelation response should match json schema
 
-  Scenario: The user is not able to cancel the invalid voucher
-    Given The user wants to cancel the invalid voucher
-    When The user triggers an action with a valid payload to cancel the invalid voucher
-    Then The result of an operation returns an error because of the invalid voucher
+  @negative
+  Scenario: A non Payment Building Block is unable to cancel a voucher due to providing invalid Gov Stack Building Block in the payload
+    Given A non Payment Building Block wants to cancel a voucher
+    When A PATCH request to cancel the voucher with invalid Gov Stack Building Block = "invalid_bb" is sent
+    Then The response from the voucher cancelation endpoint is received
+    And The voucher cancelation response should be returned in a timely manner 15000 ms
+    And The voucher cancelation response should have status 463
+    And The voucher cancelation response should match json schema
 
-  Scenario: The user is not able to cancel the already canceled voucher
-    Given The user wants to cancel the already canceled voucher
-    When The user triggers an action with a valid payload to cancel the voucher that has already been canceled
-    Then The result of an operation returns an error with Voucher already canceled message
+  @negative
+  Scenario: A non Payment Building Block is unable to cancel a voucher due to missing required voucher serial number in the payload
+    Given A non Payment Building Block wants to cancel a voucher
+    When A PATCH request to cancel the voucher is sent with missing voucher serial number in the payload
+    Then The response from the voucher cancelation endpoint is received
+    And The voucher cancelation response should be returned in a timely manner 15000 ms
+    And The voucher cancelation response should have status 400
+    And The voucher cancelation response should match json schema
 
-  Scenario: The user is not able to cancel the voucher without providing the voucher details
-    Given The user wants to cancel the voucher without providing the voucher details
-    When The user triggers an action to cancel the voucher without providing the voucher details
-    Then The result of an operation returns an error because of not providing the voucher details
+  @negative
+  Scenario: A non Payment Building Block is unable to cancel a voucher due to missing required Gov Stack Building Block in the payload
+    Given A non Payment Building Block wants to cancel a voucher
+    When A PATCH request to cancel the voucher is sent with missing Gov Stack Building Block in the payload
+    Then The response from the voucher cancelation endpoint is received
+    And The voucher cancelation response should be returned in a timely manner 15000 ms
+    And The voucher cancelation response should have status 400
+    And The voucher cancelation response should match json schema
+
+  @negative
+  Scenario: A non Payment Building Block is unable to cancel a voucher due to missing payload in the request
+    Given A non Payment Building Block wants to cancel a voucher
+    When A PATCH request to cancel the voucher is sent without payload
+    Then The response from the voucher cancelation endpoint is received
+    And The voucher cancelation response should be returned in a timely manner 15000 ms
+    And The voucher cancelation response should have status 400
+    And The voucher cancelation response should match json schema
