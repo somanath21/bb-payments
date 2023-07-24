@@ -1,192 +1,172 @@
-const pactum = require('pactum');
+const chai = require('chai');
+const { spec } = require('pactum');
 const { Given, When, Then, Before, After } = require('@cucumber/cucumber');
-const { localhost } = require('./helpers/helpers');
+const {
+  localhost,
+  defaultExpectedResponseTime,
+  voucherPreactivationEndpoint,
+  voucherPreactivationResponseSchema,
+  voucherPreactivationResponseErrorSchema,
+} = require('./helpers/helpers');
 
-let voucherVariables;
+chai.use(require('chai-json-schema'));
+
 let specVoucherPreactivation;
 
-const baseUrl = `${localhost}vouchers/voucher_preactivation`;
-const requestFunction = () =>
-  specVoucherPreactivation.post(baseUrl).withBody(voucherVariables);
+const baseUrl = localhost + voucherPreactivationEndpoint;
+const endpointTag = { tags: `@endpoint=/${voucherPreactivationEndpoint}` };
 
-Before(() => {
-  specVoucherPreactivation = pactum.spec();
+Before(endpointTag, () => {
+  specVoucherPreactivation = spec();
 });
 
-// Scenario: The user successfully receives a pre-activated voucher
-Given('The user wants to receives a pre-activated voucher #1', () => {
-  voucherVariables = {
-    voucher_amount: '15.21',
-    voucher_currency: 'AED',
-    voucher_group: 'string',
-    Gov_Stack_BB: 'Gov_Stack_BB',
-    voucher_comment: 'string',
-  };
-  return voucherVariables;
-});
-
-When('The user triggers an action to receive a pre-activated voucher', () => {
-  requestFunction();
-});
-
-Then('The user successfully receives a pre-activated voucher', async () => {
-  await specVoucherPreactivation.toss();
-  specVoucherPreactivation.response().should.have.status(200);
-  specVoucherPreactivation.response().should.have.jsonLike({
-    voucher_number: 'stringstringstri',
-    voucher_serial_number: 'stringstringstri',
-    expiry_date_time: '2023-01-04T16:01:00.619Z',
-  });
-});
-
-// Scenario: The user is not able to receives a pre-activated voucher because of an invalid voucher amount
-Given('The user wants to receives a pre-activated voucher #2', () => {
-  voucherVariables = {
-    voucher_amount: null,
-    voucher_currency: 'AED',
-    voucher_group: 'string',
-    Gov_Stack_BB: 'Gov_Stack_BB',
-    voucher_comment: 'string',
-  };
-  return voucherVariables;
-});
+// Scenario: The user successfully receives a pre-activated voucher smoke type test
+Given(
+  'The user wants to receives a pre-activated voucher',
+  () => 'The user wants to receives a pre-activated voucher'
+);
 
 When(
-  'The user triggers an action to receive a pre-activated voucher with an invalid voucher amount',
+  /^Send POST \/vouchers\/voucher_preactivation request with given body$/,
   () => {
-    requestFunction();
+    specVoucherPreactivation.post(baseUrl).withJson({
+      voucher_amount: '15.21',
+      voucher_currency: 'AED',
+      voucher_group: 'string',
+      Gov_Stack_BB: 'Gov_Stack_BB',
+      voucher_comment: 'string',
+    });
   }
 );
 
 Then(
-  'The result of an operation returns an error because of an invalid voucher amount',
-  async () => {
-    await specVoucherPreactivation.toss();
-    specVoucherPreactivation.response().should.have.status(452);
+  /^Receive a response from the \/vouchers\/voucher_preactivation endpoint$/,
+  async () => await specVoucherPreactivation.toss()
+);
+
+Then(
+  /^The \/vouchers\/voucher_preactivation endpoint response should be returned in a timely manner 15000ms$/,
+  () =>
     specVoucherPreactivation
       .response()
-      .should.have.body('{\n  "Invalid payload, voucher_amount is invalid"\n}');
-  }
+      .to.have.responseTimeLessThan(defaultExpectedResponseTime)
+);
+
+Then(
+  /^The \/vouchers\/voucher_preactivation endpoint response should have status (\d+)$/,
+  status => specVoucherPreactivation.response().to.have.status(status)
+);
+
+Then(
+  /^The \/vouchers\/voucher_preactivation endpoint response should match json schema$/,
+  () =>
+    chai
+      .expect(specVoucherPreactivation._response.json)
+      .to.be.jsonSchema(voucherPreactivationResponseSchema)
+);
+
+// Scenario: The user successfully receives a pre-activated voucher by providing the optional X-Callback-URL header
+// Others Given, When, Then are written in the aforementioned example
+When(/^Send with optional X-Callback-URL header$/, () =>
+  specVoucherPreactivation.withHeaders(
+    'X-Callback-URL',
+    'https://myserver.com/send/callback/here'
+  )
+);
+
+// Scenario: The user successfully receives a pre-activated voucher by providing the optional X-Channel header
+// Others Given, When, Then are written in the aforementioned example
+When(/^Send with optional X-Channel header$/, () =>
+  specVoucherPreactivation.withHeaders('X-Channel', 'Web')
+);
+
+// Scenario: The user successfully receives a pre-activated voucher by providing the optional X-Date header
+// Others Given, When, Then are written in the aforementioned example
+When(/^Send with optional X-Date header$/, () =>
+  specVoucherPreactivation.withHeaders('X-Date', `${new Date().toISOString()}`)
+);
+
+// Scenario: The user successfully receives a pre-activated voucher by providing the optional X-CorrelationID header
+// Others Given, When, Then are written in the aforementioned example
+When(/^Send with optional X-CorrelationID header$/, () =>
+  specVoucherPreactivation.withHeaders(
+    'X-CorrelationID',
+    '40e9da5c-10fd-11ee-be56-0242ac120002'
+  )
+);
+
+// Scenario: The user is not able to receives a pre-activated voucher because of an invalid voucher amount
+// Others Given, When, Then are written in the aforementioned example
+When(
+  /^Send POST \/vouchers\/voucher_preactivation request with an invalid voucher amount$/,
+  () =>
+    specVoucherPreactivation.post(baseUrl).withJson({
+      voucher_amount: null,
+      voucher_currency: 'AED',
+      voucher_group: 'string',
+      Gov_Stack_BB: 'Gov_Stack_BB',
+      voucher_comment: 'string',
+    })
+);
+
+Then(
+  /^The \/vouchers\/voucher_preactivation endpoint response should match json error schema$/,
+  () =>
+    chai
+      .expect(specVoucherPreactivation._response.json)
+      .to.be.jsonSchema(voucherPreactivationResponseErrorSchema)
 );
 
 // Scenario: The user is not able to receives a pre-activated voucher because of an invalid voucher currency
-Given('The user wants to receives a pre-activated voucher #3', () => {
-  voucherVariables = {
-    voucher_amount: '15.21',
-    voucher_currency: 'eur',
-    voucher_group: 'string',
-    Gov_Stack_BB: 'Gov_Stack_BB',
-    voucher_comment: 'string',
-  };
-  return voucherVariables;
-});
+// Others Given, When, Then are written in the aforementioned example
+When(
+  /^Send POST \/vouchers\/voucher_preactivation request with an invalid voucher currency$/,
+  () =>
+    specVoucherPreactivation.post(baseUrl).withJson({
+      voucher_amount: '15.21',
+      voucher_currency: '000',
+      voucher_group: 'string',
+      Gov_Stack_BB: 'Gov_Stack_BB',
+      voucher_comment: 'string',
+    })
+);
+
+// Scenario: The user is not able to receives a pre - activated voucher because of an invalid voucher group
+// Others Given, When, Then are written in the aforementioned example
 
 When(
-  'The user triggers an action to receive a pre-activated voucher with an invalid voucher currency',
-  () => {
-    requestFunction();
-  }
+  /^Send POST \/vouchers\/voucher_preactivation request with an invalid voucher group$/,
+  () =>
+    specVoucherPreactivation.post(baseUrl).withJson({
+      voucher_amount: '15.21',
+      voucher_currency: 'AED',
+      voucher_group: null,
+      Gov_Stack_BB: 'Gov_Stack_BB',
+      voucher_comment: 'string',
+    })
 );
 
-Then(
-  'The result of an operation returns an error because of an invalid voucher currency',
-  async () => {
-    await specVoucherPreactivation.toss();
-    specVoucherPreactivation.response().should.have.status(453);
-    specVoucherPreactivation
-      .response()
-      .should.have.body(
-        '{\n  "Invalid payload, voucher_currency is invalid"\n}'
-      );
-  }
-);
-
-// Scenario: The user is not able to receives a pre-activated voucher because of an invalid voucher group
-Given('The user wants to receives a pre-activated voucher #4', () => {
-  voucherVariables = {
-    voucher_amount: '15.21',
-    voucher_currency: 'EUR',
-    voucher_group: null,
-    Gov_Stack_BB: 'Gov_Stack_BB',
-    voucher_comment: 'string',
-  };
-  return voucherVariables;
-});
-
+// Scenario: The user is not able to receives a pre - activated voucher because of Gov Stack Building Block does not exist
+// Others Given, When, Then are written in the aforementioned example
 When(
-  'The user triggers an action to receive a pre-activated voucher with an invalid voucher group',
-  () => {
-    requestFunction();
-  }
-);
-
-Then(
-  'The result of an operation returns an error because of an invalid voucher group',
-  async () => {
-    await specVoucherPreactivation.toss();
-    specVoucherPreactivation.response().should.have.status(454);
-    specVoucherPreactivation
-      .response()
-      .should.have.body('{\n  "Invalid payload, voucher_group is invalid"\n}');
-  }
-);
-
-// Scenario: The user is not able to receives a pre-activated voucher because of Gov Stack Building Block does not exist
-Given('The user wants to receives a pre-activated voucher #5', () => {
-  voucherVariables = {
-    voucher_amount: '15.21',
-    voucher_currency: 'EUR',
-    voucher_group: 'string',
-    Gov_Stack_BB: 'string',
-    voucher_comment: 'string',
-  };
-  return voucherVariables;
-});
-
-When(
-  'The user triggers an action to receive a pre-activated voucher with an invalid Gov_Stack_BB',
-  () => {
-    requestFunction();
-  }
-);
-
-Then(
-  'The result of an operation returns an error because of Gov Stack Building Block does not exist',
-  async () => {
-    await specVoucherPreactivation.toss();
-    specVoucherPreactivation.response().should.have.status(460);
-    specVoucherPreactivation
-      .response()
-      .should.have.body(
-        '{\n  "Invalid payload, Gov Stack Building Block does not exist"\n}'
-      );
-  }
+  /^Send POST \/vouchers\/voucher_preactivation request with an invalid Gov_Stack_BB$/,
+  () =>
+    specVoucherPreactivation.post(baseUrl).withJson({
+      voucher_amount: '15.21',
+      voucher_currency: 'AED',
+      voucher_group: 'string',
+      Gov_Stack_BB: 'not_exist',
+      voucher_comment: 'string',
+    })
 );
 
 // Scenario: The user is not able to receives a pre-activated voucher because of an empty payload
-Given('The user wants to receives a pre-activated voucher #6', () => {
-  voucherVariables = null;
-  return voucherVariables;
-});
-
+// Others Given, When, Then are written in the aforementioned example
 When(
-  'The user triggers an action to receive a pre-activated voucher with an empty payload',
-  () => {
-    requestFunction();
-  }
+  /^Send POST \/vouchers\/voucher_preactivation request an empty payload$/,
+  () => specVoucherPreactivation.post(baseUrl).withJson({})
 );
 
-Then(
-  'The result of an operation returns an error because of empty payload',
-  async () => {
-    await specVoucherPreactivation.toss();
-    specVoucherPreactivation.response().should.have.status(400);
-    specVoucherPreactivation
-      .response()
-      .should.have.body('{\n  "Invalid request - body can not be empty"\n}');
-  }
-);
-
-After(() => {
+After(endpointTag, () => {
   specVoucherPreactivation.end();
 });
