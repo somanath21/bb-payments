@@ -69,7 +69,7 @@ Then(/^The \/voucherstatuscheck response should match json schema$/, () =>
 
 // Scenario: Successfully checks the status of a voucher with the optional X-Callback-URL header
 // Others Given, When, Then are written in the aforementioned example
-When(/^Provides optional X-Callback-URL header$/, () => {
+When(/^The request contains optional X-Callback-URL header$/, () => {
   specVoucherStatusCheck.withHeaders(
     'X-Callback-URL',
     'https://myserver.com/send/callback/here'
@@ -78,19 +78,19 @@ When(/^Provides optional X-Callback-URL header$/, () => {
 
 // Scenario: Successfully checks the status of a voucher with the optional X-Channel header
 // Others Given, When, Then are written in the aforementioned example
-When(/^Provides optional X-Channel header$/, () => {
+When(/^The request contains optional X-Channel header$/, () => {
   specVoucherStatusCheck.withHeaders('X-Channel', 'Web');
 });
 
 // Scenario: Successfully checks the status of a voucher with the optional X-Date header
 // Others Given, When, Then are written in the aforementioned example
-When(/^Provides optional X-Date header$/, () => {
+When(/^The request contains optional X-Date header$/, () => {
   specVoucherStatusCheck.withHeaders('X-Date', `${new Date().toISOString()}`);
 });
 
 // Scenario: Successfully checks the status of a voucher with the optional X-CorrelationID header
 // Others Given, When, Then are written in the aforementioned example
-When(/^Provides optional X-CorrelationID header$/, () => {
+When(/^The request contains optional X-CorrelationID header$/, () => {
   specVoucherStatusCheck.withHeaders(
     'X-CorrelationID',
     '40e9da5c-10fd-11ee-be56-0242ac120002'

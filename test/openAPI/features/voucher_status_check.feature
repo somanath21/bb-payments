@@ -16,7 +16,7 @@ Feature: The VoucherStatus API is used to check the status of a voucher
   Scenario: Successfully checks the status of a voucher with the optional X-Callback-URL header
     Given Wants to check the status of a voucher
     When GET request to check the status of the voucher with voucherserialnumer = "5556" is sent
-    And Provides optional X-Callback-URL header
+    And The request contains optional X-Callback-URL header
     Then Receives a response from the /voucherstatuscheck endpoint
     And The /voucherstatuscheck response should be returned in a timely manner 15000ms
     And The /voucherstatuscheck response should have status 200
@@ -27,7 +27,7 @@ Feature: The VoucherStatus API is used to check the status of a voucher
   Scenario: Successfully checks the status of a voucher with the optional X-Channel header
     Given Wants to check the status of a voucher
     When GET request to check the status of the voucher with voucherserialnumer = "5557" is sent
-    And Provides optional X-Channel header
+    And The request contains optional X-Channel header
     Then Receives a response from the /voucherstatuscheck endpoint
     And The /voucherstatuscheck response should be returned in a timely manner 15000ms
     And The /voucherstatuscheck response should have status 200
@@ -38,7 +38,7 @@ Feature: The VoucherStatus API is used to check the status of a voucher
   Scenario: Successfully checks the status of a voucher with the optional X-Date header
     Given Wants to check the status of a voucher
     When GET request to check the status of the voucher with voucherserialnumer = "5558" is sent
-    And Provides optional X-Date header
+    And The request contains optional X-Date header
     Then Receives a response from the /voucherstatuscheck endpoint
     And The /voucherstatuscheck response should be returned in a timely manner 15000ms
     And The /voucherstatuscheck response should have status 200
@@ -49,7 +49,7 @@ Feature: The VoucherStatus API is used to check the status of a voucher
   Scenario: Successfully checks the status of a voucher with the optional X-CorrelationID header
     Given Wants to check the status of a voucher
     When GET request to check the status of the voucher with voucherserialnumer = "5559" is sent
-    And Provides optional X-CorrelationID header
+    And The request contains optional X-CorrelationID header
     Then Receives a response from the /voucherstatuscheck endpoint
     And The /voucherstatuscheck response should be returned in a timely manner 15000ms
     And The /voucherstatuscheck response should have status 200
