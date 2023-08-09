@@ -44,22 +44,16 @@ jobs:
   deploy-fineract-helm-chart:
     docker:
       - image: cimg/python:3.10
-    # parameters:
-    #   cluster-name:
-    #     description: "GStack-sb-eks-plg"
-    #     type: string
     steps:
-      # - aws-eks/update-kubeconfig-with-authenticator:
-      #     cluster-name: "GStack-sb-eks-plg"
-      #     aws-region: "$AWS_REGION"
+      - checkout
       - helm/install-helm-client:
+          version: "v3.8.2"
       - aws-cli/setup:
           role_arn: "${AWS_CIRCLECI_ROLE_ARN}"
           region: AWS_REGION
           profile_name: "playground"
           role_session_name: deploy-test
           session_duration: '1800'
-          version: "v3.8.2"
       - run: helm ls --namespace=fineract
       - helm/upgrade-helm-chart:
           add-repo: "https://fynarfin.io/images/fineract/"
