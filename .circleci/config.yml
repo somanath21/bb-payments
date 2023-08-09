@@ -46,15 +46,14 @@ jobs:
       - image: cimg/python:3.10
     steps:
       - checkout
-      - helm/install-helm-client:
-          version: "v3.8.2"
       - aws-cli/setup:
           role_arn: "${AWS_CIRCLECI_ROLE_ARN}"
           region: AWS_REGION
           profile_name: "playground"
           role_session_name: deploy-test
           session_duration: '1800'
-      - run: helm ls --namespace=fineract
+      - helm/install-helm-client:
+          version: v3.2.0
       - helm/upgrade-helm-chart:
           add-repo: "https://fynarfin.io/images/fineract/"
           chart: "https://fynarfin.io/images/fineract/fin-engine-1.0.0-SNAPSHOT.tgz"
