@@ -25,37 +25,7 @@ jobs:
       - run:
           name: Update kubeconfig
           command: |
-            aws eks update-kubeconfig --name ${EKS_CLUSTER}
-    # Install and configure AWS CLI
-      # - aws-cli/install
-      # - run:
-      #     name: Configure AWS CLI
-      #     command: |
-      #       aws configure set aws_access_key_id $AWS_ACCESS_KEY_ID
-      #       aws configure set aws_secret_access_key $AWS_SECRET_ACCESS_KEY
-      #       aws configure set default.region $AWS_REGION
-      
-    # Assume the IAM role with MFA
-    # The AWS authentication script
-      # - run:
-      #     name: AWS EKS Authentication
-      #     command: |
-      #       SES_NAME="aws-authentication"
-      #       DURATION="3600"
-      #       ROLE_ARN="arn:aws:iam::161826879607:user/somanath@fynarfin.io"
-      #       MFA_ARN=$(aws iam list-mfa-devices --query 'MFADevices[].SerialNumber' --output text)
-      #       MFA_TOKEN=$(python -c "import pyotp; print(pyotp.TOTP('${MFA_KEY}').now())")
-      #       aws sts get-caller-identity
-      #       AWS_STS=$(aws sts assume-role --role-arn ${ROLE_ARN} \
-      #         --role-session-name ${SES_NAME} \
-      #         --duration-seconds ${DURATION} \
-      #         --serial-number ${MFA_ARN} \
-      #         --token-code ${MFA_TOKEN})
-      #       export AWS_ACCESS_KEY_ID=$(echo ${AWS_STS} | jq -r '.Credentials.AccessKeyId')
-      #       export AWS_SECRET_ACCESS_KEY=$(echo ${AWS_STS} | jq -r '.Credentials.SecretAccessKey')
-      #       export AWS_SESSION_TOKEN=$(echo ${AWS_STS} | jq -r '.Credentials.SessionToken')
-      #       aws sts get-caller-identity
-      #       unset AWS_STS    
+            aws eks update-kubeconfig --name ${EKS_CLUSTER}     
    
       # Deploy Helm chart to EKS
       - run:
@@ -83,6 +53,12 @@ jobs:
       #     cluster-name: "GStack-sb-eks-plg"
       #     aws-region: "$AWS_REGION"
       - helm/install-helm-client:
+      - aws-cli/setup:
+          role_arn: "${AWS_CIRCLECI_ROLE_ARN}"
+          region: AWS_REGION
+          profile_name: "playground"
+          role_session_name: deploy-test
+          session_duration: '1800'
           version: "v3.8.2"
       - run: helm ls --namespace=fineract
       - helm/upgrade-helm-chart:
@@ -100,6 +76,12 @@ jobs:
     steps:
       - setup_remote_docker:
             version: 20.10.14
+      - aws-cli/setup:
+          role_arn: "${AWS_CIRCLECI_ROLE_ARN}"
+          region: AWS_REGION
+          profile_name: "playground"
+          role_session_name: deploy-test
+          session_duration: '1800'
       - kubernetes/install-kubectl
       - checkout
       # - aws-eks/update-kubeconfig-with-authenticator:
@@ -127,8 +109,12 @@ jobs:
       - image: 'curlimages/curl:8.1.2' 
     steps:
       - checkout
-      - run: echo $AWS_PROFILE
-      - run: echo $AWS_DEFAULT_PROFILE
+      - aws-cli/setup:
+          role_arn: "${AWS_CIRCLECI_ROLE_ARN}"
+          region: AWS_REGION
+          profile_name: "playground"
+          role_session_name: deploy-test
+          session_duration: '1800'
       - run: sh orchestration/deployBpmn.sh
 
 workflows:
