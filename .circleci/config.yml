@@ -54,6 +54,10 @@ jobs:
           session_duration: '1800'
       - helm/install-helm-client:
           version: v3.2.0
+      - run:
+          name: Update kubeconfig
+          command: |
+            aws eks update-kubeconfig --name ${EKS_CLUSTER} 
       - helm/upgrade-helm-chart:
           add-repo: "https://fynarfin.io/images/fineract/"
           chart: "https://fynarfin.io/images/fineract/fin-engine-1.0.0-SNAPSHOT.tgz"
@@ -76,6 +80,10 @@ jobs:
           profile_name: "playground"
           role_session_name: deploy-test
           session_duration: '1800'
+      - run:
+          name: Update kubeconfig
+          command: |
+            aws eks update-kubeconfig --name ${EKS_CLUSTER} 
       - kubernetes/install-kubectl
       # - aws-eks/update-kubeconfig-with-authenticator:
       #     cluster-name: "GStack-sb-eks-plg"
@@ -104,6 +112,10 @@ jobs:
           profile_name: "playground"
           role_session_name: deploy-test
           session_duration: '1800'
+      - run:
+          name: Update kubeconfig
+          command: |
+            aws eks update-kubeconfig --name ${EKS_CLUSTER} 
       - run: sh orchestration/deployBpmn.sh
 
 workflows:
