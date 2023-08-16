@@ -103,7 +103,7 @@ jobs:
 
   deploying-bpmns:
     docker:
-      - image: 'curlimages/curl:8.1.2' 
+      - image: 'curlimages/curl:8.2.1' 
     steps:
       - checkout
       - aws-cli/setup:
