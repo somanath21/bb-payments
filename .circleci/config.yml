@@ -129,6 +129,10 @@ jobs:
           profile_name: "playground"
           role_session_name: deploy-test
           session_duration: '1800'
+      - run:
+          name: Update kubeconfig
+          command: |
+            aws eks update-kubeconfig --name ${EKS_CLUSTER}
       - helm/install-helm-client:
           version: v3.2.0
       - run:
