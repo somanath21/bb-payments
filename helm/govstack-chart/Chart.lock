@@ -1,6 +1,0 @@
-dependencies:
-- name: ph-ee-g2psandbox
-  repository: https://fynarfin.io/images/ph-ee-g2psandbox-0.0.0
-  version: 0.0.0
-digest: sha256:fcea285eb5c3d5f7e66876d18649b13e3b71fc5f63d4a43a2037d4493ea287b8
-generated: "2023-08-09T17:46:14.530048+05:30"
