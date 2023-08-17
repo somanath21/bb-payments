@@ -39,7 +39,7 @@ jobs:
             cd bb-payments/
             helm dep up helm/govstack-chart
             helm package helm/govstack-chart
-            helm upgrade -f helm/govstack-chart/values.yaml g2p-sandbox helm/govstack-chart --install --create-namespace --namespace paymenthub
+            helm install -f helm/govstack-chart/values.yaml g2p-sandbox helm/govstack-chart --install --create-namespace --namespace paymenthub
             # helm upgrade --install g2p-sandbox ./helm/govstack-chart
   deploy-fineract-helm-chart:
     docker:
