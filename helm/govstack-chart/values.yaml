@@ -21,13 +21,13 @@ ph-ee-g2psandbox:
       
     ph_ee_connector_ams_mifos:
       enabled: true
-      image: docker.io/openmf/ph-ee-connector-ams-mifos:v1.3.0
+      image: docker.io/openmf/ph-ee-connector-ams-mifos:v1.4.0
       ingress:
         enabled: false                 
 
     ph_ee_connector_mojaloop:
       enabled: true
-      image: docker.io/openmf/ph-ee-connector-mojaloop:v1.2.0
+      image: docker.io/openmf/ph-ee-connector-mojaloop:v1.3.0
       ingress:
         enabled: false
 
@@ -35,7 +35,7 @@ ph-ee-g2psandbox:
 
     channel:
       enabled: true
-      image: docker.io/openmf/ph-ee-connector-channel:v1.6.1
+      image: docker.io/openmf/ph-ee-connector-channel:v1.7.0
       operations:
         url: "http://ops-bk.sandbox.fynarfin.io/api/v1"
       server:
@@ -47,20 +47,20 @@ ph-ee-g2psandbox:
              
     operations_app:
       enabled: true
-      image: docker.io/openmf/ph-ee-operations-app:v1.5.0
+      image: docker.io/openmf/ph-ee-operations-app:v1.6.0
       tenants: "rhino,gorilla"
       ingress:
         enabled: false
 
     operations_web:
       enabled: true 
-      image: docker.io/openmf/ph-ee-operations-web:v1.3.2
+      image: docker.io/openmf/ph-ee-operations-web:v1.4.0
       ingress:
         enabled: false           
 
     ph_ee_connector_gsma:
       enabled: true
-      image: docker.io/openmf/ph-ee-connector-gsma:v1.0.2
+      image: docker.io/openmf/ph-ee-connector-gsma:v1.1.0
       ingress:
         enabled: false
 
@@ -78,14 +78,14 @@ ph-ee-g2psandbox:
       
     notifications:
       enabled: true
-      image: docker.io/openmf/ph-ee-notifications:v1.0.0
+      image: docker.io/openmf/ph-ee-notifications:v1.3.0
       NOTIFICATION_FAILURE_ENABLED: "false"
       ingress:
         enabled: false 
 
     connector_bulk:
       enabled: true
-      image: docker.io/openmf/ph-ee-bulk-processor:v1.5.0
+      image: docker.io/openmf/ph-ee-bulk-processor:v1.7.0
       tenants: "rhino,gorilla"
       aws:
         region: "us-east-2"
@@ -100,7 +100,7 @@ ph-ee-g2psandbox:
 
     zeebe_ops:
       enabled: true
-      image: docker.io/openmf/ph-ee-zeebe-ops:v1.1.0
+      image: docker.io/openmf/ph-ee-zeebe-ops:v1.2.0
       tenants: "rhino,gorilla"
       ingress:
         enabled: false
@@ -117,11 +117,11 @@ ph-ee-g2psandbox:
                             
     importer_es:
       enabled: true
-      image: docker.io/openmf/openmf/ph-ee-importer-es:v1.4.0
+      image: docker.io/openmf/openmf/ph-ee-importer-es:v1.6.0
 
     importer_rdbms:
       enabled: true
-      image: docker.io/openmf/ph-ee-importer-rdbms:v1.4.1
+      image: docker.io/openmf/ph-ee-importer-rdbms:v1.5.0
 
     wildcardhostname: ""
     tls: ""
