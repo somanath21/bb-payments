@@ -161,7 +161,6 @@ workflows:
             - playground
       - helm-test:
           requires:
-            - deploying-bpmns
             - create-secret
           context: 
             - AWS
