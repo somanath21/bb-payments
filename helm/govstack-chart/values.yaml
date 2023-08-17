@@ -117,7 +117,7 @@ ph-ee-g2psandbox:
                             
     importer_es:
       enabled: true
-      image: docker.io/openmf/openmf/ph-ee-importer-es:v1.6.0
+      image: docker.io/openmf/ph-ee-importer-es:v1.6.0
 
     importer_rdbms:
       enabled: true
