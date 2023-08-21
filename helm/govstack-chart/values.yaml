@@ -123,6 +123,10 @@ ph-ee-g2psandbox:
       enabled: true
       image: docker.io/openmf/ph-ee-importer-rdbms:v1.5.0
 
+    mockpayment:
+      enabled: true 
+      image: docker.io/openmf/ph-ee-connector-mock-payment-schema:v1.2.2  
+
     wildcardhostname: ""
     tls: ""
 
