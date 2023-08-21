@@ -144,4 +144,10 @@ ph-ee-g2psandbox:
       enabled: true
       replica:
         replicaCount: 0
+
+    integration_test:
+      enabled: true
+      replicas: 1
+      image: docker.io/openmf/ph-ee-integration-test
+      imageTag: latest    
         
