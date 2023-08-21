@@ -149,5 +149,7 @@ ph-ee-g2psandbox:
       enabled: true
       replicas: 1
       image: docker.io/openmf/ph-ee-integration-test
-      imageTag: latest    
+      imageTag: latest 
+      gradle:
+        command : ./gradlew test -Dcucumber.filter.tags="@gov"
         
