@@ -150,7 +150,7 @@ jobs:
       - store_test_results:
           path: ph-ee-integration-test/build/cucumber.xml
       - store_artifacts:
-          path: ph-ee-connector-integration-test/build/reports/tests/test
+          path: ph-ee-integration-test/build/reports/tests/test
   test-chart-ams:
     docker:
       - image: cimg/openjdk:17.0.0
@@ -160,7 +160,7 @@ jobs:
       - store_test_results:
           path: ph-ee-integration-test/build/cucumber.xml
       - store_artifacts:
-          path: ph-ee-connector-integration-test/build/reports/tests/test
+          path: ph-ee-integration-test/build/reports/tests/test
 
 workflows:
   deploy:
