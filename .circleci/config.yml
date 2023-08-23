@@ -139,7 +139,7 @@ jobs:
       - run:
           name: Run Helm Tests
           command: |
-            helm test g2p-sandbox --filter strings !attribute=Pod g2p-sandbox-zeebe-test-connection --namespace paymenthub 
+            helm test g2p-sandbox --namespace paymenthub 
   
   test-chart-gov:
     docker:
