@@ -148,7 +148,7 @@ jobs:
       - run: git clone https://github.com/openmf/ph-ee-integration-test
       - run: cd ph-ee-integration-test && ./gradlew test -Dcucumber.filter.tags="@gov" 
       - store_test_results:
-          path: ph-ee-connector-integration-test/build/cucumber.xml
+          path: ph-ee-integration-test/build/cucumber.xml
       - store_artifacts:
           path: ph-ee-connector-integration-test/build/reports/tests/test
   test-chart-ams:
@@ -158,7 +158,7 @@ jobs:
       - run: git clone https://github.com/openmf/ph-ee-integration-test
       - run: cd ph-ee-integration-test && ./gradlew test -Dcucumber.filter.tags="@amsIntegration"
       - store_test_results:
-          path: ph-ee-connector-integration-test/build/cucumber.xml
+          path: ph-ee-integration-test/build/cucumber.xml
       - store_artifacts:
           path: ph-ee-connector-integration-test/build/reports/tests/test
 
