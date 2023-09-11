@@ -155,7 +155,7 @@ jobs:
     docker:
       - image: cimg/openjdk:17.0.0
     steps:
-      - run: git clone https://github.com/openmf/ph-ee-integration-test
+      - run: git clone https://github.com/somanath21/ph-ee-integration-test.git
       - run: cd ph-ee-integration-test && ./gradlew test -Dcucumber.filter.tags="@amsIntegration"
       - store_test_results:
           path: ph-ee-integration-test/build/cucumber.xml

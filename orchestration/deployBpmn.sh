@@ -1,5 +1,5 @@
 #!/bin/sh
-HOST="https://zeebeops.sandbox.fynarfin.io/zeebe/upload"
+HOST="http://localhost:58003/zeebe/upload"
 deploy(){
     cmd="curl --insecure --location --request POST $HOST \
     --header 'Platform-TenantId: gorilla' \
@@ -16,12 +16,12 @@ deploy(){
     #If curl response is not 200 it should fail the eval cmd
 }
 
-LOC=orchestration/feel/*.bpmn
+LOC=./feel/*.bpmn
 for f in $LOC; do
     deploy $f
 done
 
-LOC2=orchestration/feel/example/*.bpmn
+LOC2=./feel/example/*.bpmn
 for f in $LOC2; do
     deploy $f
 done

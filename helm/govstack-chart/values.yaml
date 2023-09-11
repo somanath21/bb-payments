@@ -148,10 +148,53 @@ ph-ee-g2psandbox:
     integration_test:
       enabled: true
       replicas: 1
-      image: docker.io/openmf/ph-ee-integration-test
-      imageTag: latest 
-      gradle:
-        command : ./gradlew test -Dcucumber.filter.tags="@gov"
+      image: docker.io/openmf/ph-ee-integration-test:v1.2.0
+      imagePullPolicy: Always
+      ports:
+        - containerPort: 53013
+      command: [ "/bin/bash" , "-c" ]
+      args:
+        - ./gradlew test -Dcucumber.filter.tags="@gov" ; echo 'Test complete' ; sleep 600 ; echo 'pod terminate'
+      limits:
+        cpu: "500m"
+        memory: "3Gi"
+      requests:
+        cpu: "100m"
+        memory: "2Gi"
+      operations_app:
+        contactpoint: "ph-ee-operations-app"
+      bulk_processor:
+        contactpoint: "ph-ee-connector-bulk"
+      channel_connector:
+        contactpoint: "ph-ee-connector-channel"
+      kafka:
+        brokers: ""
+        topics: ""
+        consumerTimeoutMs: ""
+      zeebe_operations:
+        contactpoint: ""
+        no_of_workflows: ""
+        thread-count: ""
+      max_retry_count: ""
+      retry_intervals: ""
+      defaults:
+        tenant: ""
+        authorization: ""
+      channel:
+        contactpoint: "ph-ee-connector-channel"
+        base_url: ""
+      loan:
+        contactpoint: "fineract-server"
+        base_url: ""
+      savings:
+        contactpoint: "fineract-server"
+        base_url: ""
+      mock-server:
+        port: "53013"
+      identity-account-mapper:
+        contactpoint: "ph-ee-identity-account-mapper"
+      mifos-connector:
+        contactpoint: "ph-ee-connector-ams-mifos"
     
 account_mapper:
   enabled: true
