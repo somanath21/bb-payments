@@ -1,3 +1,3 @@
 #!/bin/bash
-chmod u+x entrypoint.sh
+chmod u+x test_entrypoint.sh
 docker-compose up -d test-app --build
