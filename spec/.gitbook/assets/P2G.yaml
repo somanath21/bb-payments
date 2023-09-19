@@ -1,0 +1,222 @@
+---
+openapi: 3.0.1
+info:
+  title: Payments P2G and Biller APIs
+  version: 1.0.0
+paths:
+  /bills/{billId}:
+    get:
+      description: Inquire bill details from the Bill Aggregator/Govt Entity
+      parameters:
+        - name: billId
+          in: path
+          required: true
+          description: Bill's Identification
+          schema:
+            type: string
+            maxLength: 20
+        - name: fields
+          in: query
+          required: true
+          schema:
+            type: string
+            enum: [inquiry]
+      responses:
+        '202':
+          description: Accepted
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/BillInquiryResponse'
+        '400':
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  code:
+                    type: string
+                    maxLength: 2
+                  reason:
+                    type: string
+                    maxLength: 200
+                  RequestID:
+                    type: string
+                    maxLength: 12
+  
+  /transferRequests/{transferRequestId}:
+    get:
+      description: "Bill Aggregator Govt Entity ↔ PBB: Inquire about the status of its RTP"
+      parameters:
+        - name: transferRequestId
+          in: path
+          required: true
+          schema:
+            type: string
+      responses:
+        '202':
+          description: Accepted
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/RTPStatusInquiryResponse'
+        '400':
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+components:
+  schemas:
+    BillInquiryResponse:
+      type: object
+      properties:
+        code:
+          type: string
+          maxLength: 2
+        reason:
+          type: string
+          maxLength: 200
+        RequestID:
+          type: string
+          maxLength: 12
+        billId:
+          type: string
+          maxLength: 20
+        billDetails:
+          type: array
+          items:
+            type: object
+            properties:
+              billerId:
+                type: string
+                maxLength: 10
+              billerName:
+                type: string
+                maxLength: 10
+              billStatus:
+                type: string
+                maxLength: 10
+              dueDate:
+                type: string
+              amountonDueDate:
+                type: integer
+              amountAfterDueDate:
+                type: integer
+              
+    MarkBillPaymentResponse:
+      type: object
+      properties:
+        code:
+          type: string
+          maxLength: 2
+        reason:
+          type: string
+          maxLength: 200
+        RequestID:
+          type: string
+          maxLength: 12
+        billId:
+          type: string
+          maxLength: 20
+        PaymentStatus:
+          type: string
+          maxLength: 10
+          
+    billerRTPRequest:
+      type: object
+      properties:
+        billId:
+          type: string
+          maxLength: 20
+        billAmount:
+          type: integer
+        payerDetails:
+          type: object
+          properties:
+            name:
+              type: string
+              maxLength: 50
+            mobile:
+              type: string
+              maxLength: 15
+              
+    billerRTPResponse:
+      type: object
+      properties:
+        code:
+          type: string
+          maxLength: 2
+        reason:
+          type: string
+          maxLength: 200
+        RTPId:
+          type: string
+          maxLength: 12
+        billId:
+          type: string
+          maxLength: 20
+      description: PBB ↔ Bill Aggregator Govt Entity to update it on the response of the RTP
+          
+    RTPStatusUpdateRequest:
+      type: object
+      properties:
+        RTPId:
+          type: string
+          maxLength: 12
+        billId:
+          type: string
+          maxLength: 20
+        status:
+          type: string
+          maxLength: 10
+      description: "tBill Aggregator Govt Entity ↔ PBB: to inquire about the status of its RTP"
+          
+    RTPStatusUpdateResponse:
+      type: object
+      properties:
+        code:
+          type: string
+          maxLength: 2
+        reason:
+          type: string
+          maxLength: 200
+        RTPId:
+          type: string
+          maxLength: 12
+        billId:
+          type: string
+          maxLength: 20
+          
+    RTPStatusInquiryResponse:
+      type: object
+      properties:
+        code:
+          type: string
+          maxLength: 2
+        reason:
+          type: string
+          maxLength: 200
+        RTPId:
+          type: string
+          maxLength: 12
+        billId:
+          type: string
+          maxLength: 20
+        status:
+          type: string
+          maxLength: 10
+          
+    ErrorResponse:
+      type: object
+      properties:
+        responseCode:
+          type: string
+          maxLength: 2
+        responseDescription:
+          type: string
+          maxLength: 200
+        requestId:
+          type: string
+          maxLength: 12

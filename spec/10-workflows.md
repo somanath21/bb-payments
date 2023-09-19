@@ -366,8 +366,8 @@ Alternatives:
 The following types of P2G payments are considered.
 
 * Bill payments
-* Payments for government services (application for a birth certificate)
-* Payment for registrations. (In the case of the [Registration for Postpartum and Infant Care](https://github.com/GovStackWorkingGroup/BuildingBlockAPI/issues/1) use case)
+* Payments for government services (for example application for a birth certificate)
+* Payment for registrations.&#x20;
 
 There are two possible scenarios that can be supported:
 
@@ -411,7 +411,6 @@ The above model requires that the payer must provide two pieces of information t
 * A reference ID: this is unique and time bound for each transaction.
 * As the bill payment is invoked by inputting the reference number which prompts the retrieval of the payment details in real-time from the registration building block, a failed transaction could be triggered by a session time-out or a wrong PIN. In both cases, the payer would have to re-initiate the transaction.
 * In the P2G payment in the flow above, the government holds an account with the Financial Services Provider which would collect the payments on the government's behalf and transfer them to the single treasury account on a defined timeline (i.e. daily) in an aggregated way. For reconciliation purposes, the Registration Building Block would need to notify the government of a successful/unsuccessful payment.
-
 
 ### 9.3.2 P2G Payment Initiated by Payee (e.g USSD push payment) sequence diagram
 
@@ -486,7 +485,7 @@ Notes:
 
 * There is small room for error in reading a QR code (unless the payer scans the wrong code).
 * All mobile operators and banking apps need to be able to read the reference in the same way for this to work meaning that a standardised/interoperable QR code needs to be in place at a country level. While this is in place in some Asian countries (i.e. Indonesia, Sri Lanka) where there is widespread adoption of QR codes, In Africa the uptake of QR codes is significantly lower and standardisation is typically not in place at a country level.
-* During registration, the Registration Building Block will generate transaction details including the amount to be paid by the payer and transaction ID, and send them to the Payments Building Block.
+* During registration, the Registration Building Block will generate transaction details including the amount to be paid by the payer and transaction ID and send them to the Payments Building Block.
 * The Payments Building Block will use the transaction details to initiate a request to pay to the Financial Service Provider.
 * The QR payment widget displayed to the payer will have the following different attributes: payment\_entity\_id, amount, currency, transaction\_id
 * The payer scans the QR code to approve/reject the payment.
@@ -496,42 +495,88 @@ Notes:
 
 ### 9.3.4 P2G Bill Payments
 
-The P2G Bill Payments flow diagram illustrates the steps involved in processing bill payments between individuals and government agencies
+The following processes are involved in government bill payments:
 
-```mermaid
-sequenceDiagram
+**Biller Onboarding**
 
-title: P2G Bill Payments
+The Biller onboarding would be a one – time prerequisite activity required to be carried out before consumers could pay bills to them.
 
-Government agency -->>Payer: Send Invoice to payer
-Government agency -->>Bill Aggregator: Send Invoice
-Bill Aggregator -->> Payments BB: Send Invoice reference
-Payer-->>Collection FSP: Invoice reference
-Collection FSP -->> Payment BB: Request transaction details (Amount)
-Payment BB -->>Bill Aggregator: Request transaction details
-Bill Aggregator -->> Payment BB: transaction details
-Payment BB -->>Collection FSP: transactions details
-Note left of Collection FSP: Executes payment
-Collection FSP -->> Payment BB: Sends payment reference
-Payments BB -->> Bill Aggregator: Sends payment reference
-Bill Aggregator -->> Government agency: Send payment reference
+Payments BB would be biller/ aggregator/ bill payment system agnostic therefore it would allow either of them to register. The main function of Payment BB in this case is allocating unique IDs to the registering entity and ensuring that all Bill Payment related queries are routed to these registered entities.
 
+The relationship between billers/ aggregators and how they identify specific bills from the consumers numbers are billers/ aggregators responsibility only and out of scope for Payments BB.
 
+**Pre-req to Biller Onboarding**&#x20;
 
+• The structure of the unique ID is defined including:&#x20;
 
+The length of the unique ID - Whether the ID is simply a sequential number or if each digit of the ID identifies any unique entity/actions.&#x20;
 
+The incoming biller/ aggregator has the required infra to support continuous requests and updates.
 
-```
+**Onboarding Process**
 
-1. The Government Agency sends an invoice to the payer, detailing the amount owed.
-2. The Government Agency also sends a copy of the invoice to the designated Bill Aggregator.
-3. The Bill Aggregator then sends the invoice reference number to the Payments Building Block (Payments Building Block).
-4. The payer, upon receiving the invoice, provides the invoice reference number to their preferred Collection Financial Service Provider (Collection Financial Services Provider).
-5. The Collection Financial Services Provider (FSP) requests transaction details, including the amount to be paid, from the Payments Building Block using the invoice reference number.
-6. The Payments Building Block, in turn, requests the transaction details from the Bill Aggregator.
-7. The Bill Aggregator provides the requested transaction details to the Payments Building Block.
-8. The Payments Building Block forwards the transaction details to the Collection FSP.
-9. The Collection FSP executes the payment based on the transaction details provided.
-10. After completing the payment, the Collection FSP sends the payment reference to the Payments Building Block.
-11. The Payments Building Block forwards the payment reference to the Bill Aggregator.
-12. Finally, the Bill Aggregator sends the payment reference to the Government Agency, confirming the completion of the payment.
+1. Onboarding Request: This step could be a manual process where a representative gathers all the required information from the billers/ aggregators and enters into the system via a UI based form/ table. (This process may go through the make checker process)
+2. Unique IDs/ Prefixes are generated by the system for each direct biller or aggregator (depending upon the billing ecosystem model). The entire information is saved in the system in the ‘Billers Table’.
+3. The billers/ aggregators are returned a unique ID/ prefix allocated to them.
+4. The billers/ aggregators concatenate the unique ID/ prefix before the Bill Ids that they generate and share with their consumers.
+
+**Payer Financial Institution – PBB Linking for Bill Payments**
+
+The Payer FI – PBB linking would be a one – time prerequisite activity required to be carried out before consumers could request bill payment over the Payments BB.
+
+NOTE: Setting up of the front end, UI to take the requests from the consumers would fall under the responsibility of the Payer FI only and would be out of scope for PBB.
+
+Pre-req to Payer FSP – PBB Linking Process
+
+·       The Payer FSP is enabled for Interbank Funds Transfer (for settlement) – Out of Scope of PBB
+
+·       The Payer FSP is equipped with the right infrastructure to communicate with the PBB
+
+_Activities for Payer FSP – PBB Linking_
+
+Payer FSP – PBB Linking would be an offline process comprising of formal agreements and the following activities to ensure proper functioning:
+
+·       PBB shares its endpoints and required API contracts that need to be setup at the FSP;
+
+·       PBB shares the list Billers and the unique IDs allotted to them with the
+
+·       PBB shares the _required_ Bank and Account Details of each registered Biller with the FSP for carrying out financial transactions and settlement activities.
+
+NOTE: The biller details could be either manually configured by the Payer FSP at their end or Payments BB could prepare a file and keep it at a central location for Payer FSP to download/ upload it (as decided).
+
+Responsibilities of Payer FSP, post PBB Linking
+
+Once the Payer FSP is setup with PBB for Bill Payment Services then it is expected that it:
+
+·       Would be able to accept from its customers Bill Ids of different Billers.
+
+·       Would be able to differentiate at its end the exact biller/ aggregator for which the customer has entered the Bill ID.
+
+·       Would be able to credit the respective account of the biller based on the account information shared by PBB at the time of linking.
+
+·       Would duly notify the PBB of the final status of the Bill Payment Request (successful debit/ Failed debit)
+
+**Bill Inquiry & Bill Payment Update via Payment BB**
+
+Once the prerequisite setups have been made the Payment BB can now start taking requests from the Payer FSPs and fetch information from and towards the Billers/ Aggregators / Govt. Entity.
+
+Main Responsibilities of Payment BB in the flow
+
+1. The PBB would receive the Bill Inquiry as a result of Pay Bill request at a Payer FI – Payer end.
+2. PBB would validate the sender of request and send it on to the respective Biller/ Govt. Entity to fetch bill.
+3. The Payer FSP would then either perform payment confirmation or abort the transaction – in either case it would notify the PBB of the Payment Status
+4. Receiving the Payment Status Update the PBB would forward the Payment confirmation to Biller/ Govt. Entity
+5. PBB would keep sending Mark Bill Paid Advice to the Biller/ Govt Entity until a response is received from that site.
+6. Upon receiving a response from the Biller/ Aggregator, the PBB would notify the Payer FSP of the response.
+7. The Government Agency sends an invoice to the payer, detailing the amount owed.
+8. The Government Agency also sends a copy of the invoice to the designated Bill Aggregator.
+9. The Bill Aggregator then sends the invoice reference number to the Payments Building Block (Payments Building Block).
+10. The payer, upon receiving the invoice, provides the invoice reference number to their preferred Collection Financial Service Provider (Collection Financial Services Provider).
+11. The Collection Financial Services Provider (FSP) requests transaction details, including the amount to be paid, from the Payments Building Block using the invoice reference number.
+12. The Payments Building Block, in turn, requests the transaction details from the Bill Aggregator.
+13. The Bill Aggregator provides the requested transaction details to the Payments Building Block.
+14. The Payments Building Block forwards the transaction details to the Collection FSP.
+15. The Collection FSP executes the payment based on the transaction details provided.
+16. After completing the payment, the Collection FSP sends the payment reference to the Payments Building Block.
+17. The Payments Building Block forwards the payment reference to the Bill Aggregator.
+18. Finally, the Bill Aggregator sends the payment reference to the Government Agency, confirming the completion of the payment.
