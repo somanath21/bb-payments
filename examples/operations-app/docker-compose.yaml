@@ -17,5 +17,5 @@ services:
     environment:
       FINERACT_DATASOURCE_CORE_HOST: operations-mysql
       SPRING_PROFILES_ACTIVE: bb
-    depends_on:
-      - operations-mysql
+    # depends_on:
+    #   - operations-mysql
