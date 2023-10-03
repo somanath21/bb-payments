@@ -29,7 +29,7 @@ Given(
 );
 
 When(
-  /^A PATCH request to cancel the voucher with serial number = "([^"]*)" is sent$/,
+  /^A PATCH request to cancel the voucher with voucherserialnumber = "([^"]*)" is sent$/,
   serialNumber => {
     voucherSerialNumberToCancel = serialNumber;
     specVoucherCancelation
@@ -140,7 +140,7 @@ Then(
 // Scenario: A non Payment Building Block is unable to cancel a voucher due to providing invalid voucher serial number in the payload
 // Given and Then are written in the aforementioned example
 When(
-  /^A PATCH request to cancel the voucher with invalid serial number = "([^"]*)" is sent$/,
+  /^A PATCH request to cancel the voucher with invalid voucherserialnumber = "([^"]*)" is sent$/,
   invalidSerialNumber => {
     specVoucherCancelation
       .patch(baseUrl)
@@ -170,7 +170,7 @@ When(
 // Scenario: A non Payment Building Block is unable to cancel a voucher due to missing required voucher serial number in the payload
 // Given and Then are written in the aforementioned example
 When(
-  /^A PATCH request to cancel the voucher is sent with missing voucher serial number in the payload$/,
+  /^A PATCH request to cancel the voucher is sent with missing voucherserialnumber in the payload$/,
   () => {
     specVoucherCancelation
       .patch(baseUrl)
