@@ -6,7 +6,7 @@ Feature: The VoucherCancelation API is used to cancel a voucher
   @smoke @positive
   Scenario: A non Payment Building Block successfully cancels a voucher smoke type test
     Given A non Payment Building Block wants to cancel a voucher
-    When A PATCH request to cancel the voucher with serial number = "60000" is sent
+    When A PATCH request to cancel the voucher with voucherserialnumber = "60000" is sent
     Then The response from the voucher cancelation endpoint is received
     And The voucher cancelation response should be returned in a timely manner 15000 ms
     And The voucher cancelation response should have status 200
@@ -16,7 +16,7 @@ Feature: The VoucherCancelation API is used to cancel a voucher
   @negative
   Scenario: A non Payment Building Block is unable to cancel a voucher that has already been canceled
     Given A non Payment Building Block wants to cancel a voucher
-    When A PATCH request to cancel the voucher with serial number = "60001" is sent
+    When A PATCH request to cancel the voucher with voucherserialnumber = "60001" is sent
     Then The response from the voucher cancelation endpoint is received
     And The voucher cancelation response should have status 200
     When A PATCH request to cancel the same voucher is sent second time
@@ -30,7 +30,7 @@ Feature: The VoucherCancelation API is used to cancel a voucher
   @negative
   Scenario: A non Payment Building Block is unable to cancel a voucher due to providing invalid voucher serial number in the payload
     Given A non Payment Building Block wants to cancel a voucher
-    When A PATCH request to cancel the voucher with invalid serial number = "invalid_serial_number" is sent
+    When A PATCH request to cancel the voucher with invalid voucherserialnumber = "invalid_serial_number" is sent
     Then The response from the voucher cancelation endpoint is received
     And The voucher cancelation response should be returned in a timely manner 15000 ms
     And The voucher cancelation response should have status 463
@@ -52,7 +52,7 @@ Feature: The VoucherCancelation API is used to cancel a voucher
   @negative
   Scenario: A non Payment Building Block is unable to cancel a voucher due to missing required voucher serial number in the payload
     Given A non Payment Building Block wants to cancel a voucher
-    When A PATCH request to cancel the voucher is sent with missing voucher serial number in the payload
+    When A PATCH request to cancel the voucher is sent with missing voucherserialnumber in the payload
     Then The response from the voucher cancelation endpoint is received
     And The voucher cancelation response should be returned in a timely manner 15000 ms
     And The voucher cancelation response should have status 400
