@@ -122,7 +122,7 @@ Exceptions: Some accounts might have been pre-validated or part of the crediting
 
 In order to facilitate the transfer of funds from the disbursement organisation (the payer) to the mobile money provider, the mobile money provider would need to be connected to the payment gateway/switch. Should this connection not be in place, the disbursement could be facilitated by a third-party aggregator or there would need to be a bilateral connection between the payer’s Financial Service Provider and the Mobile Money Provider.
 
-## 9.2 G2P Beneficiary Payments Using Vouchers
+## 9.2 G2P Vouchers Payments
 
 The Voucher Management System supports three workflows for voucher payments:
 
@@ -361,204 +361,70 @@ Alternatives:
 * Audit trails (transaction logs) capture each event as it happens and are to be used for queries, analysis, and reconciliation.
 * Event logs will capture specific events that happen at each node.
 
-## 9.3 P2G Payments
+## 9.3 P2G Bill Payments
 
 The following types of P2G payments are considered.
 
-* Bill payments
+* Bill payments such as utilities
 * Payments for government services (for example application for a birth certificate)
-* Payment for registrations.&#x20;
 
-There are two possible scenarios that can be supported:
+The following is assumed for bill payment with the Payments BB
 
-a) P2G payment is initiated by the Payer
-
-b) P2G payment is initiated by the Payee (USSD push payment for example)
-
-Scenario a) can also be implemented using QR code.
-
-### 9.3.1 P2G Payment initiated by the payer
-
-```mermaid
-sequenceDiagram
-title Payer initiated P2G payments 
-
-Registration BB ->> Payments BB: Send Transaction details
-Payments BB-->>Registration BB: Payment reference
-Registration BB ->> Payer: payment reference
-Payer ->> FSP: Invoke Bill payment service
-FSP -->>FSP: Debit payer, credit payee
-FSP -->> Payments BB: Payment notification
-Payments BB -->> Registration BB: Payment success notification
-Registration BB -->> Messaging BB: Payment success notification
-Messaging BB -->> Payer: Payment success notification
-
-```
-
-Flow Description:
-
-* Upon registration for a government service, the Registration Building Block sends transaction details to the Payments Building Block which creates and returns a unique payment reference for the payer of the service.
-* The Registration Building Block sends the unique reference number to the payer.
-* After entering their account the payer would invoke a bill payment to a selected service (in this case paying for the registration service). The payer would need to enter the payment reference which would prompt the retrieval of the payment details from the Registration Building Block in real time. If the payment details are correct, the payer is prompted to enter their mobile money pin to authorize the payment.
-* Upon authorisation, the payer’s account is debited and the government’s connected account is credited in real time. The Financial Service Provider, in this case, the mobile money provider would then notify the success status of the Payments Building Block.
-* For this type of payment, as the payment reference is needed to validate the payment, this can be done by any mobile money account holder.
-
-Notes:
-
-The above model requires that the payer must provide two pieces of information through their USSD, STK, or mobile app:
-
-* A merchant ID. Typically the government would be given a special merchant ID. The payer should be able to select which government service they would be paying for through the mobile money interface.
-* A reference ID: this is unique and time bound for each transaction.
-* As the bill payment is invoked by inputting the reference number which prompts the retrieval of the payment details in real-time from the registration building block, a failed transaction could be triggered by a session time-out or a wrong PIN. In both cases, the payer would have to re-initiate the transaction.
-* In the P2G payment in the flow above, the government holds an account with the Financial Services Provider which would collect the payments on the government's behalf and transfer them to the single treasury account on a defined timeline (i.e. daily) in an aggregated way. For reconciliation purposes, the Registration Building Block would need to notify the government of a successful/unsuccessful payment.
-
-### 9.3.2 P2G Payment Initiated by Payee (e.g USSD push payment) sequence diagram
-
-```mermaid
-sequenceDiagram
-title Payer initiated P2G payments 
-
-Registration BB ->> Payments BB: Send Transaction details
-Payments BB->>FSP: Request USSD Push
-alt Error 402: Account restrictions
-FSP -->>Payments BB: Payment Failure notification
-Payment BB -->> Registration BB: Payment Failure notification
-end
-FSP ->>Payer: Push USSD notification
-Payer -->>Payer: Enter Pin to confirm the transition
-Payer ->>FSP: transaction athorisation
-FSP -->FSP: Debit payer, credit payee
-FSP ->> Payments BB: Payment notification
-Payments BB ->> Registration BB: Payment success notification
-Registration BB -->> Messaging BB: Payment success notification
-Messaging BB -->> Payer: Payment success notification
-```
-
-Flow Description:
-
-* Upon registration for a government service, the registration building sends transaction details to the Payments Building Block which sends a payment request to the payer through their mobile money provider (Unstructured Supplementary Service Data prompt).
-* The payer will see a request coming for the specific service requested with payment details, prompting them to authorize the payment by entering the pin code.
-* Upon authorisation, the payer’s account is debited and the government’s connected account is credited in real time.
-* The Financial Services Provider, in this case, the mobile money provider would then notify the success status to the Payments Building Block.
-* This payment differs from the previous P2G mobile money payment as the payment is not initiated by the payer by invoking a bill payment but is initiated by a merchant (in this case the government agency providing the service). Therefore the payer is requested to pay for the service immediately.
-
-Notes:
-
-* There can be no error in the above as both the merchant number and the payment reference are pushed to the phone.
-* The only risk here is a timeout on the Unstructured Supplementary Service Data or the user keying in the wrong PIN which may require the transaction to be reinitiated.
-
-### 9.3.3 P2G Payment implementation using QR Code workflow
-
-```mermaid
-sequenceDiagram
-title P2G Mobile Money Payment with QR code
-
-Registration BB->>Payments BB: Send Transaction details
-Payments BB -->> Registration BB: Generates payment reference
-
-Registration BB ->> Registration BB: Generate QR code
-
-Registration BB ->> Payer: QR code is reads Payment reference
-Payer -->> FSP: Invoke Bill Payment service
-
-FSP ->> FSP: Debit Payer
-
-FSP ->> FSP: Credit Gov
-
-FSP ->> Payments BB: Payment notification
-Payments BB -->> FSP: Confirm payment
-
-Payments BB -->> Registration BB: Payment success notification
-Registration BB -->> Payer: Payment success notification
-
-alt Error 401: Incorrect Payment Reference
-    FSP ->> FSP: Rollback Payer Debit
-    FSP ->> FSP: Rollback Gov Credit
-    FSP -->> Payments BB: Rollback successful
-    Payments BB -->> Registration BB: Payment failure notification
-    Registration BB -->> Payer: Payment failure notification    
-end
-
-```
-
-Notes:
-
-* There is small room for error in reading a QR code (unless the payer scans the wrong code).
-* All mobile operators and banking apps need to be able to read the reference in the same way for this to work meaning that a standardised/interoperable QR code needs to be in place at a country level. While this is in place in some Asian countries (i.e. Indonesia, Sri Lanka) where there is widespread adoption of QR codes, In Africa the uptake of QR codes is significantly lower and standardisation is typically not in place at a country level.
-* During registration, the Registration Building Block will generate transaction details including the amount to be paid by the payer and transaction ID and send them to the Payments Building Block.
-* The Payments Building Block will use the transaction details to initiate a request to pay to the Financial Service Provider.
-* The QR payment widget displayed to the payer will have the following different attributes: payment\_entity\_id, amount, currency, transaction\_id
-* The payer scans the QR code to approve/reject the payment.
-* The Financial Service Provider sends a notification of the status of the transaction to the Payments Building Block and the payer.
-* Transaction status is sent to the Registration Building Block on completion of payments.
-* The Messaging Building Block sends a transaction confirmation message to the payer.
-
-### 9.3.4 P2G Bill Payments
+* The Bill ID generation/ distribution scenario of a jurisdiction is already decided and in place.
+* Depending upon the applicable scenario all relevant billers/ aggregators/ Bill payment Systems responsible for distributing the Bill IDs to consumers are also registered with the Payments BB.
+* The Settlement of bill amounts is carried out by the relevant payers and payee FSPs.
+* The Payments BB will generate a report/ allow a data extract that would contain the log of transactions that would be used for settlement of the transactions between the Payer FSP and the Billers/ Aggregators FSPs
 
 The following processes are involved in government bill payments:
 
-**Biller Onboarding**
+### **9.3.1 Biller Onboarding**
 
-The Biller onboarding would be a one – time prerequisite activity required to be carried out before consumers could pay bills to them.
+The Biller onboarding would be a one–time prerequisite activity required to be carried out before consumers could pay bills to them.
 
-Payments BB would be biller/ aggregator/ bill payment system agnostic therefore it would allow either of them to register. The main function of Payment BB in this case is allocating unique IDs to the registering entity and ensuring that all Bill Payment related queries are routed to these registered entities.
+The main function of Payment BB in this case is allocating unique IDs to the registering entity and ensuring that all Bill Payment related queries are routed to these registered entities.
 
-The relationship between billers/ aggregators and how they identify specific bills from the consumers numbers are billers/ aggregators responsibility only and out of scope for Payments BB.
+The relationship between billers/ aggregators and how they identify specific bills from the consumers numbers is the billers'/aggregators' responsibility only and out of scope for Payments BB.
+
+<figure><img src=".gitbook/assets/image (2).png" alt=""><figcaption><p>Biller/Aggregator Onboarding</p></figcaption></figure>
 
 **Pre-req to Biller Onboarding**&#x20;
 
-• The structure of the unique ID is defined including:&#x20;
-
-The length of the unique ID - Whether the ID is simply a sequential number or if each digit of the ID identifies any unique entity/actions.&#x20;
+* The structure of the unique ID is defined including, the length of the unique ID and whether the ID is simply a sequential number or if each digit of the ID identifies any unique entity/actions.&#x20;
 
 The incoming biller/ aggregator has the required infra to support continuous requests and updates.
 
 **Onboarding Process**
 
-1. Onboarding Request: This step could be a manual process where a representative gathers all the required information from the billers/ aggregators and enters into the system via a UI based form/ table. (This process may go through the make checker process)
-2. Unique IDs/ Prefixes are generated by the system for each direct biller or aggregator (depending upon the billing ecosystem model). The entire information is saved in the system in the ‘Billers Table’.
-3. The billers/ aggregators are returned a unique ID/ prefix allocated to them.
-4. The billers/ aggregators concatenate the unique ID/ prefix before the Bill Ids that they generate and share with their consumers.
+* Onboarding Request: This step could be a manual process where a representative gathers all the required information from the billers/ aggregators and enters it into the system via a UI-based form/ table. (This process may go through the make checker process)
+* Unique IDs/ Prefixes are generated by the system for each direct biller or aggregator (depending upon the billing ecosystem model). The entire information is saved in the system in the ‘Billers Table’.
+* The billers/ aggregators are returned a unique ID/ prefix allocated to them.
+* The billers/ aggregators concatenate the unique ID/ prefix before the Bill IDs that they generate and share with their consumers.
 
-**Payer Financial Institution – PBB Linking for Bill Payments**
+### **9.3.2 Payer Financial Institution – PBB Linking for Bill Payments**
 
-The Payer FI – PBB linking would be a one – time prerequisite activity required to be carried out before consumers could request bill payment over the Payments BB.
+The Payer FI – PBB linking is a one–time prerequisite activity required before consumers can request bill payment over the Payments BB. Setting up of the front end, UI to take the requests from the consumers would fall under the responsibility of the Payer FI only and would be out of the scope of payments BB
 
-NOTE: Setting up of the front end, UI to take the requests from the consumers would fall under the responsibility of the Payer FI only and would be out of scope for PBB.
+Pre-requisites  for the  Payer FSP – PBB Linking Process&#x20;
 
-Pre-req to Payer FSP – PBB Linking Process
+* The Payer FSP is enabled for Interbank Funds Transfer (for settlement) – Out of Scope of PBB
+* The Payer FSP is equipped with the right infrastructure to communicate with the PBB
 
-·       The Payer FSP is enabled for Interbank Funds Transfer (for settlement) – Out of Scope of PBB
+Payer FSP – PBB Linking would be an offline process comprising formal agreements and the following activities to ensure proper functioning:
 
-·       The Payer FSP is equipped with the right infrastructure to communicate with the PBB
-
-_Activities for Payer FSP – PBB Linking_
-
-Payer FSP – PBB Linking would be an offline process comprising of formal agreements and the following activities to ensure proper functioning:
-
-·       PBB shares its endpoints and required API contracts that need to be setup at the FSP;
-
-·       PBB shares the list Billers and the unique IDs allotted to them with the
-
-·       PBB shares the _required_ Bank and Account Details of each registered Biller with the FSP for carrying out financial transactions and settlement activities.
-
-NOTE: The biller details could be either manually configured by the Payer FSP at their end or Payments BB could prepare a file and keep it at a central location for Payer FSP to download/ upload it (as decided).
-
-Responsibilities of Payer FSP, post PBB Linking
+* PBB shares the list of Billers and the unique IDs allotted to them with the Payer FSP
+* PBB shares its endpoints and required API contracts that need to be setup at the FSP;
+* PBB shares the _required_ Bank and Account Details of each registered Biller with the FSP for carrying out financial transactions and settlement activities. The biller details could be either manually configured by the Payer FSP at their end or Payments BB could prepare a file and keep it at a central location for Payer FSP to download/ upload it (as decided).
 
 Once the Payer FSP is setup with PBB for Bill Payment Services then it is expected that it:
 
-·       Would be able to accept from its customers Bill Ids of different Billers.
+* Would be able to accept from its customers Bill IDs of different Billers.
+* Would be able to differentiate at its end the exact biller/ aggregator for which the customer has entered the Bill ID.
+* Would be able to credit the respective account of the biller based on the account information shared by PBB at the time of linking.
+* Would duly notify the PBB of the final status of the Bill Payment Request (successful debit/ Failed debit)
 
-·       Would be able to differentiate at its end the exact biller/ aggregator for which the customer has entered the Bill ID.
+### **9**.3**.3 Bill Inquiry & Bill Payment Update via Payment BB**
 
-·       Would be able to credit the respective account of the biller based on the account information shared by PBB at the time of linking.
-
-·       Would duly notify the PBB of the final status of the Bill Payment Request (successful debit/ Failed debit)
-
-**Bill Inquiry & Bill Payment Update via Payment BB**
-
-Once the prerequisite setups have been made the Payment BB can now start taking requests from the Payer FSPs and fetch information from and towards the Billers/ Aggregators / Govt. Entity.
+After the completion of the prerequisite setups, the Payment BB is ready to accept requests from the Payer FSPs and retrieve information from and communicate with the Billers, Aggregators, and Government Entities.
 
 Main Responsibilities of Payment BB in the flow
 
@@ -580,3 +446,189 @@ Main Responsibilities of Payment BB in the flow
 16. After completing the payment, the Collection FSP sends the payment reference to the Payments Building Block.
 17. The Payments Building Block forwards the payment reference to the Bill Aggregator.
 18. Finally, the Bill Aggregator sends the payment reference to the Government Agency, confirming the completion of the payment.
+
+\
+
+
+```mermaid
+sequenceDiagram
+title Push Payment Flow with Bill Inquiry
+    title P2G Bill Payment via RTP
+    participant "Payer FI" as PayerFI
+    participant PaymentsBB
+    participant ALS
+    participant "Bill Aggregator GovtEntity" as BillAggregator
+
+    BillAggregator->>PaymentsBB: 1. billerRtpReq (txnID, rtpId, billId, requestType, aliasID (C))
+    PaymentsBB-->>BillAggregator: billerRtpReq (Ack)
+
+    alt RTP Type = 00
+        note over PaymentsBB: Jump to "SEND RTP TO PAYER FI" Step
+    else RTP Type = 01
+        PaymentsBB->>* ALS: Bill ID is routed to lookup service.
+        ALS->>PaymentsBB: Returns back with Payer FI details.
+        note over PaymentsBB: Jump to "SEND RTP TO PAYER FI" Step
+    end
+
+    note over PaymentsBB, PayerFI: SEND RTP TO PAYER FI
+    PaymentsBB->>PayerFI: 2. payerRtpReq \n(txnId, billId, [Bill Details])
+    PayerFI-->>PaymentsBB: payerRtpResp (Ack)
+
+    note over PayerFI: Initiate "RTP Notification Sequence - Customer<->FSP"
+    PayerFI->>PaymentsBB: 3. payerRtpResp\n(txnId, referenceId)
+    PaymentsBB-->>PayerFI: payerRtpResp (Ack)
+
+    PaymentsBB->>BillAggregator: 4. billerRtpResp (txnId, paymentStatus, referenceId)
+    BillAggregator-->>PaymentsBB: billerRtpResp (Ack)
+
+    opt If BillAggregator requires status update
+        BillAggregator->>PaymentsBB: rtpStatusUpdate (txnId, rtpID)_ Req
+        PaymentsBB-->>BillAggregator: rtpStatusUpdate (Status Code) _ Resp
+    end
+
+    note over PayerFI, BillAggregator: BILL PAYMENT STATUS STAGE
+
+    note over PayerFI: Initiate "LEG2:PayBill Sequence - Customer/FSP" 
+
+    PayerFI->>PaymentsBB: paymentStatusUpdate(Payment Status, Txn ID, RespCode) _ Req
+    PaymentsBB-->>PayerFI: paymentStatusUpdate(Ack)
+
+    note over PaymentsBB, BillAggregator: Mark Bill == "PAID" Req Sequence
+
+    loop Mark Bill Payment Advice via SAF
+        PaymentsBB->>BillAggregator: markBillPaid(Bill ID, ReceiptNum, PaymentStatus) _ Req 
+        note right of PaymentsBB: Payments BB keeps sending \n Bill Payment Advice to BillAggregator \n until Response received from BillAggregator
+    end 
+
+    BillAggregator-->>PaymentsBB: markBillPaid (Ack)
+    BillAggregator->>PaymentsBB: markBillPaid(MarkStatus, RespCode(C)) _ Resp 
+    PaymentsBB->>PayerFI: paymentStatusUpdate(Payment Status, Txn ID, RespCode) _ Resp
+    PayerFI-->>PaymentsBB: paymentStatusUpdate(Ack)
+```
+
+
+
+```mermaid
+sequenceDiagram
+    title PayBill Sequence - Customer/FSP
+    participant Payer as Payer
+    participant PayerFI as Payer FI
+
+    note over Payer, PayerFI: LEG 1: BILL PAYMENT REQUEST
+    Payer->>PayerFI: Pay_Bill_Req (Bill ID)
+    note right of PayerFI: Forwards billInquiry (Bill ID) _ Req to PBB
+    note left of PayerFI: Receives billInquiry_Resp from PBB
+    PayerFI->>Payer: Pay_Bill_Resp \n(Biller Name, Due Date\nAmount,Bill Status )
+
+    note over Payer, PayerFI: LEG 2: BILL PAYMENT CONFIRMATION
+    Payer-->>PayerFI: Confirms Bill Payment
+    PayerFI->>PayerFI: * Performs Account Validations \n * Identifies the Biller Account
+    note over PayerFI: Logs Txn_Success_Ref ID/ \n Txn_Fail_Ref ID
+
+    alt If Validations OK
+        PayerFI->>PayerFI: Debits Payer's Account
+        PayerFI->>Payer: Sends Payment Receipt \n(Txn_Success_Ref ID)
+        PayerFI->>Payer: Account/ Wallet Debited - Bill Paid (Txn_Success_Ref ID) 
+        Note right of PayerFI: Initiates: "(PBB) BILL PAYMENT STATUS STAGE" \nCalls PAYER BB API -> paymentStatusUpdate
+    else If Validations KO
+        PayerFI->>PayerFI: No Debit
+        PayerFI->>Payer: Sends Txn Failure Message (Txn_Fail_Ref ID)
+        note right of PayerFI: Bill Paid Status (Txn_Fail_Ref ID)
+    end
+
+```
+
+
+
+
+
+
+
+```mermaid
+sequenceDiagram
+title P2G Bill Payment via RTP
+    participant PayerFI as "Payer FI"
+    participant PaymentsBB as "PaymentsBB"
+    participant ALS as "ALS"
+    participant BillAggregator as "Bill Aggregator GovtEntity"
+    
+    BillAggregator->>PaymentsBB: 1. billerRtpReq (txnID, rtpId, billId, requestType, aliasID (C))
+    PaymentsBB-->>BillAggregator: billerRtpReq (Ack)
+    
+    alt RTP Type = 00
+        PaymentsBB->>PayerFI: Jump to \"SEND RTP TO PAYER FI\" Step
+    else RTP Type = 01
+        PaymentsBB->>+ALS: Bill ID is routed to lookup service.
+        ALS->>PaymentsBB: Returns back with Payer FI details.
+        PaymentsBB->>PayerFI: Jump to \"SEND RTP TO PAYER FI\" Step
+    end
+    
+    Note over PaymentsBB, PayerFI: SEND RTP TO PAYER FI
+    PaymentsBB->>PayerFI: 2. payerRtpReq (txnId, billId, [Bill Details])
+    PayerFI-->>PaymentsBB: payerRtpResp (Ack)
+    
+    Note over PayerFI: Initiate \"RTP Notification Sequence - Customer<->FSP\"
+    PayerFI->>PaymentsBB: 3. payerRtpResp (txnId, referenceId)
+    PaymentsBB-->>PayerFI: payerRtpResp (Ack)
+    
+    PaymentsBB->>BillAggregator: 4.billerRtpResp (txnId, paymentStatus, referenceId)
+    BillAggregator-->>PaymentsBB: billerRtpResp (Ack)
+    
+    opt If BillAggregator requires status update
+        BillAggregator->>PaymentsBB: rtpStatusUpdate (txnId, rtpID)_ Req
+        PaymentsBB-->>BillAggregator: rtpStatusUpdate (Status Code) _ Resp
+    end
+    
+    Note over PayerFI, BillAggregator: BILL PAYMENT STATUS STAGE
+    
+    Note over PayerFI: Initiate \"LEG2:PayBill Sequence - Customer/FSP\"
+    PayerFI->>PaymentsBB: paymentStatusUpdate(Payment Status, Txn ID, RespCode) _ Req
+    PaymentsBB-->>PayerFI: paymentStatusUpdate(Ack)
+    
+    Note over PaymentsBB, BillAggregator: Mark Bill == \"PAID\" Req Sequence
+    
+    loop Mark Bill Payment Advice via SAF
+        PaymentsBB->>BillAggregator: markBillPaid(Bill ID, ReceiptNum, PaymentStatus) _ Req
+        BillAggregator-->>PaymentsBB: markBillPaid (ack)
+    end
+    
+    BillAggregator->>PaymentsBB: markBillPaid(MarkStatus, RespCode(C)) _ Resp
+    
+    PaymentsBB->>PayerFI: paymentStatusUpdate(Payment Status, Txn ID, RespCode) _ Resp
+    PayerFI-->>PaymentsBB: paymentStatusUpdate(Ack)
+```
+
+
+
+
+
+```mermaid
+sequenceDiagram
+    participant Payer_FI as PR
+    participant Payments_BB as PBB
+    participant Voucher_Engine as V
+    participant Biller as Biller
+    
+    Note over PR: Bill Inquiry is Done - For Bill Payment "Voucher" is chosen as option
+    Note over Payer_FI, Biller: BILL PAYMENT STATUS STAGE
+
+    PR ->> PBB: voucherRedemptionforBillPayment(BillInquiryCorrelationID, Bill Details, Voucher Secret Code)
+    PBB ->>+ V: VOUCHER REDEMPTION
+    PBB -->> V: VoucherInquiry(Secret Code)
+    V -->> PBB: VoucherInquiry_Response
+    PBB -->> V: redemptionWithoutAuthentication_Request
+    V -->> PBB: redemptionWithoutAuthentication_Response
+    destroy V
+    PBB -->> PR: voucherRedemptionforBillPayment(Status)_Resp
+    
+    loop Mark Bill Payment Advice via SAF
+        PBB ->> Biller: markBillPaid(Bill ID, ReceiptNum, PaymentStatus) _ Req
+        Note right of PBB: Payments BB keeps sending\nBill Payment Advice to Biller\nuntil Response received from Biller
+        Biller -->> PBB: markBillPaid (ack)
+        Biller -->> PBB: markBillPaid(MarkStatus, RespCode(C)) _ Resp
+        PBB -->> PR: paymentStatusUpdate(Payment Status, Txn ID, RespCode) _ Resp
+    end
+    
+    PR -->> PBB: paymentStatusUpdate(ack)
+```
+

@@ -295,7 +295,39 @@ Figure: Key digital requirements of Bulk Payments expressed as a high-level bloc
 
 <figure><img src=".gitbook/assets/Picture2.png" alt=""><figcaption></figcaption></figure>
 
-###
+### 6.17 P2G Bill payments
+
+The Billing ecosystem would consist of various actors performing core and secondary processes to complete the bill payment function. Some of the actors only play an auxiliary role to enable bill payment.
+
+<figure><img src=".gitbook/assets/image (1).png" alt=""><figcaption></figcaption></figure>
+
+**Payments Building Block**
+
+* Main payments facilitator enabling exchange of all financial and non-financial messages related to: Biller/Aggregator Registration o Bill discovery o Bill Payment Confirmation messages
+* Biller Discovery through internally referring to the Billers Table updated by PBB Billing sub-Module&#x20;
+* Generation of transaction/ activity reports for registered Billers/ Aggregators&#x20;
+* Registration of Billers in the system&#x20;
+* Allocation of unique Biller IDs / Prefixes
+
+**Billers Table**
+
+* Database of all registered billers
+* Internally referenced by the Payments BB each time a Bill Inquiry comes in
+* Returns the endpoints for the registered biller/ aggregators
+* Biller Details and Account Details from this table would be shared with the Payer FIs during Payments BB and Payer FSP linking for Bill Payments.
+
+**Billers/ Aggregators**
+
+* Getting registered at the PBB – Bill Payment Service
+* Returning the correct Bill Details against the Bill Inquiries received from PBB
+* Marking the Bills as “Paid” upon receiving Payment confirmation from PBB
+* \[Out of Scope of PBB] Performing Bill validation and Bill discovery in their system
+
+**Payer FIs**
+
+* Sending Bill inquiry Requests
+* Sending Bill Payment Confirmation
+* \[Out of Scope of PBB] Customer validation and Payment debit
 
 ## 6.17 Payments Building Block Components
 
