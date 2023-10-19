@@ -1,0 +1,67 @@
+openapi: 3.0.0
+info:
+  title: Single Beneficiary Payment Status Check API
+  version: 1.0.1
+  description: API for Source BB to retrieve individual beneficiary payment statuses.
+
+paths:
+  /beneficiary:
+    put:
+      summary: Check status for individual beneficiaries.
+      parameters:
+        - name: X-Callback_URL
+          in: header
+          required: true
+          description: Callback URL.
+          schema:
+            type: string
+            maxLength: 20
+        - name: registeringInstitutionId
+          in: header
+          required: true
+          description: Id of registering Institution.
+          schema:
+            type: string
+            maxLength: 20
+      requestBody:
+        description: Details of the beneficiaries to check.
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                requestId:
+                  type: string
+                  maxLength: 12
+                  description: Request Id.
+                payeePartyIds:
+                  type: array
+                  items:
+                    type: string
+                    maxLength: 20
+                  description: The functional Ids of the beneficiaries.
+      responses:
+        '200':
+          description: Successfully retrieved payment statuses.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  requestId:
+                    type: string
+                    description: Request Id.
+                  paymentModalityList:
+                    type: array
+                    items:
+                      type: object
+                      properties:
+                        payeeIdentity:
+                          type: string
+                        paymentModality:
+                          type: string
+                        financialAddress:
+                          type: string
+                        bankingInstitutionCode:
+                          type: string
