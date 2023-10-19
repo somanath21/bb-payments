@@ -1,0 +1,59 @@
+openapi: 3.0.0
+info:
+  title: Authorization Response Callback API
+  version: 1.0.1
+  description: Callback API for Payer Bank to respond to the getAuthorization() Request.
+paths:
+  /{X-Callback-URL}:
+    post:
+      summary: Respond to getAuthorization() Request.
+      parameters:
+        - name: X-Callback-URL
+          in: path
+          required: true
+          description: The URL registered in the original request.
+          schema:
+            type: string
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              required:
+                - clientCorrelationId
+                - status
+              properties:
+                clientCorrelationId:
+                  type: string
+                  maxLength: 12
+                  description: Echo referenced GUID of original request by Payments BB.
+                status:
+                  type: string
+                  maxLength: 1
+                  enum: ['Y', 'N']
+                  description: Authorization status (Y for Yes, N for No).
+                reason:
+                  type: string
+                  maxLength: 100
+                  description: Description of why authorization was given or not given.
+      responses:
+        '202':
+          description: Accepted. Response received and processed.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                    example: "Response has been processed."
+        '200':
+          description: OK. Response received successfully.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                    example: "Response has been received successfully."
