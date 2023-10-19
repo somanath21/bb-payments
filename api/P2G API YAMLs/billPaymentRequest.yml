@@ -1,0 +1,95 @@
+openapi: 3.0.0
+info:
+  title: Payer FI to Payments BB Notification API
+  version: 1.0.0
+  description: Notification API to inform Payments BB about success and to notify the Biller/Aggregator to mark bill as paid.
+paths:
+  /billTransferRequests:
+    post:  # The method is POST as mentioned
+      summary: Notify Payments BB about successful payment.
+      parameters:
+        - name: X-CorrelationID
+          in: header
+          required: true
+          description: Globally unique requestId/ client correlation Id
+          schema:
+            type: string
+            maxLength: 20
+        - name: X-Platform-TenantId
+          in: header
+          required: true
+          description: Tenant Id for Data scoping
+          schema:
+            type: string
+            maxLength: 20
+        - name: X-PayerFI-Id
+          in: header
+          required: true  # mandatory as mentioned
+          description: Payer FI ID initiating the original bill inquiry/ payment sequence
+          schema:
+            type: string
+            maxLength: 20
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                requestId:
+                  type: string
+                  maxLength: 12
+                billInquiryRequestId:
+                  type: string
+                  maxLength: 12
+                billId:
+                  type: string
+                  maxLength: 20
+                paymentReferenceID:
+                  type: string
+                  maxLength: 16
+              required:
+                - requestId
+                - billInquiryRequestId
+                - billId
+                - paymentReferenceID
+      responses:
+        '202':
+          description: Request Accepted
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  responseCode:
+                    type: string
+                    maxLength: 2
+                  reason:
+                    type: string
+                    maxLength: 200
+                  requestID:
+                    type: string
+                    maxLength: 12
+        '400':
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  code:
+                    type: string
+                    maxLength: 2
+                  reason:
+                    type: string
+                    maxLength: 200
+                  requestID:
+                    type: string
+                    maxLength: 12
+      security:
+        - PayerFIAuth: []
+components:
+  securitySchemes:
+    PayerFIAuth:
+      type: apiKey
+      in: header
+      name: X-CorrelationID

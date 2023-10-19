@@ -1,0 +1,79 @@
+openapi: 3.0.0
+info:
+  title: RTP Request API to Payer FI
+  version: 1.0.0
+  description: API called by Payments BB to request RTP to Payer FI.
+paths:
+  /rtpRequest:
+    post:
+      summary: Request RTP from Payer FI.
+      parameters:
+        - name: X-CorrelationID
+          in: header
+          required: true
+          description: Globally unique requestId/ client correlation Id
+          schema:
+            type: string
+            maxLength: 20
+        - name: X-Platform-TenantId
+          in: header
+          required: true
+          description: Tenant Id for Data scoping
+          schema:
+            type: string
+            maxLength: 20
+        - name: X-billerId
+          in: header
+          required: true
+          description: ID of the institution initiating the RTP
+          schema:
+            type: string
+            maxLength: 20
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                TxnID:
+                  type: string
+                  maxLength: 12
+                rTPID:
+                  type: integer
+                  maxLength: 12
+                billDetails:
+                  type: object
+                  properties:
+                    Bill ID:
+                      type: string
+                      maxLength: 10
+                    Biller Name:
+                      type: string
+                      maxLength: 10
+                    Amount:
+                      type: integer
+      responses:
+        '200':
+          description: RTP Request Acknowledged
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  responseCode:
+                    type: string
+                    maxLength: 2
+                  responseDescription:
+                    type: string
+                    maxLength: 200
+                  requestID:
+                    type: string
+                    maxLength: 12
+      security:
+        - PayerFIAuth: []
+components:
+  securitySchemes:
+    PayerFIAuth:
+      type: apiKey
+      in: header
+      name: X-CorrelationID
