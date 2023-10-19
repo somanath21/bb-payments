@@ -1,0 +1,97 @@
+openapi: 3.0.0
+info:
+  title: Update Payer FI of Mark Bill Payment Notification API
+  version: 1.0.0
+  description: API invoked by PBB to update Payer FI about the status of its Mark Bill Payment Notification.
+paths:
+  /billTransferRequests:
+    post:
+      summary: Update Payer FI about the status of Mark Bill Payment Notification.
+      parameters:
+        - name: X-CorrelationID
+          in: header
+          required: true
+          description: Globally unique requestId/ client correlation Id
+          schema:
+            type: string
+            maxLength: 20
+        - name: X-Platform-TenantId
+          in: header
+          required: true
+          description: Tenant Id for Data scoping
+          schema:
+            type: string
+            maxLength: 20
+        - name: X-PayerFI-Id
+          in: header
+          required: true
+          description: Payer FI ID initiating the original bill inquiry/ payment sequence
+          schema:
+            type: string
+            maxLength: 20
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                requestId:
+                  type: string
+                  maxLength: 12
+                billId:
+                  type: integer
+                  maxLength: 12
+                status:
+                  type: string
+                  maxLength: 4
+                  enum:
+                    - ACK
+                    - RJC
+                rejectReason:
+                  type: string
+                  maxLength: 100
+                  enum:
+                    - Def
+                    - Dup
+                    - Und
+      responses:
+        '200':
+          description: Request Successful
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  respCode:
+                    type: string
+                    maxLength: 2
+                  reason:
+                    type: string
+                    maxLength: 200
+                  requestID:
+                    type: string
+                    maxLength: 12
+        '400':
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  code:
+                    type: string
+                    maxLength: 2
+                  reason:
+                    type: string
+                    maxLength: 200
+                  requestID:
+                    type: string
+                    maxLength: 12
+      security:
+        - PayerFIAuth: []
+components:
+  securitySchemes:
+    PayerFIAuth:
+      type: apiKey
+      in: header
+      name: X-CorrelationID
