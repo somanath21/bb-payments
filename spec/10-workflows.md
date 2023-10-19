@@ -432,11 +432,11 @@ Main Responsibilities of Payment BB in the flow
 2. PBB would validate the sender of request and send it on to the respective Biller/ Govt. Entity to fetch bill.
 3. The Payer FSP would then either perform payment confirmation or abort the transaction – in either case it would notify the PBB of the Payment Status
 4. Receiving the Payment Status Update the PBB would forward the Payment confirmation to Biller/ Govt. Entity
-5. PBB would keep sending Mark Bill Paid Advice to the Biller/ Govt Entity until a response is received from that site.
+5. PBB sends Mark Bill Paid Advice to the Biller/ Govt Entity until a response is received from that site.
 6. Upon receiving a response from the Biller/ Aggregator, the PBB would notify the Payer FSP of the response.
 7. The Government Agency sends an invoice to the payer, detailing the amount owed.
 8. The Government Agency also sends a copy of the invoice to the designated Bill Aggregator.
-9. The Bill Aggregator then sends the invoice reference number to the Payments Building Block (Payments Building Block).
+9. The Bill Aggregator then sends the invoice reference number to the Payments Building Block .
 10. The payer, upon receiving the invoice, provides the invoice reference number to their preferred Collection Financial Service Provider (Collection Financial Services Provider).
 11. The Collection Financial Services Provider (FSP) requests transaction details, including the amount to be paid, from the Payments Building Block using the invoice reference number.
 12. The Payments Building Block, in turn, requests the transaction details from the Bill Aggregator.
@@ -447,8 +447,7 @@ Main Responsibilities of Payment BB in the flow
 17. The Payments Building Block forwards the payment reference to the Bill Aggregator.
 18. Finally, the Bill Aggregator sends the payment reference to the Government Agency, confirming the completion of the payment.
 
-\
-
+**Push Payment Flow with Bill Inquiry Flow**&#x20;
 
 ```mermaid
 sequenceDiagram
@@ -506,7 +505,36 @@ title Push Payment Flow with Bill Inquiry
     PayerFI-->>PaymentsBB: paymentStatusUpdate(Ack)
 ```
 
+1. **Bill Inquiry stage**
 
+* **Payer FI** initiates the process by querying bill details.
+* **Payer FI** requests bill inquiry using `billInq(Txn ID, Bill ID)_Req`.
+* **PaymentsBB** validates the request, performing security checks and registration status verification.
+  * If validations fail, **PaymentsBB** sends an error response to **Payer FI**.
+  * If validations succeed, **PaymentsBB** identifies the biller and moves to the next step.
+
+**2. Biller discovery**
+
+* **PaymentsBB** identifies the biller by querying the **Billers Table** using `IdentifyBiller(Prefix)`.
+* **Billers Table** provides **PaymentsBB** with the Biller's endpoint information.
+* **PaymentsBB** then proceeds to fetch the bill from the **Bill Aggregator/Government Entity**.
+
+3. **Fetch Bill**
+
+* **PaymentsBB** requests bill details from **Bill Aggregator/Government Entity** using `billInqBiller(Bill ID)`.
+* **Bill Aggregator/Government Entity** performs internal checks (e.g., payment status, expiry) and responds with bill details.
+* **PaymentsBB** forwards bill details to **Payer FI** for review.
+
+**4. Bill Payment Status**
+
+* **Payer FI** reviews the bill details and initiates the payment sequence.
+* **Payer FI** updates the payment status using `paymentStatusUpdate(Payment Status, Txn ID, RespCode)`.
+* **PaymentsBB** acknowledges the update and marks the bill as "PAID" in the request sequence.
+* **PaymentsBB** sends payment advice to **Bill Aggregator/Government Entity** until a response is received.
+* Once confirmed, **Bill Aggregator/Government Entity** acknowledges the payment and updates the status.
+* Finally, **PaymentsBB** notifies **Payer FI** of the successful payment update
+
+### Payer FI – Customer Bill Payment Flow <a href="#_toc142074926" id="_toc142074926"></a>
 
 ```mermaid
 sequenceDiagram
@@ -540,9 +568,7 @@ sequenceDiagram
 
 
 
-
-
-
+### P2G Bill Payment via Request to Pay Flow
 
 ```mermaid
 sequenceDiagram
@@ -598,37 +624,50 @@ title P2G Bill Payment via RTP
     PayerFI-->>PaymentsBB: paymentStatusUpdate(Ack)
 ```
 
-
+### P2G Bill Payment with Voucher
 
 
 
 ```mermaid
 sequenceDiagram
-    participant Payer_FI as PR
-    participant Payments_BB as PBB
-    participant Voucher_Engine as V
+    title Payment By Voucher
+    
+    participant Payer FI as PR
+    participant PaymentsBB as PBB
+    participant Voucher Engine as V
     participant Biller as Biller
     
-    Note over PR: Bill Inquiry is Done - For Bill Payment "Voucher" is chosen as option
-    Note over Payer_FI, Biller: BILL PAYMENT STATUS STAGE
-
+    note over PR: Bill Inquiry is Done - For Bill Payment "Voucher" is chosen as option
+    note over Payer FI, Biller: BILL PAYMENT STATUS STAGE
+    
     PR ->> PBB: voucherRedemptionforBillPayment(BillInquiryCorrelationID, Bill Details, Voucher Secret Code)
-    PBB ->>+ V: VOUCHER REDEMPTION
-    PBB -->> V: VoucherInquiry(Secret Code)
+    
+    note over PBB: PBB receives API Call with Voucher as well as Bill Details.
+    PBB ->> V: VOUCHER REDEMPTION
+    
+    note over PBB,V: PAYBB checks that Voucher is valid, Voucher Amount and Bill Amount are same
+    PBB ->> V: VoucherInquiry(Secret Code)
     V -->> PBB: VoucherInquiry_Response
-    PBB -->> V: redemptionWithoutAuthentication_Request
+    
+    note over PBB: Check Voucher Value, Bill\nValue, Check Compatibility\n\nIf Okay, Redeem Else Cancel
+    PBB ->> V: redemptionWithoutAuthentication_Request
     V -->> PBB: redemptionWithoutAuthentication_Response
-    destroy V
+    PBB --x V: destroy V
+    
     PBB -->> PR: voucherRedemptionforBillPayment(Status)_Resp
     
+    note over PBB, Biller: Mark Bill == "PAID" Req Sequence
     loop Mark Bill Payment Advice via SAF
-        PBB ->> Biller: markBillPaid(Bill ID, ReceiptNum, PaymentStatus) _ Req
-        Note right of PBB: Payments BB keeps sending\nBill Payment Advice to Biller\nuntil Response received from Biller
-        Biller -->> PBB: markBillPaid (ack)
-        Biller -->> PBB: markBillPaid(MarkStatus, RespCode(C)) _ Resp
-        PBB -->> PR: paymentStatusUpdate(Payment Status, Txn ID, RespCode) _ Resp
+       PaymentsBB ->> Biller: markBillPaid(Bill ID, ReceiptNum, PaymentStatus) _ Req
+       note right of PaymentsBB: Payments BB keeps sending \n Bill Payment Advice to Biller \n until Response received from Biller
     end
     
-    PR -->> PBB: paymentStatusUpdate(ack)
+    Biller -->> PaymentsBB: markBillPaid(ack)
+    Biller -->> PaymentsBB: markBillPaid(MarkStatus, RespCode(C)) _ Resp
+    
+    PaymentsBB ->> PR: paymentStatusUpdate(Payment Status, Txn ID, RespCode) _ Resp
+    
+    Payer FI -->> PaymentsBB: paymentStatusUpdate(ack)
+
 ```
 

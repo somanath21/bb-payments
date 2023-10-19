@@ -12,17 +12,11 @@ The [GovStack non-functional requirements document](https://govstack.gitbook.io/
 
 The tests for the Payments Building Block can be found in [this GitHub repository](https://github.com/GovStackWorkingGroup/bb-payments/tree/main/test/openAPI).
 
-## 8.1 Payment Orchestration
-
-A summary of the payments BB APIs are listed below
-
-<table data-header-hidden><thead><tr><th width="73.33333333333331"></th><th></th><th></th></tr></thead><tbody><tr><td>1</td><td>make_G2P_payment (Payer ID, Payee ID, Amounts, Currency, [Modality], Date)</td><td>Returns success code after payment confirmation or else returns failure status with error code</td></tr><tr><td>2</td><td>Create_transaction (Payer ID, Payee ID, BillReferenceID, Amount, Currency, Date)</td><td>Returns success code after payment confirmation or else returns failure status with error code</td></tr><tr><td>3</td><td>view_transaction(PayerID, PayeeID, FromDate, ToDate, [status]).</td><td>Returns success code along with payments history or else returns failure status with error code.</td></tr><tr><td>4</td><td>register_beneficiary(payee_functionalID, Modality, fsp_id, account_info)</td><td>Returns success code after creating entry along with mapperID.</td></tr><tr><td>5</td><td>update_beneficiary(payee_functionalID, Modality, fsp_id, account_info)</td><td>Returns success code after updating entry along with new mapperID.</td></tr><tr><td>6</td><td>get_paymentaccount_info(payee_functionalID)</td><td>Returns success code along with mapperID in tokenised format.</td></tr><tr><td>7</td><td>VoucherPreactivation (InstructionID, amount, Group_Code, currency, Expiry_DTTM, FunctionalID, Description)</td><td>Returns success code with voucher number, voucher serial number and expiry date.</td></tr><tr><td>8</td><td>VoucherActivation(voucher_number)</td><td>Returns success code. After this point the voucher may be redeemed.</td></tr><tr><td>9</td><td>VoucherRedemption(voucher_number, voucher_serial_number,[OC1] )</td><td>Returns success code and payment reference from the payment gateway. After this point the voucher CANNOT be used again as the system will fail it.</td></tr><tr><td>10</td><td>VoucherStatusCheck(serial_number)</td><td>Returns success code with the status of the voucher which may be either of Pre-Activated, Activated, Suspended, Blocked or Not Existing</td></tr><tr><td>11</td><td>VoucherCancellation(voucher_serial_number)</td><td>Returns a success code if the voucher has been successfully cancelled.</td></tr><tr><td>12</td><td>billInquiryBiller(RequestID, BillID)</td><td>This is the API that is called by the Payments BB to inquire bill details from the Bill Aggregator/Govt Entity, returns the relevant bill details including biller ID, Name, Bank Institutional Code (BIC), Status, Amount with due date and after due date.</td></tr><tr><td>13</td><td>markBillPpayment(requestID, Bill InquiryRequestID, billID, PaymentReference)</td><td>This is the API that is called by the Payments BB to Bill Aggregator/Govt Entity to mark bill as paid. returns requestId, billId, responseCode, reason, status</td></tr><tr><td>14</td><td>BillerRtpReq(requestId, Request to Pay ID, BillerID, Request Type, Payer Financial Details, alias, Bill details)</td><td>The Bill Aggregator Govt Entity calls this API from PBB for “Request To Pay”</td></tr><tr><td>15</td><td>billerRtpResp</td><td>The PBB calls this API from Biller to update it on the response of the RTP</td></tr><tr><td>16</td><td>rtpStatusUpdate</td><td>This API could be called by the Biller/Aggregator from the PBB to inquire about the status of its Request To Pay</td></tr></tbody></table>
-
-## 8.2 Government to Person (G2P) payments <a href="#docs-internal-guid-f78d8d0a-7fff-33bf-2d15-aced73dc0f65" id="docs-internal-guid-f78d8d0a-7fff-33bf-2d15-aced73dc0f65"></a>
+## 8.1 Government to Person (G2P) payments <a href="#docs-internal-guid-f78d8d0a-7fff-33bf-2d15-aced73dc0f65" id="docs-internal-guid-f78d8d0a-7fff-33bf-2d15-aced73dc0f65"></a>
 
 These APIs link Source BB to the Payments Building Block for bulk payment processing, identity verification, and bank/wallet mapping. Third-party providers may add extra APIs depending on the country's payment landscape.
 
-### 8.2.1 Collaboration with G2PConnect
+### 8.1.1 Collaboration with G2PConnect
 
 GovStack is collaborating with G2P Connect to make it easier for countries to understand, find, and implement the optimal tools for executing digital payments for the aim of sustainable development. For those familiar with the GovStack initiative, it is no surprise we are collaborating with G2P Connect, as we share a common mission (to provide the technological tools to facilitate sustainable development) and similar methods (developing technical specifications and guidance).
 
@@ -32,7 +26,7 @@ As G2PConnect is focused exclusively on G2P payments, this is a cogent area of c
 
 These valuable resources will then enable any country to implement G2P payments with digital sovereignty and minimal effort. Countries can choose to use our open specifications to make existing systems compatible, procure an open-source DPG, or even a proprietary solution compliant with the specifications.
 
-### 8.2.2 Beneficiary Onboarding - Account Mapper APIs&#x20;
+### 8.1.2 Beneficiary Onboarding - Account Mapper APIs&#x20;
 
 Once a new G2P beneficiary is onboarded by a G2P Program and assigned a Functional ID, they can be added to the Account Mapper in Payments BB after their eligibility for the social benefit program has been verified.
 
@@ -56,7 +50,7 @@ This is the API that is called back by the Pay-BB to notify the Source BB via th
 [RegisterBeneficiaryResponse.yml](.gitbook/assets/RegisterBeneficiaryResponse.yml)
 {% endswagger %}
 
-### 8.2.3 Update Beneficiary Details&#x20;
+### 8.1.3 Update Beneficiary Details&#x20;
 
 This is the API that is called by the Information Mediator BB when the Registration BB in turn calls its API for registering beneficiaries into the ID Mapper of the Payments BB.
 
@@ -98,11 +92,11 @@ This API is to be invoked by the Source BB to the Payments BB in case the Source
 
 
 
-## 8.3 Voucher Management APIs <a href="#docs-internal-guid-9cf2815f-7fff-7e39-e7ed-207134468ff3" id="docs-internal-guid-9cf2815f-7fff-7e39-e7ed-207134468ff3"></a>
+## 8.2 Voucher Management APIs <a href="#docs-internal-guid-9cf2815f-7fff-7e39-e7ed-207134468ff3" id="docs-internal-guid-9cf2815f-7fff-7e39-e7ed-207134468ff3"></a>
 
 The first API in the section below is used to request for a voucher with a specific value, currency, and purpose. The server responds with a voucher number, serial number, and expiry date. The second call activates the pre-activated voucher. The third call processes voucher redemption, crediting the merchant if valid. The fourth APIs allow for voucher status checks.
 
-### 8.3.1 VoucherPreActivation&#x20;
+### 8.2.1 VoucherPreActivation&#x20;
 
 #### a) VoucherPreActivation()
 
@@ -120,7 +114,7 @@ Description This is the API called by the Voucher Engine to return Voucher Detai
 [VoucherCreationResponse.yml](.gitbook/assets/VoucherCreationResponse.yml)
 {% endswagger %}
 
-### 8.3.2 VoucherActivation  <a href="#docs-internal-guid-53943e9f-7fff-ee8a-93a6-10bc57857bd7" id="docs-internal-guid-53943e9f-7fff-ee8a-93a6-10bc57857bd7"></a>
+### 8.2.2 VoucherActivation  <a href="#docs-internal-guid-53943e9f-7fff-ee8a-93a6-10bc57857bd7" id="docs-internal-guid-53943e9f-7fff-ee8a-93a6-10bc57857bd7"></a>
 
 #### a) Voucher\_Activation()
 
@@ -146,7 +140,7 @@ Description This is the response API called by the Voucher Engine to confirm the
 [VoucherActivateResponse.yml](.gitbook/assets/VoucherActivateResponse.yml)
 {% endswagger %}
 
-### 8.3.3 VoucherRedemption <a href="#docs-internal-guid-df8c2024-7fff-e374-7456-23db45c11b57" id="docs-internal-guid-df8c2024-7fff-e374-7456-23db45c11b57"></a>
+### 8.2.3 VoucherRedemption <a href="#docs-internal-guid-df8c2024-7fff-e374-7456-23db45c11b57" id="docs-internal-guid-df8c2024-7fff-e374-7456-23db45c11b57"></a>
 
 The VoucherRedemption API is used by non-Payment Building Blocks in the GovStack Framework to redeem a voucher. The calling Building Block will capture the voucher number and the voucher serial number from the merchant point. The external Building Block will also acquire the merchant name and payment details from the merchant registry. The calling Building Block will then send the voucher number, the voucher serial number, the merchant’s name, and payment details. The Payment Building Block will verify that the voucher has been activated and has not been used or blocked or canceled. If so, the Payment Building Block will then send a payment request to the funding agency/Financial Services Provider. The Payment Gateway of the Payments Building Block will facilitate the debit of the funding account, and the credit of the merchant as well as handle any intermediary fees. Once the payment has been successfully done the Payment Building Block will mark the voucher as consumed and notify the merchant (and beneficiary if possible).
 
@@ -154,7 +148,7 @@ The VoucherRedemption API is used by non-Payment Building Blocks in the GovStack
 [VoucherRedemption.yml](.gitbook/assets/VoucherRedemption.yml)
 {% endswagger %}
 
-### 8.3.4 VoucherStatus  <a href="#docs-internal-guid-14288f23-7fff-3b24-f10e-6fb6e3200147" id="docs-internal-guid-14288f23-7fff-3b24-f10e-6fb6e3200147"></a>
+### 8.2.4 VoucherStatus  <a href="#docs-internal-guid-14288f23-7fff-3b24-f10e-6fb6e3200147" id="docs-internal-guid-14288f23-7fff-3b24-f10e-6fb6e3200147"></a>
 
 The VoucherStatus API is used by non-Payment Building Blocks in the GovStack Framework to check the status of a voucher. The calling Building Block will capture the voucher number and send it to the Payments Building Block to determine the status of a voucher. The Payments Building Block will respond with one of the statuses of Pre-Activated, Activated, Suspended, Blocked, or Not Existing.
 
@@ -162,7 +156,7 @@ The VoucherStatus API is used by non-Payment Building Blocks in the GovStack Fra
 [VoucherStatus.yml](.gitbook/assets/VoucherStatus.yml)
 {% endswagger %}
 
-### 8.3.5 VoucherCancellation  <a href="#docs-internal-guid-ceb6fd44-7fff-a34f-207b-6fc5be1638fa" id="docs-internal-guid-ceb6fd44-7fff-a34f-207b-6fc5be1638fa"></a>
+### 8.2.5 VoucherCancellation  <a href="#docs-internal-guid-ceb6fd44-7fff-a34f-207b-6fc5be1638fa" id="docs-internal-guid-ceb6fd44-7fff-a34f-207b-6fc5be1638fa"></a>
 
 **Voucher\_Cancellation()**
 
@@ -186,11 +180,11 @@ Description Response API called by the Voucher Engine to confirm the cancellatio
 [VoucherCancellationResponse.yml](.gitbook/assets/VoucherCancellationResponse.yml)
 {% endswagger %}
 
-## 8.4 Person-to-Government APIs (P2G) Bill Payments <a href="#docs-internal-guid-83db42bd-7fff-3768-b76a-9586be4ab890" id="docs-internal-guid-83db42bd-7fff-3768-b76a-9586be4ab890"></a>
+## 8.3 Person-to-Government APIs (P2G) Bill Payments <a href="#docs-internal-guid-83db42bd-7fff-3768-b76a-9586be4ab890" id="docs-internal-guid-83db42bd-7fff-3768-b76a-9586be4ab890"></a>
 
 The Bill Payments APIs allow government entities to accept bill payments from persons on digital platforms like mobile money and vouchers.
 
-#### **8.4.1 billInquiryBiller**
+#### **8.3.1 billInquiryBiller**
 
 This API is called to inquire about bill details from a Bill Aggregator or Govt Entity.
 
@@ -198,7 +192,7 @@ This API is called to inquire about bill details from a Bill Aggregator or Govt 
 [billInquiryRequest.yml](.gitbook/assets/billInquiryRequest.yml)
 {% endswagger %}
 
-#### **8.4.2 billrInquiryResponse**
+#### **8.3.2 billrInquiryResponse**
 
 The Payment BB updates the Bill Aggregator or government entity on the status of the Request to Pay.
 
@@ -206,7 +200,7 @@ The Payment BB updates the Bill Aggregator or government entity on the status of
 [billInquiryResponse.yml](.gitbook/assets/billInquiryResponse.yml)
 {% endswagger %}
 
-#### **8.4.3 markBillPayment**
+#### **8.3.3 markBillPayment**
 
 This API marks a bill as paid.
 
@@ -214,7 +208,7 @@ This API marks a bill as paid.
 [markBillPpaymentRequest.yml](.gitbook/assets/markBillPpaymentRequest.yml)
 {% endswagger %}
 
-#### **8.4.4 billerRtpReq**
+#### **8.3.4 billerRtpReq**
 
 The Bill Aggregator or Govt Entity initiates a “Request to Pay” (RTP) through this API.
 
@@ -222,13 +216,13 @@ The Bill Aggregator or Govt Entity initiates a “Request to Pay” (RTP) throug
 [markBillPpaymentResponse.yml](.gitbook/assets/markBillPpaymentResponse.yml)
 {% endswagger %}
 
-#### **8.4.5 billerRtpReq**
+#### **8.3.5 billerRtpReq**
 
 {% swagger src=".gitbook/assets/billerRtpResponse.yml" path="/rtpUpdate" method="post" %}
 [billerRtpResponse.yml](.gitbook/assets/billerRtpResponse.yml)
 {% endswagger %}
 
-#### **8.4.6 rtpStatusUpdate**
+#### **8.3.6 rtpStatusUpdate**
 
 This API allows the Biller or Aggregator to inquire about the status of its RTP.
 
@@ -236,7 +230,7 @@ This API allows the Biller or Aggregator to inquire about the status of its RTP.
 [rtpStatusUpdateRequest.yml](.gitbook/assets/rtpStatusUpdateRequest.yml)
 {% endswagger %}
 
-#### **8.4.7 rtpStatusUpdateResponse**
+#### **8.3.7 rtpStatusUpdateResponse**
 
 This API allows the Biller or Aggregator to receive the status of its RTP.
 
