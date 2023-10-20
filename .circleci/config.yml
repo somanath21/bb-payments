@@ -204,6 +204,21 @@ jobs:
 workflows:
   deploy:
     jobs:  
+      - test-harness/create-config:
+          post-steps: # Persist to workspace has to be defined in main workflow
+            - persist_to_workspace:
+                root: workspace
+                paths:
+                  - generated.yml
+          context: # CircleCI context containing AWS credentials
+            - AWS 
+            - playground
+      - test-harness/execute-tests:
+          requires:
+            - test-harness/create-config 
+          context: # CircleCI context containing AWS credentials
+            - AWS 
+            - playground
       - deploy-g2psandbox-govstack-chart:
           context: 
             - AWS
