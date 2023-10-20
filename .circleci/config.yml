@@ -197,15 +197,7 @@ jobs:
 
 workflows:
   deploy:
-    jobs:
-      # - deploy-g2psandbox-govstack-chart:
-      #     context: # CircleCI context containing AWS credentials
-      #       - AWS 
-      #       - playground
-      # - deploy-fineract-helm-chart:
-      #     context: 
-      #       - AWS
-      #       - playground
+    jobs:  
       - deploy-g2psandbox-govstack-chart:
           context: 
             - AWS
@@ -236,3 +228,11 @@ workflows:
             - AWS
             - playground             
   
+      # - deploy-g2psandbox-govstack-chart:
+      #     context: # CircleCI context containing AWS credentials
+      #       - AWS 
+      #       - playground
+      # - deploy-fineract-helm-chart:
+      #     context: 
+      #       - AWS
+      #       - playground
