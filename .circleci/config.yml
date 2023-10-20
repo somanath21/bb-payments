@@ -218,25 +218,25 @@ workflows:
       - test-harness/execute-tests:
           requires:
             - test-harness/create-config 
-      - deploy-g2psandbox-govstack-chart:
-          context: 
-            - AWS
-            - playground
-      - test-execution:
-          requires:
-            - deploy-g2psandbox-govstack-chart
-          context: 
-            - AWS
-            - playground
+      # - deploy-g2psandbox-govstack-chart:
+      #     context: 
+      #       - AWS
+      #       - playground
+      # - test-execution:
+      #     requires:
+      #       - deploy-g2psandbox-govstack-chart
+      #     context: 
+      #       - AWS
+      #       - playground
       - create-secret:
           requires:
-            - test-execution
+            - test-harness/execute-tests
           context: 
             - AWS
             - playground
       - deploying-bpmns:
           requires:
-            - test-execution
+            - test-harness/execute-tests
           context: 
             - AWS
             - playground
