@@ -104,7 +104,22 @@ workflows:
                 root: workspace
                 paths:
                   - generated.yml
+            - aws-cli/setup:
+              role_arn: "${AWS_CIRCLECI_ROLE_ARN}"
+              region: AWS_REGION
+              profile_name: "playground"
+              role_session_name: deploy-test
+              session_duration: '1800'
+          context: 
+          - AWS
+          - playground
       - test-harness/execute-tests:
+          - aws-cli/setup:
+              role_arn: "${AWS_CIRCLECI_ROLE_ARN}"
+              region: AWS_REGION
+              profile_name: "playground"
+              role_session_name: deploy-test
+              session_duration: '1800'
           requires:
             - test-harness/create-config 
       - create-secret:
