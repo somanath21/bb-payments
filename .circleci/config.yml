@@ -9,107 +9,6 @@ orbs:
   aws-cli: circleci/aws-cli@4.0.0
 
 jobs:
-  deploy-g2psandbox-govstack-chart:
-    docker: 
-      - image: cimg/python:3.10
-    steps:
-      - checkout
-      - aws-cli/setup:
-          role_arn: "${AWS_CIRCLECI_ROLE_ARN}"
-          region: AWS_REGION
-          profile_name: "playground"
-          role_session_name: deploy-test
-          session_duration: '1800'
-      - run:
-          name: Update kubeconfig
-          command: |
-            aws eks update-kubeconfig --name ${EKS_CLUSTER}
-      - run:
-          name: helm upgrade
-          command: |
-            sh "examples/bb-payment/test_entrypoint.sh"
-      # - test-harness/create-config:
-      #     post-steps: # Persist to workspace has to be defined in main workflow
-      #       - persist_to_workspace:
-      #           root: workspace
-      #           paths:
-      #             - generated.yml
-  test-execution:  
-    docker: 
-      - image: cimg/python:3.10
-    steps:
-      - aws-cli/setup:
-          role_arn: "${AWS_CIRCLECI_ROLE_ARN}"
-          region: AWS_REGION
-          profile_name: "playground"
-          role_session_name: deploy-test
-          session_duration: '1800'
-      - run:
-          name: Update kubeconfig
-          command: |
-            aws eks update-kubeconfig --name ${EKS_CLUSTER}   
-      # - test-harness/create-config:
-      #     post-steps: # Persist to workspace has to be defined in main workflow
-      #       - persist_to_workspace:
-      #           root: workspace
-      #           paths:
-      #             - generated.yml
-      # - test-harness/execute-tests:
-      #     requires:
-      #       - test-harness/create-config 
-          
-  # deploy-g2psandbox-govstack-chart:
-  #   docker:
-  #     - image: cimg/python:3.10
-  #   steps:
-  #     - checkout
-  #     - aws-cli/setup:
-  #         role_arn: "${AWS_CIRCLECI_ROLE_ARN}"
-  #         region: AWS_REGION
-  #         profile_name: "playground"
-  #         role_session_name: deploy-test
-  #         session_duration: '1800'
-  #     - helm/install-helm-client:
-  #         version: "v3.8.2"
-  #     - run:
-  #         name: Update kubeconfig
-  #         command: |
-  #           aws eks update-kubeconfig --name ${EKS_CLUSTER}     
-   
-      # Deploy Helm chart to EKS
-  #     - run:
-  #         name: Deploy Helm chart to EKS
-  #         command: |
-  #           # Install Helm chart
-  #           helm dep up helm/govstack-chart
-  #           helm upgrade --install -f helm/govstack-chart/values.yaml g2p-sandbox helm/govstack-chart --create-namespace  --namespace paymenthub
-  #           # helm upgrade --install g2p-sandbox ./helm/govstack-chart
-  # deploy-fineract-helm-chart:
-  #   docker:
-  #     - image: cimg/python:3.10
-  #   steps:
-  #     - checkout
-  #     - aws-cli/setup:
-  #         role_arn: "${AWS_CIRCLECI_ROLE_ARN}"
-  #         region: AWS_REGION
-  #         profile_name: "playground"
-  #         role_session_name: deploy-test
-  #         session_duration: '1800'
-  #     - helm/install-helm-client:
-  #         version: "v3.8.2"
-  #     - run:
-  #         name: Update kubeconfig
-  #         command: |
-  #           aws eks update-kubeconfig --name ${EKS_CLUSTER} 
-  #     - helm/upgrade-helm-chart:
-  #         add-repo: "https://fynarfin.io/images/fineract/"
-  #         chart: "https://fynarfin.io/images/fineract/fin-engine-1.1.0-SNAPSHOT.tgz"
-  #         release-name: fineract
-  #         namespace: fineract
-  #         recreate-pods: true
-  #         wait: true
-  #         timeout: "300s"
-
   create-secret:
     docker:
       - image: cimg/base:2022.06 
@@ -143,12 +42,6 @@ jobs:
           kubectl create secret generic bulk-processor-secret \
           --from-literal=aws-access-key="$S3_ACCESS_KEY_ID" \
           --from-literal=aws-secret-key="$S3_SECRET_ACCESS_KEY" -n $ENV_NAMESPACE
-
-      # - run: |
-      #     kubectl delete secret bulk-processor-secret -n paymenthub || echo "delete the secret if exist"
-      #     kubectl create secret generic bulk-processor-secret \
-      #     --from-literal=aws-access-key="$S3_ACCESS_KEY_ID" \
-      #     --from-literal=aws-secret-key="$S3_SECRET_ACCESS_KEY" -n paymenthub
 
   deploying-bpmns:
     docker:
@@ -194,10 +87,6 @@ jobs:
           command: |
             mkdir integration_report
             kubectl cp paymenthub/`kubectl get pods -n paymenthub | grep g2p-sandbox-test-connection |cut -d " " -f1`:/ph-ee-connector-integration-test/build/reports/tests/test/ ./integration_report
-      # - run:
-      #     name: Fetch Integration Test Report
-      #     command: |
-      #       kubectl cp -n $KUBE_NAMESPACE <pod-name>:<path-to-report-file> ./integration_report  # Replace <pod-name> and <path-to-report-file> with the actual pod name and path to the report file
       - run:
           name: List Contents of Integration Report Directory
           command: |
@@ -218,16 +107,6 @@ workflows:
       - test-harness/execute-tests:
           requires:
             - test-harness/create-config 
-      # - deploy-g2psandbox-govstack-chart:
-      #     context: 
-      #       - AWS
-      #       - playground
-      # - test-execution:
-      #     requires:
-      #       - deploy-g2psandbox-govstack-chart
-      #     context: 
-      #       - AWS
-      #       - playground
       - create-secret:
           requires:
             - test-harness/execute-tests
@@ -246,13 +125,4 @@ workflows:
             - deploying-bpmns
           context: 
             - AWS
-            - playground             
-  
-      # - deploy-g2psandbox-govstack-chart:
-      #     context: # CircleCI context containing AWS credentials
-      #       - AWS 
-      #       - playground
-      # - deploy-fineract-helm-chart:
-      #     context: 
-      #       - AWS
-      #       - playground
+            - playground
