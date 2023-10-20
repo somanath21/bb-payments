@@ -13,6 +13,7 @@ jobs:
     docker: 
       - image: cimg/python:3.10
     steps:
+      - checkout
       - aws-cli/setup:
           role_arn: "${AWS_CIRCLECI_ROLE_ARN}"
           region: AWS_REGION
