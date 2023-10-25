@@ -299,7 +299,7 @@ Figure: Key digital requirements of Bulk Payments expressed as a high-level bloc
 
 The Billing ecosystem would consist of various actors performing core and secondary processes to complete the bill payment function. Some of the actors only play an auxiliary role to enable bill payment.
 
-<figure><img src=".gitbook/assets/image (1).png" alt=""><figcaption></figcaption></figure>
+<figure><img src=".gitbook/assets/image (1) (1).png" alt=""><figcaption></figcaption></figure>
 
 **Payments Building Block**
 
