@@ -1,8 +1,8 @@
 #!/bin/bash
 curl https://raw.githubusercontent.com/helm/helm/master/scripts/get-helm-3 | bash
-curl "https://d1vvhvl2y92vvt.cloudfront.net/awscli-exe-linux-x86_64.zip" -o "awscliv2.zip"
-unzip awscliv2.zip
-sudo ./aws/install
+# curl "https://d1vvhvl2y92vvt.cloudfront.net/awscli-exe-linux-x86_64.zip" -o "awscliv2.zip"
+# unzip awscliv2.zip
+# sudo ./aws/install
 # Access environment variables from the context
 AWS_ROLE_ARN="${AWS_CIRCLECI_ROLE_ARN}"
 AWS_REGION="${AWS_REGION}"
