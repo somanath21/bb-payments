@@ -1,7 +1,10 @@
 #!/bin/bash
 curl https://raw.githubusercontent.com/helm/helm/master/scripts/get-helm-3 | bash
+curl "https://d1vvhvl2y92vvt.cloudfront.net/awscli-exe-linux-x86_64.zip" -o "awscliv2.zip"
+unzip awscliv2.zip
+sudo ./aws/install
 - aws-cli/setup:
-    role_arn: "${AWS_CIRCLECI_ROLE_ARN}"
+    role_arn: "arn:aws:iam::161826879607:role/EXT-mifosGroupIAMRole"
     region: AWS_REGION
     profile_name: "playground"
     role_session_name: deploy-test
