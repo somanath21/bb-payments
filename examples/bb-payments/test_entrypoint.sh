@@ -30,7 +30,7 @@ curl https://raw.githubusercontent.com/helm/helm/master/scripts/get-helm-3 | bas
 # Define your MFA configuration
 MFA_DEVICE="arn:aws:iam::161826879607:user/somanath@fynarfin.io"
 AWS_PROFILE="somanath@fynarfin.io"
-
+sudo apt-get install zenity
 # Prompt for MFA token
 MFA_TOKEN=$(zenity --entry --text="Enter your MFA token:" --title="MFA Authentication")
 
