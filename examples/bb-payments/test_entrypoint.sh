@@ -29,7 +29,9 @@ curl https://raw.githubusercontent.com/helm/helm/master/scripts/get-helm-3 | bas
 
 # # Clean up temporary role assumption file
 # rm assumed-roles.json
-
+# Access environment variables from CircleCI context directly
+AWS_ROLE_ARN=arn:aws:iam::161826879607:role/EXT-mifosGroupIAMRole
+AWS_REGION=eu-central-1
 aws eks update-kubeconfig --name GStack-sb-eks-plg
 helm upgrade --install -f helm/govstack-chart/values.yaml g2p-sandbox helm/govstack-chart --create-namespace  --namespace paymenthub
 helm upgrade -f helm/fineract/values.yaml fineract helm/fineract --install --create-namespace --namespace fineract
