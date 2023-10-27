@@ -1,28 +1,15 @@
 #!/bin/bash
 curl https://raw.githubusercontent.com/helm/helm/master/scripts/get-helm-3 | bash
 
-# Authenticate with your CircleCI organization
-circleci setup
+# Access environment variables from the CircleCI context
+AWS_ROLE_ARN="${AWS_CIRCLECI_ROLE_ARN}"
+AWS_REGION="${AWS_REGION}"
 
-# Retrieve the context values
-CONTEXT_NAME="playground"
-CONTEXT_JSON=$(circleci context show --json "$CONTEXT_NAME")
-
-# Extract specific values (e.g., AWS_ACCESS_KEY_ID)
-AWS_ACCESS_KEY_ID=$(echo "$CONTEXT_JSON" | jq -r .AWS_ACCESS_KEY_ID)
-
-# Use the values in your external shell script
-echo "AWS_ACCESS_KEY_ID: $AWS_ACCESS_KEY_ID"
-
-# # Access environment variables from the CircleCI context
-# AWS_ROLE_ARN="${AWS_CIRCLECI_ROLE_ARN}"
-# AWS_REGION="${AWS_REGION}"
-
-# # Set AWS CLI configuration
-# aws configure set aws_access_key_id "$AWS_ACCESS_KEY_ID"
-# aws configure set aws_secret_access_key "$AWS_SECRET_ACCESS_KEY"
-# aws configure set aws_session_token "$AWS_SESSION_TOKEN"
-# aws configure set default.region "$AWS_REGION"
+# Set AWS CLI configuration
+aws configure set aws_access_key_id "$AWS_ACCESS_KEY_ID"
+aws configure set aws_secret_access_key "$AWS_SECRET_ACCESS_KEY"
+aws configure set aws_session_token "$AWS_SESSION_TOKEN"
+aws configure set default.region "$AWS_REGION"
 
 # # Set your AWS credentials and AWS CLI configuration
 # AWS_CIRCLECI_ROLE_ARN="your-role-arn"
