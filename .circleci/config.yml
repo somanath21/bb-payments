@@ -25,8 +25,11 @@ jobs:
       - run:
           name: Install AWS CLI
           command: |
-            python -m ensurepip --upgrade
-            python -m pip install awscli
+            sudo apt-get update
+            sudo apt-get install -y python3
+            curl -O https://bootstrap.pypa.io/get-pip.py
+            python3 get-pip.py
+            python3 -m pip install awscli
       - run:
           name: Configure AWS CLI
           command: |
