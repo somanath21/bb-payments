@@ -15,10 +15,10 @@ curl https://raw.githubusercontent.com/helm/helm/master/scripts/get-helm-3 | bas
 # echo "AWS_ROLE_ARN: $AWS_ROLE_ARN"
 # echo "AWS_REGION: $AWS_REGION"
 
-ROLE_SESSION_NAME= deploy-test
+ROLE_SESSION_NAME=deploy-test
 AWS_CIRCLECI_ROLE_ARN=$(circleci env subst "${AWS_CIRCLECI_ROLE_ARN}")
-PROFILE_NAME= playground
-SESSION_DURATION= 1800
+PROFILE_NAME=playground
+SESSION_DURATION=1800
 
 if [ -z "${ROLE_SESSION_NAME}" ]; then
     echo "Role session name is required"
