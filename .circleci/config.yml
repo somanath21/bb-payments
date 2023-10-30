@@ -58,6 +58,7 @@ jobs:
       - run:
           name: Update kubeconfig
           command: |
+            echo "$AWS_CIRCLECI_ROLE_ARN"
             aws eks update-kubeconfig --name ${EKS_CLUSTER} 
       - run: sh orchestration/deployBpmn.sh
 
