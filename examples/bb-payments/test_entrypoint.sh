@@ -17,7 +17,7 @@ curl https://raw.githubusercontent.com/helm/helm/master/scripts/get-helm-3 | bas
 
 CLUSTER_NAME=$(eval echo "$EKS_CLUSTER")
 AWS_REGION=$(eval echo "$AWS_REGION")
-AWS_PROFILE= "playground"
+AWS_PROFILE=playground
 ROLE_ARN=$(eval echo "$AWS_CIRCLECI_ROLE_ARN")
 
 # aws configure set aws_access_key_id $AWS_ACCESS_KEY_ID && aws configure set aws_secret_access_key $AWS_SECRET_ACCESS_KEY && aws configure set default.region eu-central-1
