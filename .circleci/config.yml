@@ -23,6 +23,10 @@ jobs:
       #     role_session_name: deploy-test
       #     session_duration: '1800'
       - run:
+          name: Install AWS CLI
+          command: |
+            pip install awscli
+      - run:
           name: Configure AWS CLI
           command: |
             aws configure set aws_access_key_id AWS_ACCESS_KEY_ID
