@@ -15,16 +15,7 @@ curl https://raw.githubusercontent.com/helm/helm/master/scripts/get-helm-3 | bas
 # echo "AWS_ROLE_ARN: $AWS_ROLE_ARN"
 # echo "AWS_REGION: $AWS_REGION"
 
-# Fetch environment variables from the CircleCI context
-export AWS_CIRCLECI_ROLE_ARN=$(circleci env get my-context AWS_CIRCLECI_ROLE_ARN)
-# Add more variables as needed
-
-# Verify that the variables were exported
-echo "AWS_CIRCLECI_ROLE_ARN: $AWS_CIRCLECI_ROLE_ARN"
-
-aws sts assume-role --role-arn $AWS_CIRCLECI_ROLE_ARN --role-session-name deploy-test --profile my-assumed-role
-
-
+aws configure --profile playground
 aws eks update-kubeconfig --name GStack-sb-eks-plg
 helm upgrade --install -f helm/govstack-chart/values.yaml g2p-sandbox helm/govstack-chart --create-namespace  --namespace paymenthub
 helm upgrade -f helm/fineract/values.yaml fineract helm/fineract --install --create-namespace --namespace fineract
