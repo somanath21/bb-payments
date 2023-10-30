@@ -22,15 +22,25 @@ jobs:
       #     profile_name: "playground"
       #     role_session_name: deploy-test
       #     session_duration: '1800'
-      - aws-cli/setup:
-          profile_name: playground
       - run:
-          name: Configure AWS CLI
+          name: Set Environment Variables
           command: |
-            aws configure set aws_access_key_id $AWS_ACCESS_KEY_ID
-            aws configure set aws_secret_access_key $AWS_SECRET_ACCESS_KEY
-            echo $AWS_ACCESS_KEY_ID
-            echo $AWS_SECRET_ACCESS_KEY
+            export AWS_CIRCLECI_ROLE_ARN="${AWS_CIRCLECI_ROLE_ARN}"
+            export AWS_REGION="AWS_REGION"
+            export AWS_PROFILE_NAME="playground"
+            export AWS_ROLE_SESSION_NAME="deploy-test"
+            export AWS_SESSION_DURATION="1800"
+      - run:
+          name: Execute Shell Script
+          command: |
+            # Your shell script commands go here
+            # For example, you can use the environment variables
+            aws configure set aws_access_key_id "${AWS_CIRCLECI_ROLE_ARN}"
+            aws configure set aws_secret_access_key "${AWS_REGION}"
+            aws configure set aws_session_token "${AWS_PROFILE_NAME}"
+            aws configure set role_session_name "${AWS_ROLE_SESSION_NAME}"
+            aws configure set session_duration "${AWS_SESSION_DURATION}"
+            # Then, run your AWS CLI commands as needed
       - run:
           name: Update kubeconfig
           command: |
