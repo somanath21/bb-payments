@@ -14,12 +14,13 @@ curl https://raw.githubusercontent.com/helm/helm/master/scripts/get-helm-3 | bas
 # # Use the variables in your script
 # echo "AWS_ROLE_ARN: $AWS_ROLE_ARN"
 # echo "AWS_REGION: $AWS_REGION"
-export AWS_CIRCLECI_ROLE_ARN=$AWS_CIRCLECI_ROLE_ARN
-export AWS_REGION=$AWS_REGION
-AWS_ROLE_ARN=$AWS_CIRCLECI_ROLE_ARN
-AWS_REGION=$AWS_REGION
 
-# aws eks update-kubeconfig --name GStack-sb-eks-plg
+export AWS_CIRCLECI_ROLE_ARN= $AWS_CIRCLECI_ROLE_ARN
+export AWS_ACCESS_KEY_ID= $AWS_ACCESS_KEY_ID
+export AWS_SECRET_ACCESS_KEY= $AWS_SECRET_ACCESS_KEY
+export AWS_DEFAULT_REGION= $AWS_REGION
+
+aws eks update-kubeconfig --name GStack-sb-eks-plg
 helm upgrade --install -f helm/govstack-chart/values.yaml g2p-sandbox helm/govstack-chart --create-namespace  --namespace paymenthub
 helm upgrade -f helm/fineract/values.yaml fineract helm/fineract --install --create-namespace --namespace fineract
 # helm test g2p-sandbox -n paymenthub
