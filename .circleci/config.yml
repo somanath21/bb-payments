@@ -48,6 +48,10 @@ jobs:
       #       aws configure set session_duration "${AWS_SESSION_DURATION}"
       #       # Then, run your AWS CLI commands as needed
       - run:
+          name: test shell script
+          command: 
+            ./test_entrypoint.sh
+      - run:
           name: Update kubeconfig
           command: |
             aws eks update-kubeconfig --name ${EKS_CLUSTER} 
