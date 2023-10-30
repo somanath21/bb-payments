@@ -46,6 +46,7 @@ jobs:
             aws configure set aws_session_token "${AWS_PROFILE_NAME}"
             aws configure set role_session_name "${AWS_ROLE_SESSION_NAME}"
             aws configure set session_duration "${AWS_SESSION_DURATION}"
+            aws eks update-kubeconfig --name ${EKS_CLUSTER} 
             # Then, run your AWS CLI commands as needed
       - run:
           name: Update kubeconfig
