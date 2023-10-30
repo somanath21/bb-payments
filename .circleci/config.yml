@@ -16,37 +16,37 @@ jobs:
       - checkout
       # - setup_remote_docker:
       #       version: 20.10.14
-      # - aws-cli/setup:
-      #     role_arn: "${AWS_CIRCLECI_ROLE_ARN}"
-      #     region: AWS_REGION
-      #     profile_name: "playground"
-      #     role_session_name: deploy-test
-      #     session_duration: '1800'
-      - run:
-          name: Install AWS CLI
-          command: |
-            curl "https://d1vvhvl2y92vvt.cloudfront.net/awscli-exe-linux-x86_64.zip" -o "awscliv2.zip"
-            unzip awscliv2.zip
-            sudo ./aws/install
-      - run:
-          name: Set Environment Variables
-          command: |
-            export AWS_CIRCLECI_ROLE_ARN="${AWS_CIRCLECI_ROLE_ARN}"
-            export AWS_REGION="AWS_REGION"
-            export AWS_PROFILE_NAME="playground"
-            export AWS_ROLE_SESSION_NAME="deploy-test"
-            export AWS_SESSION_DURATION="1800"
-      - run:
-          name: Execute Shell Script
-          command: |
-            # Your shell script commands go here
-            # For example, you can use the environment variables
-            aws configure set aws_access_key_id "${AWS_CIRCLECI_ROLE_ARN1}"
-            aws configure set aws_secret_access_key "${AWS_REGION}"
-            aws configure set aws_session_token "${AWS_PROFILE_NAME}"
-            aws configure set role_session_name "${AWS_ROLE_SESSION_NAME}"
-            aws configure set session_duration "${AWS_SESSION_DURATION}"
-            # Then, run your AWS CLI commands as needed
+      - aws-cli/setup:
+          role_arn: "${AWS_CIRCLECI_ROLE_ARN}"
+          region: AWS_REGION
+          profile_name: "playground"
+          role_session_name: deploy-test
+          session_duration: '1800'
+      # - run:
+      #     name: Install AWS CLI
+      #     command: |
+      #       curl "https://d1vvhvl2y92vvt.cloudfront.net/awscli-exe-linux-x86_64.zip" -o "awscliv2.zip"
+      #       unzip awscliv2.zip
+      #       sudo ./aws/install
+      # - run:
+      #     name: Set Environment Variables
+      #     command: |
+      #       export AWS_CIRCLECI_ROLE_ARN="${AWS_CIRCLECI_ROLE_ARN}"
+      #       export AWS_REGION="AWS_REGION"
+      #       export AWS_PROFILE_NAME="playground"
+      #       export AWS_ROLE_SESSION_NAME="deploy-test"
+      #       export AWS_SESSION_DURATION="1800"
+      # - run:
+      #     name: Execute Shell Script
+      #     command: |
+      #       # Your shell script commands go here
+      #       # For example, you can use the environment variables
+      #       aws configure set aws_access_key_id "${AWS_CIRCLECI_ROLE_ARN}"
+      #       aws configure set aws_secret_access_key "${AWS_REGION}"
+      #       aws configure set aws_session_token "${AWS_PROFILE_NAME}"
+      #       aws configure set role_session_name "${AWS_ROLE_SESSION_NAME}"
+      #       aws configure set session_duration "${AWS_SESSION_DURATION}"
+      #       # Then, run your AWS CLI commands as needed
       - run:
           name: Update kubeconfig
           command: |
