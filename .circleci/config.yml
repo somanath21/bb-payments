@@ -22,14 +22,8 @@ jobs:
       #     profile_name: "playground"
       #     role_session_name: deploy-test
       #     session_duration: '1800'
-      - run:
-          name: Install AWS CLI
-          command: |
-            sudo apt-get update
-            sudo apt-get install -y python3
-            curl -O https://bootstrap.pypa.io/get-pip.py
-            python3 get-pip.py
-            python3 -m pip install awscli
+      - aws-cli/setup:
+          profile_name: playground
       - run:
           name: Configure AWS CLI
           command: |
