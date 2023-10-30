@@ -16,12 +16,12 @@ jobs:
       - checkout
       # - setup_remote_docker:
       #       version: 20.10.14
-      - aws-cli/setup:
-          role_arn: "${AWS_CIRCLECI_ROLE_ARN}"
-          region: AWS_REGION
-          profile_name: "playground"
-          role_session_name: deploy-test
-          session_duration: '1800'
+      # - aws-cli/setup:
+      #     role_arn: "${AWS_CIRCLECI_ROLE_ARN}"
+      #     region: AWS_REGION
+      #     profile_name: "playground"
+      #     role_session_name: deploy-test
+      #     session_duration: '1800'
       - run:
           name: Update kubeconfig
           command: |
