@@ -1,5 +1,5 @@
 #!/bin/sh
-$HOST= kubectl port-forward service/ph-ee-zeebe-ops 5000:80
+$HOST= "kubectl port-forward service/ph-ee-zeebe-ops 5000:80 -n paymenthub"
 HOST="$HOST/zeebe/upload"
 deploy(){
     cmd="curl --insecure --location --request POST $HOST \
