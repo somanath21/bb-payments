@@ -5,7 +5,7 @@ echo $AWS_CIRCLECI_ROLE_ARN
 echo $EKS_CLUSTER
 echo $SANDBOX_DOMAIN
 cat  /home/circleci/parameters.json
-chmod u+x entrypoint.sh
+# chmod u+x entrypoint.sh
 
 # aws configure set aws_access_key_id $AWS_ACCESS_KEY_ID && aws configure set aws_secret_access_key $AWS_SECRET_ACCESS_KEY && aws configure set default.region eu-central-1
 # aws configure --profile playground
