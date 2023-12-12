@@ -6,11 +6,11 @@ echo $EKS_CLUSTER
 echo $SANDBOX_DOMAIN
 cat  /home/circleci/parameters.json
 # chmod u+x entrypoint.sh
-# - aws-cli/setup:
-#     role_arn: "${AWS_CIRCLECI_ROLE_ARN}"
-#     region: ${AWS_REGION}
-#     role_session_name: CircleCISession
-#     session_duration: '1800'  
+- aws-cli/setup:
+    role_arn: "${AWS_CIRCLECI_ROLE_ARN}"
+    region: ${AWS_REGION}
+    role_session_name: CircleCISession
+    session_duration: '1800'  
 # aws configure set aws_access_key_id $AWS_ACCESS_KEY_ID && aws configure set aws_secret_access_key $AWS_SECRET_ACCESS_KEY && aws configure set default.region eu-central-1
 # aws configure --profile playground
 curl https://baltocdn.com/helm/signing.asc | gpg --dearmor | sudo tee /usr/share/keyrings/helm.gpg > /dev/null
