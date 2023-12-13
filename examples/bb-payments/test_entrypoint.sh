@@ -1,12 +1,6 @@
 #!/bin/bash
-# echo $AWS_SECRET_ACCESS_KEY
-# echo $AWS_REGION
-# echo $AWS_CIRCLECI_ROLE_ARN
-# echo $EKS_CLUSTER
-# echo $SANDBOX_DOMAIN
-# cat  /home/circleci/parameters.json
-# chmod u+x entrypoint.sh
 
+kubectl cluster-info
 AWS_CIRCLECI_ROLE_ARN="${AWS_CIRCLECI_ROLE_ARN}"
 AWS_REGION="${AWS_REGION}"
 
@@ -14,10 +8,10 @@ aws configure set default.region $AWS_REGION
 
 # Assume the specified role
 role_credentials=$(aws sts assume-role \
-    --role-arn $AWS_CIRCLECI_ROLE_ARN \
-    --role-session-name CircleCISession \
-    --duration-seconds 1800 \
-    --output json)
+--role-arn $AWS_CIRCLECI_ROLE_ARN \
+--role-session-name CircleCISession \
+--duration-seconds 1800 \
+--output json)
 
 # Extract and set the assumed role credentials as environment variables
 export AWS_ACCESS_KEY_ID=$(echo $role_credentials | jq -r .Credentials.AccessKeyId)
@@ -31,7 +25,7 @@ export AWS_SESSION_TOKEN=$(echo $role_credentials | jq -r .Credentials.SessionTo
 unset AWS_ACCESS_KEY_ID
 unset AWS_SECRET_ACCESS_KEY
 unset AWS_SESSION_TOKEN
-
+kubectl cluster-info
 # aws configure set aws_access_key_id $AWS_ACCESS_KEY_ID && aws configure set aws_secret_access_key $AWS_SECRET_ACCESS_KEY && aws configure set default.region eu-central-1
 # aws configure --profile playground
 curl https://baltocdn.com/helm/signing.asc | gpg --dearmor | sudo tee /usr/share/keyrings/helm.gpg > /dev/null
