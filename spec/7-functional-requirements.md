@@ -159,7 +159,7 @@ The payment portal will:
   \
   All notification events shall have a timestamp associated with them and be kept as part of the audit log.
 
-## 6.8 Reconciliation (RECOMMENDED)
+## 6.8 Reconciliation
 
 This should happen at two levels: internally and externally.
 
@@ -168,7 +168,7 @@ This should happen at two levels: internally and externally.
 * The nodes that are under the control of the GovStack should be time synched (REQUIRED)
 * IDs should be unique, if possible contain the timestamp, and should not roll over across short ranges (REQUIRED)
 
-## 6.9 Batch Processing (RECOMMENDED)
+## 6.9 Batch Processing
 
 * Prepares the batch breakdown on the basis of rulesets governing: which Financial Services Providers shall receive, which payments, and other considerations (REQUIRED)
 * Combines payments with other payments to the same beneficiary (REQUIRED)
