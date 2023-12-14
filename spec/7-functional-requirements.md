@@ -53,45 +53,52 @@ Payments orchestration is used to configure the Payments Building Block function
 
 The voucher management system is responsible for prectivation, storage, activation, redemption, validation, suspension, unsuspension, purging, and reporting on vouchers.
 
-### **6.2.1 Voucher Provisioning**
+### **Voucher Provisioning**
 
 This process traditionally involves the generation of group vouchers against some authorized value (budget release or allotment).
 
-* Each voucher should have a unique secret voucher number, a unique identification number (voucher serial number) indicating its position in an inventory of pre-activated ~~issued~~ vouchers, and is linked to a fixed amount of value in a particular currency. Vouchers will also be associated with a voucher group during ~~provisioning~~ pre-activation. Voucher serial numbers will be unique across currencies should there be vouchers of multiple currencies.
-* The vouchers should be created with an expiry date and MUST be stored securely. All vouchers will be expected to have the same duration of expiry and this expiry period will be from the moment the voucher is activated.
-* Alternative design options include dynamically pre-activating a voucher at transaction time and creating variable amounts, but this increases complexity and requires tighter operational controls.
+* Each voucher should have a unique secret voucher number, a unique identification number (voucher serial number) indicating its position in an inventory of pre-activated ~~issued~~ vouchers, and is linked to a fixed amount of value in a particular currency (REQUIRED)\
+  \
+  Vouchers will also be associated with a voucher group during ~~provisioning~~ pre-activation. Voucher serial numbers will be unique across currencies should there be vouchers of multiple currencies.
+* The vouchers should be created with an expiry date and MUST be stored securely (REQUIRED)\
+  \
+  All vouchers will be expected to have the same duration of expiry and this expiry period will be from the moment the voucher is activated.
+* Alternative design options include dynamically pre-activating a voucher at transaction time and creating variable amounts, but this increases complexity and requires tighter operational controls (OPTIONAL)
 
-### **6.2.2 Voucher Issuance**
+### **Voucher Issuance**
 
 This process involves the Registration Building Block (or any other Building Block for that matter) requesting a voucher number from the voucher management system through an API.
 
 * Once confirmation is received that the voucher has been released it flags the voucher as activated. Design decisions include making this step optional. Having an additional step increases security by ensuring that the voucher is not used until it is in the hands of the beneficiary (RECOMMENDED)
-* Once a voucher has been issued by the calling Building Block (Registration Building Block) it will be presented to the beneficiary in a form that is determined by the calling Building Block (refer to voucher workflow). The format of the final voucher presentation will be determined by the function of the calling Building Block. At a minimum, this presentation should have the voucher number as well as the voucher serial number. it could also have the details of the beneficiary, which when placed on the voucher presentation, will help the merchant authenticate the beneficiary at the point of redemption (REQUIRED)
+* Presentation of the voucher. At a minimum, this presentation should have the voucher number as well as the voucher serial number (REQUIRED)\
+  \
+  Once a voucher has been issued by the calling Building Block (Registration Building Block) it will be presented to the beneficiary in a form that is determined by the calling Building Block (refer to voucher workflow). The format of the final voucher presentation will be determined by the function of the calling Building Block. It could include the details of the beneficiary, which when placed on the voucher presentation, will help the merchant authenticate the beneficiary at the point of redemption
 
 ### **6.2.3 Voucher Redemption**
 
-* In the redemption process, the merchant will authenticate the beneficiary and use a predefined technology (Unstructured Supplementary Service Data, Mobile App, Web Browser) to extract the voucher number and call a redemption API through the relevant calling Building Block. The calling Building Block may also validate the beneficiary details if so required. The Building Block will also be able to validate the merchant and determine the voucher group to which the merchant belongs. Lastly, the calling Building Block will invoke the Payment Building Block Redeem API, through the Payments Building Block API Management gateway, to validate the voucher and if valid to redeem it (REQUIRED)
-* Once the voucher is validated, the Voucher Management System should invoke an API on the Payment Gateway to effect the payment in the merchant or agent wallet or bank account (depending on what was set up at merchant/agent registration). The payment gateway/switch will debit a pre-funded account/wallet and credit the merchant/agent account/wallet. The successful execution will result in the voucher being flagged as consumed/used (REQUIRED)
+* Extract and authenticate voucher data (REQUIRED)\
+  \
+  In the redemption process, the merchant will authenticate the beneficiary and use a predefined technology (Unstructured Supplementary Service Data, Mobile App, Web Browser) to extract the voucher number and call a redemption API through the relevant calling Building Block. The calling Building Block may also validate the beneficiary details if so required. The Building Block will also be able to validate the merchant and determine the voucher group to which the merchant belongs. Lastly, the calling Building Block will invoke the Payment Building Block Redeem API, through the Payments Building Block API Management gateway, to validate the voucher and if valid to redeem it&#x20;
+* Initiate payment in the merchant or agent wallet or bank account (REQUIRED)\
+  \
+  Once the voucher is validated, the Voucher Management System should invoke an API on the Payment Gateway to effect the payment in the merchant or agent wallet or bank account (depending on what was set up at merchant/agent registration). The payment gateway/switch will debit a pre-funded account/wallet and credit the merchant/agent account/wallet. The successful execution will result in the voucher being flagged as consumed/used (REQUIRED)
 
 ### 6.2.4 Voucher Management System (VMS) API interface
 
 The details of the VMS APIs are described in the Service API section.
 
-The VMS functionality can be accessed by four external APIs:
+The VMS functionality can be accessed by four external APIs and includes the following functionalities:
 
-* **Voucher preactivate**: An API call to pre-activate the voucher and get a voucher number, a voucher serial number, and an expiry date.
-* **Voucher activate**: An API call to activate the vouchers by serial number.
-* **Voucher validity**: An API call to check the validity of a voucher by serial number.
-* **Voucher redeem**: An API to redeem the voucher by voucher number.
-
-The API interface should provide a minimum of five internal API calls.
-
-* Voucher preactivation: An API to pre-activate the voucher and get a voucher number, a voucher serial number, and an expiry date.
-* Voucher activation: A call to activate the voucher, by serial number.
-* Voucher validity:
-  * A call to check the validity of the voucher by serial number.
-  * A call to check the validity of the voucher by voucher number and group.
-* Voucher consumption: A call to consume the voucher by voucher number.
+* Preactivate a voucher (REQUIRED)\
+  \
+  An API call to pre-activate the voucher and get a voucher number, a voucher serial number, and an expiry date.
+* Activate a voucher (REQUIRED)\
+  \
+  An API call to activate the vouchers by serial number.
+* Verify validity of a voucher by serial number (REQUIRED)\
+  \
+  An API call to check the validity of a voucher by serial number, or by voucher number and group
+* Redeem/consume voucher (REQUIRED)
 
 ### 6.2.5 Voucher Storage
 
@@ -107,9 +114,11 @@ The voucher management server shall have a storage subsystem to store the vouche
 
 The account lookup directory service identifies the Financial Service Providers (FSP) where the merchant/agent/payee’s account is located.
 
-The account lookup directory service provides a directory that maps the beneficiary's unique identifier (which matches the record in the social registry system) to the transaction account where the beneficiary wishes to receive their G2P payment, allowing the government to address payments to a specific individual. The identifier can be a national ID, phone number, or other number or alias that can uniquely identify individuals across social protection and financial sector databases. The information will be kept in a tokenised form in the account lookup directory service.
-
-In the case where there is a national payment switch, the account lookup directory service will be maintained by the FSPs, In the scenario, where there is no payment switch, the government would need to manage the account lookup directory service and provide a mechanism for linking it to the FSPs.
+* Account lookup directory service (REQUIRED)\
+  \
+  The account lookup directory service provides a directory that maps the beneficiary's unique identifier (which matches the record in the social registry system) to the transaction account where the beneficiary wishes to receive their G2P payment, allowing the government to address payments to a specific individual. The identifier can be a national ID, phone number, or other number or alias that can uniquely identify individuals across social protection and financial sector databases. The information will be kept in a tokenised form in the account lookup directory service.\
+  \
+  In the case where there is a national payment switch, the account lookup directory service will be maintained by the FSPs, In the scenario, where there is no payment switch, the government would need to manage the account lookup directory service and provide a mechanism for linking it to the FSPs.
 
 ## 6.4 Payment Request Initiation
 
@@ -127,7 +136,7 @@ A payment gateway allows different (digital) Financial Service Providers (FSPs) 
 * Initiate and receive transactions (REQUIRED)
 * Accept or reject transactions and debit or credit end-user accounts (REQUIRED)
 
-## 6.6 Payment Portal (RECOMMENDED)
+## 6.6 Payment Portal
 
 The payment portal will:
 
@@ -144,9 +153,11 @@ The payment portal will:
 
 ## 6.7 Event Management
 
-This functionality supports different events related to triggering specific actions on payment outcomes such as issuing receipts upon successful payment, automating payments in case of bulk transactions, passing information to other Building Blocks as necessary, and handling exceptional cases for instance user/system errors amongst others.
-
-All notification events shall have a timestamp associated with them and be kept as part of the audit log.
+* Create logs and notifications for specific actions on any transaction (REQUIRED)\
+  \
+  This functionality supports different events related to triggering specific actions on payment outcomes such as issuing receipts upon successful payment, automating payments in case of bulk transactions, passing information to other Building Blocks as necessary, and handling exceptional cases for instance user/system errors amongst others.\
+  \
+  All notification events shall have a timestamp associated with them and be kept as part of the audit log.
 
 ## 6.8 Reconciliation (RECOMMENDED)
 
@@ -154,10 +165,8 @@ This should happen at two levels: internally and externally.
 
 * The internal reconciliation will occur between the different sub-blocks within the Payments Building Blocks. In order to achieve internal reconciliation the internal payment request initiator should issue a unique ID that will be referenced by subsequent Payments Building Blocks in all future calls related to the particular payment. This will allow end-to-end tracing of the transaction within the Payments Building Blocks (REQUIRED)
 * The external reconciliation is more complex as it involves a calling Building Block which is outside the Payments Building Blocks (such as the Registration Building Block) and a third party (e.g. DFS). Ideally, there needs to be a sequence of IDs that can identify a transaction from start to finish (REQUIRED)
-* Cross-cutting Prerequisites for reconciliation:
-  * The nodes that are under the control of the GovStack should be time synched (REQUIRED)
-  * IDs should be unique, if possible contain the timestamp, and should not roll over across short ranges (REQUIRED)
-* Transactions are expected to be irrevocable. Transaction reversals are subject to local regulations. In some countries, a transaction is revoked/clawed back if the beneficiary has not withdrawn the payment within a certain time period. Good practice, from a financial inclusion perspective, is to not claw back. The beneficiary could use this money as savings when needed. The system should allow both configurations (REQUIRED)
+* The nodes that are under the control of the GovStack should be time synched (REQUIRED)
+* IDs should be unique, if possible contain the timestamp, and should not roll over across short ranges (REQUIRED)
 
 ## 6.9 Batch Processing (RECOMMENDED)
 
@@ -242,33 +251,28 @@ At the transport layer:
 
 ## 6.15 Data Protection
 
-Use of a hardware security module (HSM) or equivalent to provide cryptographic keys for critical functions such as encryption, decryption, and authentication for the use of applications, identities, and databases.
+* Use of a hardware security module (HSM) or equivalent to provide cryptographic keys for critical functions such as encryption, decryption, and authentication for the use of applications, identities, and databases (REQUIRED)
 
-## 6.16 Bulk payment service (RECOMMENDED)
+## 6.16 Bulk payment service&#x20;
 
-The bulk payment service is invoked in the case of G2P bulk disbursement and should provide the following functionality:
+*   G2P bulk disbursement (RECOMMENDED)\
+    \
+    The following are the prerequisites required before bulk payments can be initiated:
 
-### 6.16.1 G2P Bulk disbursement (REQUIRED)
+    * Funding requirements
+      * The funding requirements must operate within the budget/ceiling.
+      * The number of funding accounts and the life cycle processes will vary depending on the payment infrastructure scenarios.
+    * Bulk payments file
+      * For the salary payments use case, this would be generated by the payroll system.
+      * For the unconditional social cash transfer use case, this would be generated by a process that would be triggered as per a pre-agreed frequency and the information about the payments to be made would be extracted from the registry (a database containing the information about beneficiaries for a particular government social cash transfer programme). The process of generating this payments file is outside the Payments Building Block.
 
-The following are the prerequisites required before bulk payments can be initiated:
+    There are three options for the disbursement:
 
-A) Funding requirements
+    * Manual process for Government/Department to send the retail payment details to each Financial Services Provider (FSP) (i.e. either by email or other means). This would be the case where there is a lack of interoperability among FSPs.
+    * Upload the batch disbursement file in the payment web portal for each FSP to retrieve in the case of a centralised Account Lookup Directory Service.
+    * Automate the disbursement process through the decentralised Account Lookup Directory Service and the payment gateway.
 
-* The funding requirements must operate within the budget/ceiling.
-* The number of funding accounts and the life cycle processes will vary depending on the payment infrastructure scenarios.
-
-B) Bulk payments file
-
-* For the salary payments use case, this would be generated by the payroll system.
-* For the unconditional social cash transfer use case, this would be generated by a process that would be triggered as per a pre-agreed frequency and the information about the payments to be made would be extracted from the registry (a database containing the information about beneficiaries for a particular government social cash transfer programme). The process of generating this payments file is outside the Payments Building Block.
-
-There are three options for the disbursement:
-
-* Manual process for Government/Department to send the retail payment details to each Financial Services Provider (FSP) (i.e. either by email or other means). This would be the case where there is a lack of interoperability among FSPs.
-* Upload the batch disbursement file in the payment web portal for each FSP to retrieve in the case of a centralised Account Lookup Directory Service.
-* Automate the disbursement process through the decentralised Account Lookup Directory Service and the payment gateway.
-
-**Option 1**: Retail payment information is sent securely to each Payment Service Provider for disbursement
+    **Option 1**: Retail payment information is sent securely to each Payment Service Provider for disbursement
 
 <figure><img src=".gitbook/assets/image20.png" alt=""><figcaption></figcaption></figure>
 
