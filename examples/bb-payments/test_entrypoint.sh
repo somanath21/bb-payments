@@ -33,7 +33,7 @@ helm install my-ph-ee-g2psandbox g2p-sandbox-1-3-1/ph-ee-g2psandbox --version 1.
 
 kubectl get pods -n paymenthub
 helm list -n paymenthub
-helm test my-ph-ee-g2psandbox --timeout 10m
+helm test my-ph-ee-g2psandbox -n paymenthub --timeout 10m
 # helm upgrade --install -f helm/govstack-chart/values.yaml g2p-sandbox helm/govstack-chart --create-namespace  --namespace paymenthub
 # helm upgrade -f helm/fineract/values.yaml fineract helm/fineract --install --create-namespace --namespace fineract
 # helm test g2p-sandbox -n paymenthub
