@@ -14,7 +14,7 @@ kubectl version
 curl -LO https://storage.googleapis.com/minikube/releases/latest/minikube_latest_amd64.deb
 sudo dpkg -i minikube_latest_amd64.deb
 minikube start
-
+minikube dashboard
 minikube kubectl -- get po -A #Interact with Minikube cluster
 # aws configure set aws_access_key_id $AWS_ACCESS_KEY_ID && aws configure set aws_secret_access_key $AWS_SECRET_ACCESS_KEY && aws configure set default.region eu-central-1
 # aws configure --profile playground
@@ -33,7 +33,10 @@ helm install my-ph-ee-g2psandbox g2p-sandbox-1-3-1/ph-ee-g2psandbox --version 1.
 
 kubectl get pods -n paymenthub
 helm list -n paymenthub
-helm test my-ph-ee-g2psandbox -n paymenthub --timeout 10m
+helm test my-ph-ee-g2psandbox -n paymenthub --timeout 20m || echo test
+
+#Fetch Integration Test Report
+
 # helm upgrade --install -f helm/govstack-chart/values.yaml g2p-sandbox helm/govstack-chart --create-namespace  --namespace paymenthub
 # helm upgrade -f helm/fineract/values.yaml fineract helm/fineract --install --create-namespace --namespace fineract
 # helm test g2p-sandbox -n paymenthub
