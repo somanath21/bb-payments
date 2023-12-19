@@ -28,9 +28,9 @@ echo "deb [arch=$(dpkg --print-architecture) signed-by=/usr/share/keyrings/helm.
 sudo apt-get update
 sudo apt-get install helm
 #payment install
+kubectl apply -f https://raw.githubusercontent.com/prometheus-operator/prometheus-operator/main/example/prometheus-operator-crd/monitoring.coreos.com_servicemonitors.yaml #Install ServiceMonitor
 kubectl create namespace paymenthub
-kubectl get -A namespace 
-kubectl apply -f https://raw.githubusercontent.com/prometheus-operator/prometheus-operator/main/example/prometheus-operator-crd/monitoring.coreos.com_servicemonitors.yaml #Install ServiceMonitor 
+kubectl get -A namespace  
 helm repo add g2p-sandbox-1-3-1 https://fynarfin.io/images/ph-ee-g2psandbox-1.3.1/
 helm install my-ph-ee-g2psandbox g2p-sandbox-1-3-1/ph-ee-g2psandbox --version 1.3.1 -n paymenthub
 
