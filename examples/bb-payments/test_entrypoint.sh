@@ -46,7 +46,8 @@ kubectl get -A namespace
 helm repo add g2p-sandbox-1-3-1 https://fynarfin.io/images/ph-ee-g2psandbox-1.3.1/
 helm install my-ph-ee-g2psandbox g2p-sandbox-1-3-1/ph-ee-g2psandbox --version 1.3.1 -n paymenthub
 
-
+kubectl get pods -n paymenthub
+helm test my-ph-ee-g2psandbox
 # helm upgrade --install -f helm/govstack-chart/values.yaml g2p-sandbox helm/govstack-chart --create-namespace  --namespace paymenthub
 # helm upgrade -f helm/fineract/values.yaml fineract helm/fineract --install --create-namespace --namespace fineract
 # helm test g2p-sandbox -n paymenthub
