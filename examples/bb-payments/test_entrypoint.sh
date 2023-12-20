@@ -28,11 +28,11 @@ kubectl apply -f https://raw.githubusercontent.com/prometheus-operator/prometheu
 kubectl create namespace paymenthub
 kubectl get -A namespace  
 helm repo add g2p-sandbox-1-3-1 https://fynarfin.io/images/ph-ee-g2psandbox-1.3.1/
-helm install my-ph-ee-g2psandbox g2p-sandbox-1-3-1/ph-ee-g2psandbox --version 1.3.1 -n paymenthub
+helm install ph-ee-g2psandbox g2p-sandbox-1-3-1/ph-ee-g2psandbox --version 1.3.1 -n paymenthub
 
 kubectl get pods -n paymenthub
 helm list -n paymenthub
-helm test my-ph-ee-g2psandbox -n paymenthub --timeout 8m 
+helm test my-ph-ee-g2psandbox -n paymenthub --timeout 10m 
 
 #Fetch Integration Test Report
 
