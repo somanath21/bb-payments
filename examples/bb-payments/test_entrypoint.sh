@@ -30,6 +30,26 @@ kubectl get -A namespace
 helm repo add g2p-sandbox-1-3-1 https://fynarfin.io/images/ph-ee-g2psandbox-1.3.1/
 helm install ph-ee-g2psandbox g2p-sandbox-1-3-1/ph-ee-g2psandbox --version 1.3.1 -n paymenthub
 
+git clone -b 7.17 https://github.com/elastic/helm-charts.git elastic/helm-charts
+cd elastic/helm-charts/elasticsearch/examples/security/
+make secrets || echo "elastic-secrets" already exists
+
+cd elastic/helm-charts/kibana/examples/security/
+make secrets || echo "kibana-secrets" already exists
+#insatll netcat
+apt install -y netcat
+until nc -vz ph-ee-zeebe-ops 80; do echo "Waiting for zeebe-ops service"; sleep 2; done;
+
+#Deploy BPMN 
+kubectl port-forward service/ph-ee-zeebe-ops 5000:80 -n paymenthub & #portforward zeebe-ops &'
+git clone https://github.com/openMF/ph-ee-env-labs.git openMF/ph-ee-env-labs
+cd openMF/ph-ee-env-labs/orchestration
+ls
+sed -i "/HOST=/c\HOST=http://localhost:5000/zeebe/upload" deployBpmn.sh
+cat deployBpmn.sh
+cd ..
+sh orchestration/deployBpmn.sh
+
 kubectl get pods -n paymenthub
 helm list -n paymenthub
 helm test ph-ee-g2psandbox -n paymenthub --timeout 10m 
