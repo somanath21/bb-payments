@@ -38,7 +38,7 @@ cd elastic/helm-charts/kibana/examples/security/
 make secrets || echo "kibana-secrets" already exists
 #insatll netcat
 apt install -y netcat
-until nc -vz ph-ee-zeebe-ops 80; do echo "Waiting for zeebe-ops service"; sleep 2; done;
+# until nc -vz ph-ee-zeebe-ops 80; do echo "Waiting for zeebe-ops service"; sleep 2; done;
 
 #Deploy BPMN 
 kubectl port-forward service/ph-ee-zeebe-ops 5000:80 -n paymenthub & #portforward zeebe-ops &'
