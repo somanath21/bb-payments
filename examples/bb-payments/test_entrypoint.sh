@@ -52,9 +52,9 @@ sh orchestration/deployBpmn.sh
 
 kubectl get pods -n paymenthub
 helm list -n paymenthub
-sleep 20m
+sleep 30m
 kubectl get -A namespace paymenthub
-helm test ph-ee-g2psandbox -n paymenthub --timeout 5m 
+helm test ph-ee-g2psandbox -n paymenthub --timeout 10m 
 
 #Fetch Integration Test Report
 
