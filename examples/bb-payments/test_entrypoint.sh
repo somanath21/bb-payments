@@ -54,7 +54,7 @@ kubectl get pods -n paymenthub
 helm list -n paymenthub
 sleep 20m
 kubectl get -A namespace paymenthub
-helm test ph-ee-g2psandbox -n paymenthub --timeout 10m 
+helm test ph-ee-g2psandbox -n paymenthub --timeout 5m 
 
 #Fetch Integration Test Report
 
