@@ -28,7 +28,7 @@ kubectl apply -f https://raw.githubusercontent.com/prometheus-operator/prometheu
 kubectl create namespace paymenthub
 kubectl get -A namespace  
 helm repo add g2p-sandbox-1-3-1 https://fynarfin.io/images/ph-ee-g2psandbox-1.3.1/
-helm install ph-ee-g2psandbox g2p-sandbox-1-3-1/ph-ee-g2psandbox --version 1.3.1 -n paymenthub --wait
+helm install ph-ee-g2psandbox g2p-sandbox-1-3-1/ph-ee-g2psandbox --version 1.3.1 -n paymenthub
 
 git clone -b 7.17 https://github.com/elastic/helm-charts.git elastic/helm-charts
 cd elastic/helm-charts/elasticsearch/examples/security/
