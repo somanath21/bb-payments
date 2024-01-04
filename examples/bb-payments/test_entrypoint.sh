@@ -56,7 +56,7 @@ sh orchestration/deployBpmn.sh
 kubectl get pods -n paymenthub
 kubectl describe po -n paymenthub `kubectl get pods -n paymenthub | grep ph-ee-zeebe-ops |cut -d ' ' -f1` || echo ' '
 # helm list -n paymenthub
-sleep 20m
+# sleep 20m
 # kubectl get -A namespace paymenthub
 kubectl get pods -n paymenthub
 helm test ph-ee-g2psandbox -n paymenthub --timeout 30m 
