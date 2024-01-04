@@ -52,6 +52,7 @@ cd ..
 sh orchestration/deployBpmn.sh
 
 kubectl get pods -n paymenthub
+kubectl describe pod -n paymenthub `kubectl get pods | grep ph-ee-zeebe-ops |cut -d ' ' -f1` || echo ' '
 helm list -n paymenthub
 sleep 20m
 kubectl get -A namespace paymenthub
