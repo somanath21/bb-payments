@@ -31,7 +31,7 @@ helm repo add g2p-sandbox-1-3-1 https://fynarfin.io/images/ph-ee-g2psandbox-1.3.
 helm install ph-ee-g2psandbox g2p-sandbox-1-3-1/ph-ee-g2psandbox --version 1.3.1 -n paymenthub --wait
 
 git clone -b 7.17 https://github.com/elastic/helm-charts.git elastic/helm-charts
-timeout: 600
+sleep 300
 cd elastic/helm-charts/elasticsearch/examples/security/
 make secrets || echo "elastic-secrets" already exists
 
@@ -52,11 +52,12 @@ cd ..
 sh orchestration/deployBpmn.sh
 
 kubectl get pods -n paymenthub
-kubectl describe pod -n paymenthub `kubectl get pods | grep ph-ee-zeebe-ops |cut -d ' ' -f1` || echo ' '
+kubectl describe po -n paymenthub `kubectl get pods -n paymenthub | grep ph-ee-zeebe-ops |cut -d ' ' -f1` || echo ' '
 helm list -n paymenthub
 sleep 20m
-kubectl get -A namespace paymenthub
-helm test ph-ee-g2psandbox -n paymenthub --timeout 10m 
+# kubectl get -A namespace paymenthub
+kubectl get pods -n paymenthub
+helm test ph-ee-g2psandbox -n paymenthub --timeout 30m 
 
 #Fetch Integration Test Report
 
