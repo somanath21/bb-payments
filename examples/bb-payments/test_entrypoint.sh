@@ -31,6 +31,7 @@ helm repo add g2p-sandbox-1-3-1 https://fynarfin.io/images/ph-ee-g2psandbox-1.3.
 helm install ph-ee-g2psandbox g2p-sandbox-1-3-1/ph-ee-g2psandbox --version 1.3.1 -n paymenthub --wait
 
 git clone -b 7.17 https://github.com/elastic/helm-charts.git elastic/helm-charts
+timeout: 600
 cd elastic/helm-charts/elasticsearch/examples/security/
 make secrets || echo "elastic-secrets" already exists
 
