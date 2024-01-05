@@ -39,10 +39,11 @@ make secrets || echo "elastic-secrets" already exists
 git clone -b 7.17 https://github.com/elastic/helm-charts.git elastic/helm-charts
 cd elastic/helm-charts/kibana/examples/security/
 make secrets || echo "kibana-secrets" already exists
+kubectl get secrets -n paymenthub
+kubectl get configmap -n paymenthub
 #insatll netcat
 apt install -y netcat
 # until nc -vz ph-ee-zeebe-ops 80; do echo "Waiting for zeebe-ops service"; sleep 2; done;
-
 #Deploy BPMN 
 kubectl port-forward service/ph-ee-zeebe-ops 5000:80 -n paymenthub & #portforward zeebe-ops &'
 git clone https://github.com/openMF/ph-ee-env-labs.git openMF/ph-ee-env-labs
@@ -56,10 +57,10 @@ sh orchestration/deployBpmn.sh
 kubectl get pods -n paymenthub
 kubectl describe po -n paymenthub `kubectl get pods -n paymenthub | grep ph-ee-zeebe-ops |cut -d ' ' -f1` || echo ' '
 # helm list -n paymenthub
-# sleep 20m
+# sleep 10m
 # kubectl get -A namespace paymenthub
 kubectl get pods -n paymenthub
-helm test ph-ee-g2psandbox -n paymenthub --timeout 30m
+helm test ph-ee-g2psandbox -n paymenthub --timeout 10m
 no_output_timeout=900
 
 #fetch report
