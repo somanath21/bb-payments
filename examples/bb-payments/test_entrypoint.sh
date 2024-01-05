@@ -66,7 +66,7 @@ kubectl describe po -n paymenthub `kubectl get pods -n paymenthub | grep ph-ee-z
 # sleep 10m
 # kubectl get -A namespace paymenthub
 kubectl get pods -n paymenthub
-helm test ph-ee-g2psandbox -n paymenthub --timeout 10m
+helm test ph-ee-g2psandbox -n paymenthub --timeout 5m
 no_output_timeout=900
 
 #fetch report
