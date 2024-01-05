@@ -29,19 +29,19 @@ kubectl create namespace paymenthub
 kubectl get -A namespace  
 helm repo add g2p-sandbox-1-3-1 https://fynarfin.io/images/ph-ee-g2psandbox-1.3.1/
 helm install ph-ee-g2psandbox g2p-sandbox-1-3-1/ph-ee-g2psandbox --version 1.3.1 -n paymenthub 
-sleep 300
-kubectl get pods -n paymenthub
 
 git clone -b 7.17 https://github.com/elastic/helm-charts.git elastic/helm-charts
 # sleep 300
 cd elastic/helm-charts/elasticsearch/examples/security/
-make secrets || echo "elastic-secrets" already exists
+make secrets -n paymenthub || echo "elastic-secrets" already exists
 git clone -b 7.17 https://github.com/elastic/helm-charts.git elastic/helm-charts
 cd elastic/helm-charts/kibana/examples/security/
-make secrets || echo "kibana-secrets" already exists
+make secrets -n paymenthub || echo "kibana-secrets" already exists
 kubectl get -A secrets 
 kubectl get -A configmap 
 
+sleep 300
+kubectl get pods -n paymenthub
 #insatll netcat
 apt install -y netcat
 # until nc -vz ph-ee-zeebe-ops 80; do echo "Waiting for zeebe-ops service"; sleep 2; done;
