@@ -62,6 +62,43 @@ kubectl get pods -n paymenthub
 helm test ph-ee-g2psandbox -n paymenthub --timeout 30m
 no_output_timeout=900
 
+#fetch report
+mkdir -p integration_report/test-report
+kubectl cp paymenthub/`kubectl get pods -n paymenthub | grep g2p-sandbox-test-connection |cut -d " " -f1`:/ph-ee-connector-integration-test/build integration_report/test-report
+# Specify the path to the downloaded file
+downloaded_file="integration_report/test-report/cucumber.xml"
+# Loop until the file is not empty
+while [ ! -s $downloaded_file ]; do
+    echo "File is empty, waiting..."
+    sleep 60  # You can adjust the sleep interval as needed
+    kubectl cp paymenthub/`kubectl get pods -n paymenthub | grep g2p-sandbox-test-connection |cut -d " " -f1`:/ph-ee-connector-integration-test/build/ integration_report/test-report
+    downloaded_file="integration_report/test-report/cucumber.xml  "
+done
+echo "File is no longer empty, processing..."
+
+# Function to store test results
+store_test_results() {
+    echo "Storing test results from cucumber.xml..."
+    cp integration_report/test-report/cucumber.xml /path/to/destination/cucumber.xml
+}
+
+# Function to store artifacts
+store_artifacts() {
+    echo "Storing artifacts from tests..."
+    cp -r integration_report/test-report/reports/tests/test /path/to/destination/test_artifacts
+}
+
+# Main script
+main() {
+    store_test_results
+    store_artifacts
+}
+
+# Run the script
+main
+
+# kubectl cp paymenthub/`kubectl get pods -n paymenthub | grep g2p-sandbox-test-connection |cut -d " " -f1`:/ph-ee-connector-integration-test/build integration_report/test-report
+
 #Fetch Integration Test Report
 
 # helm upgrade --install -f helm/govstack-chart/values.yaml g2p-sandbox helm/govstack-chart --create-namespace  --namespace paymenthub
