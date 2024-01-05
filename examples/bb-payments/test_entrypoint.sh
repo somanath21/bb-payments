@@ -42,10 +42,10 @@ kubectl get secret elastic-certificate-pem -n default -o yaml | sed 's/namespace
 kubectl get secret elastic-certificates -n default -o yaml | sed 's/namespace: default/namespace: paymenthub/' | kubectl create -f -
 kubectl get secret elastic-credentials -n default -o yaml | sed 's/namespace: default/namespace: paymenthub/' | kubectl create -f -
 kubectl get secret kibana -n default -o yaml | sed 's/namespace: default/namespace: paymenthub/' | kubectl create -f -
-kubectl get -A secrets 
-kubectl get -A configmap 
+kubectl get secrets -n paymenthub
+kubectl get configmap -n paymenthub
 
-sleep 10m
+sleep 5m
 kubectl get pods -n paymenthub
 #insatll netcat
 apt install -y netcat
