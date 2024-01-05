@@ -1,5 +1,6 @@
 #!/bin/bash
 #insatll kubectl
+echo hello 
 sudo apt-get update
 sudo apt-get install -y apt-transport-https ca-certificates curl gpg
 sudo mkdir -p /etc/apt/keyrings
