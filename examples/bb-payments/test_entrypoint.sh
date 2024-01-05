@@ -39,8 +39,9 @@ make secrets || echo "elastic-secrets" already exists
 git clone -b 7.17 https://github.com/elastic/helm-charts.git elastic/helm-charts
 cd elastic/helm-charts/kibana/examples/security/
 make secrets || echo "kibana-secrets" already exists
-kubectl get secrets -n paymenthub
-kubectl get configmap -n paymenthub
+kubectl get -A secrets 
+kubectl get -A configmap 
+
 #insatll netcat
 apt install -y netcat
 # until nc -vz ph-ee-zeebe-ops 80; do echo "Waiting for zeebe-ops service"; sleep 2; done;
