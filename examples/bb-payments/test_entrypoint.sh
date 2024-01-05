@@ -33,10 +33,15 @@ helm install ph-ee-g2psandbox g2p-sandbox-1-3-1/ph-ee-g2psandbox --version 1.3.1
 git clone -b 7.17 https://github.com/elastic/helm-charts.git elastic/helm-charts
 # sleep 300
 cd elastic/helm-charts/elasticsearch/examples/security/
-make secrets -n paymenthub || echo "elastic-secrets" already exists
+make secrets || echo "elastic-secrets" already exists
 git clone -b 7.17 https://github.com/elastic/helm-charts.git elastic/helm-charts
 cd elastic/helm-charts/kibana/examples/security/
-make secrets -n paymenthub || echo "kibana-secrets" already exists
+make secrets || echo "kibana-secrets" already exists
+kubectl get secret elastic-certificate-crt -n default -o yaml | sed 's/namespace: default/namespace: paymenthub/' | kubectl create -f -
+kubectl get secret elastic-certificate-pem -n default -o yaml | sed 's/namespace: default/namespace: paymenthub/' | kubectl create -f -
+kubectl get secret elastic-certificates -n default -o yaml | sed 's/namespace: default/namespace: paymenthub/' | kubectl create -f -
+kubectl get secret elastic-credentials -n default -o yaml | sed 's/namespace: default/namespace: paymenthub/' | kubectl create -f -
+kubectl get secret kibana -n default -o yaml | sed 's/namespace: default/namespace: paymenthub/' | kubectl create -f -
 kubectl get -A secrets 
 kubectl get -A configmap 
 
