@@ -45,7 +45,7 @@ kubectl get secret kibana -n default -o yaml | sed 's/namespace: default/namespa
 kubectl get secrets -n paymenthub
 kubectl get configmap -n paymenthub
 
-sleep 5m
+# sleep 5m
 kubectl get pods -n paymenthub
 #insatll netcat
 apt install -y netcat
