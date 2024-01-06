@@ -16,8 +16,7 @@ curl -LO https://storage.googleapis.com/minikube/releases/latest/minikube_latest
 sudo dpkg -i minikube_latest_amd64.deb
 minikube start
 minikube kubectl -- get po -A #Interact with Minikube cluster
-# aws configure set aws_access_key_id $AWS_ACCESS_KEY_ID && aws configure set aws_secret_access_key $AWS_SECRET_ACCESS_KEY && aws configure set default.region eu-central-1
-# aws configure --profile playground
+
 curl https://baltocdn.com/helm/signing.asc | gpg --dearmor | sudo tee /usr/share/keyrings/helm.gpg > /dev/null
 sudo apt-get install apt-transport-https --yes
 echo "deb [arch=$(dpkg --print-architecture) signed-by=/usr/share/keyrings/helm.gpg] https://baltocdn.com/helm/stable/debian/ all main" | sudo tee /etc/apt/sources.list.d/helm-stable-debian.list
@@ -71,18 +70,18 @@ helm test ph-ee-g2psandbox -n paymenthub --timeout 5m
 no_output_timeout=900
 
 #fetch report
-mkdir -p integration_report/test-report
-kubectl cp paymenthub/`kubectl get pods -n paymenthub | grep g2p-sandbox-test-connection |cut -d " " -f1`:/ph-ee-connector-integration-test/build integration_report/test-report
-# Specify the path to the downloaded file
-downloaded_file="integration_report/test-report/cucumber.xml"
-# Loop until the file is not empty
-while [ ! -s $downloaded_file ]; do
-    echo "File is empty, waiting..."
-    sleep 60  # You can adjust the sleep interval as needed
-    kubectl cp paymenthub/`kubectl get pods -n paymenthub | grep g2p-sandbox-test-connection |cut -d " " -f1`:/ph-ee-connector-integration-test/build/ integration_report/test-report
-    downloaded_file="integration_report/test-report/cucumber.xml  "
-done
-echo "File is no longer empty, processing..."
+# mkdir -p integration_report/test-report
+# kubectl cp paymenthub/`kubectl get pods -n paymenthub | grep g2p-sandbox-test-connection |cut -d " " -f1`:/ph-ee-connector-integration-test/build integration_report/test-report
+# # Specify the path to the downloaded file
+# downloaded_file="integration_report/test-report/cucumber.xml"
+# # Loop until the file is not empty
+# while [ ! -s $downloaded_file ]; do
+#     echo "File is empty, waiting..."
+#     sleep 60  # You can adjust the sleep interval as needed
+#     kubectl cp paymenthub/`kubectl get pods -n paymenthub | grep g2p-sandbox-test-connection |cut -d " " -f1`:/ph-ee-connector-integration-test/build/ integration_report/test-report
+#     downloaded_file="integration_report/test-report/cucumber.xml  "
+# done
+# echo "File is no longer empty, processing..."
 
 # Function to store test results
 store_test_results() {
