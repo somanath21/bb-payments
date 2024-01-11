@@ -14,7 +14,7 @@ kubectl version
 curl -LO https://storage.googleapis.com/minikube/releases/latest/minikube_latest_amd64.deb
 sudo dpkg -i minikube_latest_amd64.deb
 minikube start
-sleep 60
+sleep 30
 minikube kubectl -- get po -A #Interact with Minikube cluster
 echo minikube started
 curl https://baltocdn.com/helm/signing.asc | gpg --dearmor | sudo tee /usr/share/keyrings/helm.gpg > /dev/null
@@ -28,7 +28,8 @@ sudo apt-get install helm
 kubectl create namespace hello-world
 kubectl get -A namespace
 helm repo add hello-world https://ayazuddin007.github.io/Helm3/
-helm install my-hello-world hello-world/hello-world --version 0.2.0
+helm install my-hello-world hello-world/hello-world --version 0.2.0 -n hello-world
+helm test my-hello-world -n hello-world
 
 # #payment install
 # kubectl apply -f https://raw.githubusercontent.com/prometheus-operator/prometheus-operator/main/example/prometheus-operator-crd/monitoring.coreos.com_servicemonitors.yaml #Install ServiceMonitor
