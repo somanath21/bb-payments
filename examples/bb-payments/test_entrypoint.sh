@@ -23,48 +23,55 @@ echo "deb [arch=$(dpkg --print-architecture) signed-by=/usr/share/keyrings/helm.
 #helm install
 sudo apt-get update
 sudo apt-get install helm
-#payment install
-kubectl apply -f https://raw.githubusercontent.com/prometheus-operator/prometheus-operator/main/example/prometheus-operator-crd/monitoring.coreos.com_servicemonitors.yaml #Install ServiceMonitor
-kubectl create namespace paymenthub
-kubectl get -A namespace  
-helm repo add g2p-sandbox-1-3-1 https://fynarfin.io/images/ph-ee-g2psandbox-1.3.1/
-helm install ph-ee-g2psandbox g2p-sandbox-1-3-1/ph-ee-g2psandbox --version 1.3.1 -n paymenthub 
 
-git clone -b 7.17 https://github.com/elastic/helm-charts.git elastic/helm-charts
-# sleep 300
-cd elastic/helm-charts/elasticsearch/examples/security/
-make secrets || echo "elastic-secrets" already exists
-git clone -b 7.17 https://github.com/elastic/helm-charts.git elastic/helm-charts
-cd elastic/helm-charts/kibana/examples/security/
-make secrets || echo "kibana-secrets" already exists
-kubectl get secret elastic-certificate-crt -n default -o yaml | sed 's/namespace: default/namespace: paymenthub/' | kubectl create -f -
-kubectl get secret elastic-certificate-pem -n default -o yaml | sed 's/namespace: default/namespace: paymenthub/' | kubectl create -f -
-kubectl get secret elastic-certificates -n default -o yaml | sed 's/namespace: default/namespace: paymenthub/' | kubectl create -f -
-kubectl get secret elastic-credentials -n default -o yaml | sed 's/namespace: default/namespace: paymenthub/' | kubectl create -f -
-kubectl get secret kibana -n default -o yaml | sed 's/namespace: default/namespace: paymenthub/' | kubectl create -f -
-kubectl get secrets -n paymenthub
-kubectl get configmap -n paymenthub
+#hello world install
+kubectl create namespace hello-world
+kubectl get -A namespace
+helm repo add hello-world https://ayazuddin007.github.io/Helm3/
+helm install my-hello-world hello-world/hello-world --version 0.2.0
 
-# sleep 5m
-kubectl get pods -n paymenthub
-#insatll netcat
-apt install -y netcat
-# until nc -vz ph-ee-zeebe-ops 80; do echo "Waiting for zeebe-ops service"; sleep 2; done;
-#Deploy BPMN 
-kubectl port-forward service/ph-ee-zeebe-ops 5000:80 -n paymenthub & #portforward zeebe-ops &'
-git clone https://github.com/openMF/ph-ee-env-labs.git openMF/ph-ee-env-labs
-cd openMF/ph-ee-env-labs/orchestration
-ls
-sed -i "/HOST=/c\HOST=http://localhost:5000/zeebe/upload" deployBpmn.sh
-cat deployBpmn.sh
-cd ..
-sh orchestration/deployBpmn.sh
+# #payment install
+# kubectl apply -f https://raw.githubusercontent.com/prometheus-operator/prometheus-operator/main/example/prometheus-operator-crd/monitoring.coreos.com_servicemonitors.yaml #Install ServiceMonitor
+# kubectl create namespace paymenthub
+# kubectl get -A namespace  
+# helm repo add g2p-sandbox-1-3-1 https://fynarfin.io/images/ph-ee-g2psandbox-1.3.1/
+# helm install ph-ee-g2psandbox g2p-sandbox-1-3-1/ph-ee-g2psandbox --version 1.3.1 -n paymenthub 
 
-kubectl get pods -n paymenthub
-# kubectl describe po -n paymenthub `kubectl get pods -n paymenthub | grep ph-ee-zeebe-ops |cut -d ' ' -f1` || echo ' '
-# helm list -n paymenthub
+# git clone -b 7.17 https://github.com/elastic/helm-charts.git elastic/helm-charts
+# # sleep 300
+# cd elastic/helm-charts/elasticsearch/examples/security/
+# make secrets || echo "elastic-secrets" already exists
+# git clone -b 7.17 https://github.com/elastic/helm-charts.git elastic/helm-charts
+# cd elastic/helm-charts/kibana/examples/security/
+# make secrets || echo "kibana-secrets" already exists
+# kubectl get secret elastic-certificate-crt -n default -o yaml | sed 's/namespace: default/namespace: paymenthub/' | kubectl create -f -
+# kubectl get secret elastic-certificate-pem -n default -o yaml | sed 's/namespace: default/namespace: paymenthub/' | kubectl create -f -
+# kubectl get secret elastic-certificates -n default -o yaml | sed 's/namespace: default/namespace: paymenthub/' | kubectl create -f -
+# kubectl get secret elastic-credentials -n default -o yaml | sed 's/namespace: default/namespace: paymenthub/' | kubectl create -f -
+# kubectl get secret kibana -n default -o yaml | sed 's/namespace: default/namespace: paymenthub/' | kubectl create -f -
+# kubectl get secrets -n paymenthub
+# kubectl get configmap -n paymenthub
 
-kubectl get pods -n paymenthub
-helm test ph-ee-g2psandbox -n paymenthub --timeout 5m
-# no_output_timeout=900
+# # sleep 5m
+# kubectl get pods -n paymenthub
+# #insatll netcat
+# apt install -y netcat
+# # until nc -vz ph-ee-zeebe-ops 80; do echo "Waiting for zeebe-ops service"; sleep 2; done;
+# #Deploy BPMN 
+# kubectl port-forward service/ph-ee-zeebe-ops 5000:80 -n paymenthub & #portforward zeebe-ops &'
+# git clone https://github.com/openMF/ph-ee-env-labs.git openMF/ph-ee-env-labs
+# cd openMF/ph-ee-env-labs/orchestration
+# ls
+# sed -i "/HOST=/c\HOST=http://localhost:5000/zeebe/upload" deployBpmn.sh
+# cat deployBpmn.sh
+# cd ..
+# sh orchestration/deployBpmn.sh
+
+# kubectl get pods -n paymenthub
+# # kubectl describe po -n paymenthub `kubectl get pods -n paymenthub | grep ph-ee-zeebe-ops |cut -d ' ' -f1` || echo ' '
+# # helm list -n paymenthub
+
+# # kubectl get pods -n paymenthub
+# helm test ph-ee-g2psandbox -n paymenthub --timeout 5m
+# # no_output_timeout=900
 
