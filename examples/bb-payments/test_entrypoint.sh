@@ -73,5 +73,21 @@ kubectl get pods -n paymenthub
 echo test completed
 kubectl describe pod g2p-sandbox-test-connection -n paymenthub
 echo check for the logs
-kubectl logs g2p-sandbox-test-connection -n paymenthub
+kubectl logs -f g2p-sandbox-test-connection -n paymenthub
 # no_output_timeout=900
+
+#export test results
+mkdir -p integration_report/test-report
+kubectl cp paymenthub/`kubectl get pods -n paymenthub | grep g2p-sandbox-test-connection |cut -d " " -f1`:/ph-ee-connector-integration-test/build /home/circleci/project/test/openAPI/result/
+
+# Specify the path to the downloaded file
+downloaded_file="/home/circleci/project/test/openAPI/result/cucumber.xml"
+
+# Loop until the file is not empty
+while [ ! -s $downloaded_file ]; do
+    echo "File is empty, waiting..."
+    sleep 60  # You can adjust the sleep interval as needed
+    kubectl cp paymenthub/`kubectl get pods -n paymenthub | grep g2p-sandbox-test-connection |cut -d " " -f1`:/ph-ee-connector-integration-test/build/ /home/circleci/project/test/openAPI/result/
+    downloaded_file="/home/circleci/project/test/openAPI/result/cucumber.xml  "
+done
+echo "File is no longer empty, processing..."
