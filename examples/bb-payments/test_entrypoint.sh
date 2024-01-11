@@ -39,6 +39,12 @@ make secrets || echo "elastic-secrets" already exists
 git clone -b 7.17 https://github.com/elastic/helm-charts.git elastic/helm-charts
 cd elastic/helm-charts/kibana/examples/security/
 make secrets || echo "kibana-secrets" already exists
+kubectl get secret elastic-certificate-crt -n default -o yaml | sed 's/namespace: default/namespace: paymenthub/' | kubectl create -f -
+kubectl get secret elastic-certificate-pem -n default -o yaml | sed 's/namespace: default/namespace: paymenthub/' | kubectl create -f -
+kubectl get secret elastic-certificates -n default -o yaml | sed 's/namespace: default/namespace: paymenthub/' | kubectl create -f -
+kubectl get secret elastic-credentials -n default -o yaml | sed 's/namespace: default/namespace: paymenthub/' | kubectl create -f -
+kubectl get secret kibana -n default -o yaml | sed 's/namespace: default/namespace: paymenthub/' | kubectl create -f -
+kubectl get secrets -n paymenthub
 #insatll netcat
 apt install -y netcat
 # until nc -vz ph-ee-zeebe-ops 80; do echo "Waiting for zeebe-ops service"; sleep 2; done;
