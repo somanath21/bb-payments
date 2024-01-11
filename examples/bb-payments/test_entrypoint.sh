@@ -62,7 +62,7 @@ cat deployBpmn.sh
 cd ..
 sh orchestration/deployBpmn.sh
 ls /home/circleci/project/test/openAPI/result/
-checkout
+# checkout
 #helm test 
 pwd
 kubectl get pods -n paymenthub
@@ -70,6 +70,8 @@ kubectl get pods -n paymenthub
 # sleep 20m
 helm test ph-ee-g2psandbox -n paymenthub --timeout 5m 
 kubectl get pods -n paymenthub
+echo test completed
 kubectl describe pod g2p-sandbox-test-connection -n paymenthub
+echo check for the logs
 kubectl logs g2p-sandbox-test-connection -n paymenthub
 # no_output_timeout=900
