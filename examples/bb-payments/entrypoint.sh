@@ -15,6 +15,7 @@ kubectl version
 curl -LO https://storage.googleapis.com/minikube/releases/latest/minikube_latest_amd64.deb
 sudo dpkg -i minikube_latest_amd64.deb
 minikube start
+sleep 60
 minikube kubectl -- get po -A #Interact with Minikube cluster
 echo minikube started
 curl https://baltocdn.com/helm/signing.asc | gpg --dearmor | sudo tee /usr/share/keyrings/helm.gpg > /dev/null
