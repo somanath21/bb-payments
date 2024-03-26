@@ -118,10 +118,6 @@ jobs:
           command: |
             aws eks update-kubeconfig --name ${EKS_CLUSTER} 
       - kubernetes/install-kubectl
-      - run:
-          name: Port Forward zeebe-gateway
-          command: |
-            kubectl port-forward service/ph-ee-zeebe-ops 5000:80 &
       # - run:
       #     name: Wait for Port Forward
       #     command: |
@@ -129,10 +125,31 @@ jobs:
       - run: 
           name: download and execute the bpmn upload
           command: | 
-            # curl -o deployBpmn.sh https://raw.githubusercontent.com/openMF/ph-ee-env-labs/master/orchestration/deployBpmn.sh
-            cd helm/bpmn-upload
-            chmod +x deployBpmn.sh
-            sh deployBpmn.sh
+            #insatll netcat
+            apt install -y netcat
+            sleep 10
+            check_count=0
+            until ((check_count==20)) || nc -vz ph-ee-zeebe-ops 80; do 
+                echo "Waiting for zeebe-ops service"; 
+                sleep 5; 
+                check_count=$(($check_count + 1));
+            done;
+            echo ------zeebe-ops service available-----------
+            sleep 10
+            #Deploy BPMN 
+            kubectl port-forward service/ph-ee-zeebe-ops 5000:80 -n $NAMESPACE &
+            echo "sleeping to get portforwading ready"
+            git clone https://github.com/openMF/ph-ee-env-labs.git
+            cd ph-ee-env-labs/orchestration/
+            sed -i "/HOST=/c\HOST=http://localhost:5000/zeebe/upload" deployBpmn.sh
+            cat deployBpmn.sh
+            cd ..
+            timeout 180s sh orchestration/deployBpmn.sh && sleep 5 || echo 'deploy Bpmn done'
+            echo ---------------------------successful--------------------------
+            # # curl -o deployBpmn.sh https://raw.githubusercontent.com/openMF/ph-ee-env-labs/master/orchestration/deployBpmn.sh
+            # cd helm/bpmn-upload
+            # chmod +x deployBpmn.sh
+            # sh deployBpmn.sh
 
   helm-test:
     docker:
@@ -155,43 +172,88 @@ jobs:
       - run:
           name: Run Helm Tests
           command: |
-            helm test g2p-sandbox --namespace paymenthub || echo test
+            helm test g2p-sandbox --filter name=g2p-sandbox-test-gov --namespace paymenthub || echo test
+                 
       - run:
           name: Fetch Integration Test Report
           command: |
             #!/bin/bash
             mkdir -p integration_report/test-report
-            kubectl cp paymenthub/`kubectl get pods -n paymenthub | grep g2p-sandbox-test-connection |cut -d " " -f1`:/ph-ee-connector-integration-test/build integration_report/test-report
 
-            # Specify the path to the downloaded file
+            echo "Fetch Integration Test Report for GOV"
+            kubectl cp paymenthub/`kubectl get pods -n paymenthub | grep g2p-sandbox-test-gov |cut -d " " -f1`:/ph-ee-connector-integration-test/build integration_report/test-report
+            # Specify the path to the downloaded file 
             downloaded_file="integration_report/test-report/cucumber.xml"
-
             # Loop until the file is not empty
             while [ ! -s $downloaded_file ]; do
                 echo "File is empty, waiting..."
                 sleep 60  # You can adjust the sleep interval as needed
-                kubectl cp paymenthub/`kubectl get pods -n paymenthub | grep g2p-sandbox-test-connection |cut -d " " -f1`:/ph-ee-connector-integration-test/build/ integration_report/test-report
-                downloaded_file="integration_report/test-report/cucumber.xml  "
+                kubectl cp paymenthub/`kubectl get pods -n paymenthub | grep g2p-sandbox-test-gov |cut -d " " -f1`:/ph-ee-connector-integration-test/build/ integration_report/test-report
+                downloaded_file="integration_report/test-report/cucumber.xml"
             done
             echo "File is no longer empty, processing..."
-            # kubectl cp paymenthub/`kubectl get pods -n paymenthub | grep g2p-sandbox-test-connection |cut -d " " -f1`:/ph-ee-connector-integration-test/build integration_report/test-report
-        # - run:
-        #     name: Fetch Integration Test Report
-        #     command: |
-        #       kubectl cp -n $KUBE_NAMESPACE <pod-name>:<path-to-report-file> ./integration_report  # Replace <pod-name> and <path-to-report-file> 
-      # - run:
-      #     name: List Contents of Integration Report Directory
-      #     command: |
-      #       ls -l /tmp/integration_report
+            mv integration_report/test-report/cucumber.xml integration_report/test-report/cucumber_gov.xml
+            mv integration_report/test-report/reports/tests/test integration_report/test-report/reports/tests/test_gov
+           
+            mkdir -p integration_report_final
+            cp integration_report/test-report/cucumber_gov.xml integration_report_final/ || echo ""
+            cp integration_report/test-report/cucumber_ams.xml integration_report_final/ || echo ""
+
+            ls integration_report/test-report/
+            # kubectl cp paymenthub/`kubectl get pods -n paymenthub | grep g2p-sandbox-test-gov |cut -d " " -f1`:/ph-ee-connector-integration-test/build integration_report/test-report
+            for i in $(kubectl get pods -n paymenthub |cut -d " " -f1|tail -n +2); do
+                echo "--------------------------------------------------------------------Logs of $i Start---------------------------------------------------------------------------" >> all_pod_logs.log
+                kubectl logs -n paymenthub  $i  --all-containers=true >> all_pod_logs.log
+                echo "---------------------------------------------------------------------Logs of $i End----------------------------------------------------------------------------" >> all_pod_logs.log
+                echo " " >> all_pod_logs.log
+                echo " " >> all_pod_logs.log
+            done
+            mv all_pod_logs.log integration_report/test-report/reports/tests/
+
       - store_test_results:
-          path: integration_report/test-report/cucumber.xml
+          path: integration_report_final/
       - store_artifacts:
-          path: integration_report/test-report/reports/tests/test
-          # path: integration_report/test-report/reports/tests/test
+          path: integration_report/test-report/reports/tests
+      # - run:
+      #     name: Run Helm Tests
+      #     command: |
+      #       helm test g2p-sandbox --namespace paymenthub || echo test
+      # - run:
+      #     name: Fetch Integration Test Report
+      #     command: |
+      #       #!/bin/bash
+      #       mkdir -p integration_report/test-report
+      #       kubectl cp paymenthub/`kubectl get pods -n paymenthub | grep g2p-sandbox-test-connection |cut -d " " -f1`:/ph-ee-connector-integration-test/build integration_report/test-report
+
+      #       # Specify the path to the downloaded file
+      #       downloaded_file="integration_report/test-report/cucumber.xml"
+
+      #       # Loop until the file is not empty
+      #       while [ ! -s $downloaded_file ]; do
+      #           echo "File is empty, waiting..."
+      #           sleep 60  # You can adjust the sleep interval as needed
+      #           kubectl cp paymenthub/`kubectl get pods -n paymenthub | grep g2p-sandbox-test-connection |cut -d " " -f1`:/ph-ee-connector-integration-test/build/ integration_report/test-report
+      #           downloaded_file="integration_report/test-report/cucumber.xml  "
+      #       done
+      #       echo "File is no longer empty, processing..."
+      #       # kubectl cp paymenthub/`kubectl get pods -n paymenthub | grep g2p-sandbox-test-connection |cut -d " " -f1`:/ph-ee-connector-integration-test/build integration_report/test-report
+      #   # - run:
+      #   #     name: Fetch Integration Test Report
+      #   #     command: |
+      #   #       kubectl cp -n $KUBE_NAMESPACE <pod-name>:<path-to-report-file> ./integration_report  # Replace <pod-name> and <path-to-report-file> 
+      # # - run:
+      # #     name: List Contents of Integration Report Directory
+      # #     command: |
+      # #       ls -l /tmp/integration_report
       # - store_test_results:
-      #     path: integration_reports/test-report/cucumber.xml
+      #     path: integration_report/test-report/cucumber.xml
       # - store_artifacts:
-      #     path: ph-ee-integration-test/build/reports/tests/test
+      #     path: integration_report/test-report/reports/tests/test
+      #     # path: integration_report/test-report/reports/tests/test
+      # # - store_test_results:
+      # #     path: integration_reports/test-report/cucumber.xml
+      # # - store_artifacts:
+      # #     path: ph-ee-integration-test/build/reports/tests/test
 
 workflows:
   deploy:
