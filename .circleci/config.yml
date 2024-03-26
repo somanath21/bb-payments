@@ -126,7 +126,8 @@ jobs:
           name: download and execute the bpmn upload
           command: | 
             #insatll netcat
-            apt install -y netcat
+            echo install netcat
+            sudo apt install -y netcat
             sleep 10
             check_count=0
             until ((check_count==20)) || nc -vz ph-ee-zeebe-ops 80; do 
@@ -144,6 +145,7 @@ jobs:
             sed -i "/HOST=/c\HOST=http://localhost:5000/zeebe/upload" deployBpmn.sh
             cat deployBpmn.sh
             cd ..
+            chmod +x deployBpmn.sh  
             timeout 180s sh orchestration/deployBpmn.sh && sleep 5 || echo 'deploy Bpmn done'
             echo ---------------------------successful--------------------------
             # # curl -o deployBpmn.sh https://raw.githubusercontent.com/openMF/ph-ee-env-labs/master/orchestration/deployBpmn.sh
