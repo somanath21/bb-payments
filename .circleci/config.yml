@@ -61,97 +61,97 @@ jobs:
           wait: true
           timeout: "300s"
 
-  create-secret:
-    docker:
-      - image: cimg/base:2022.06 
-    steps: 
-      - checkout
-      # - setup_remote_docker:
-      #       version: 20.10.14
-      - aws-cli/setup:
-          role_arn: "${AWS_CIRCLECI_ROLE_ARN}"
-          region: AWS_REGION
-          profile_name: "playground"
-          role_session_name: deploy-test
-          session_duration: '1800'
-      - run:
-          name: Update kubeconfig
-          command: |
-            aws eks update-kubeconfig --name ${EKS_CLUSTER} 
-      - kubernetes/install-kubectl
-      # - aws-eks/update-kubeconfig-with-authenticator:
-      #     cluster-name: "GStack-sb-eks-plg"
-      #     aws-region: "$REGION"
-      - run: |
-          cd helm/kibana-secret/
-          make secrets || echo "kibana" already exists
-      - run: |
-          cd helm/es-secret/
-          make secrets || echo "elastic-certificates" already exists
-      - run: |
-          export ENV_NAMESPACE=paymenthub
-          kubectl delete secret bulk-processor-secret -n $ENV_NAMESPACE || echo "delete the secret if exist"
-          kubectl create secret generic bulk-processor-secret \
-          --from-literal=aws-access-key="$S3_ACCESS_KEY_ID" \
-          --from-literal=aws-secret-key="$S3_SECRET_ACCESS_KEY" -n $ENV_NAMESPACE
+  # create-secret:
+  #   docker:
+  #     - image: cimg/base:2022.06 
+  #   steps: 
+  #     - checkout
+  #     # - setup_remote_docker:
+  #     #       version: 20.10.14
+  #     - aws-cli/setup:
+  #         role_arn: "${AWS_CIRCLECI_ROLE_ARN}"
+  #         region: AWS_REGION
+  #         profile_name: "playground"
+  #         role_session_name: deploy-test
+  #         session_duration: '1800'
+  #     - run:
+  #         name: Update kubeconfig
+  #         command: |
+  #           aws eks update-kubeconfig --name ${EKS_CLUSTER} 
+  #     - kubernetes/install-kubectl
+  #     # - aws-eks/update-kubeconfig-with-authenticator:
+  #     #     cluster-name: "GStack-sb-eks-plg"
+  #     #     aws-region: "$REGION"
+  #     - run: |
+  #         cd helm/kibana-secret/
+  #         make secrets || echo "kibana" already exists
+  #     - run: |
+  #         cd helm/es-secret/
+  #         make secrets || echo "elastic-certificates" already exists
+  #     - run: |
+  #         export ENV_NAMESPACE=paymenthub
+  #         kubectl delete secret bulk-processor-secret -n $ENV_NAMESPACE || echo "delete the secret if exist"
+  #         kubectl create secret generic bulk-processor-secret \
+  #         --from-literal=aws-access-key="$S3_ACCESS_KEY_ID" \
+  #         --from-literal=aws-secret-key="$S3_SECRET_ACCESS_KEY" -n $ENV_NAMESPACE
 
-      # - run: |
-      #     kubectl delete secret bulk-processor-secret -n paymenthub || echo "delete the secret if exist"
-      #     kubectl create secret generic bulk-processor-secret \
-      #     --from-literal=aws-access-key="$S3_ACCESS_KEY_ID" \
-      #     --from-literal=aws-secret-key="$S3_SECRET_ACCESS_KEY" -n paymenthub
+  #     # - run: |
+  #     #     kubectl delete secret bulk-processor-secret -n paymenthub || echo "delete the secret if exist"
+  #     #     kubectl create secret generic bulk-processor-secret \
+  #     #     --from-literal=aws-access-key="$S3_ACCESS_KEY_ID" \
+  #     #     --from-literal=aws-secret-key="$S3_SECRET_ACCESS_KEY" -n paymenthub
 
-  deploying-bpmns:
-    docker:
-      - image: cimg/base:2022.06 
-      # - image: 'curlimages/curl:8.2.1'   
-    steps:
-      - checkout
-      - aws-cli/setup:
-          role_arn: "${AWS_CIRCLECI_ROLE_ARN}"
-          region: AWS_REGION
-          profile_name: "playground"
-          role_session_name: deploy-test
-          session_duration: '1800'
-      - run:
-          name: Update kubeconfig
-          command: |
-            aws eks update-kubeconfig --name ${EKS_CLUSTER} 
-      - kubernetes/install-kubectl
-      # - run:
-      #     name: Wait for Port Forward
-      #     command: |
-      #       until nc -z localhost 5000; do sleep 1; done
-      - run: 
-          name: download and execute the bpmn upload
-          command: | 
-            #insatll netcat
-            echo install netcat
-            sudo apt install -y netcat
-            sleep 10
-            check_count=0
-            until ((check_count==20)) || nc -vz ph-ee-zeebe-ops 80; do 
-                echo "Waiting for zeebe-ops service"; 
-                sleep 5; 
-                check_count=$(($check_count + 1));
-            done;
-            echo ------zeebe-ops service available-----------
-            sleep 10
-            #Deploy BPMN 
-            kubectl port-forward service/ph-ee-zeebe-ops 5000:80 -n $NAMESPACE &
-            echo "sleeping to get portforwading ready"
-            git clone https://github.com/openMF/ph-ee-env-labs.git
-            cd ph-ee-env-labs/orchestration/
-            sed -i "/HOST=/c\HOST=http://localhost:5000/zeebe/upload" deployBpmn.sh
-            cat deployBpmn.sh
-            cd ..
-            chmod +x deployBpmn.sh  
-            timeout 180s sh orchestration/deployBpmn.sh && sleep 5 || echo 'deploy Bpmn done'
-            echo ---------------------------successful--------------------------
-            # # curl -o deployBpmn.sh https://raw.githubusercontent.com/openMF/ph-ee-env-labs/master/orchestration/deployBpmn.sh
-            # cd helm/bpmn-upload
-            # chmod +x deployBpmn.sh
-            # sh deployBpmn.sh
+  # deploying-bpmns:
+  #   docker:
+  #     - image: cimg/base:2022.06 
+  #     # - image: 'curlimages/curl:8.2.1'   
+  #   steps:
+  #     - checkout
+  #     - aws-cli/setup:
+  #         role_arn: "${AWS_CIRCLECI_ROLE_ARN}"
+  #         region: AWS_REGION
+  #         profile_name: "playground"
+  #         role_session_name: deploy-test
+  #         session_duration: '1800'
+  #     - run:
+  #         name: Update kubeconfig
+  #         command: |
+  #           aws eks update-kubeconfig --name ${EKS_CLUSTER} 
+  #     - kubernetes/install-kubectl
+  #     # - run:
+  #     #     name: Wait for Port Forward
+  #     #     command: |
+  #     #       until nc -z localhost 5000; do sleep 1; done
+  #     - run: 
+  #         name: download and execute the bpmn upload
+  #         command: | 
+  #           #insatll netcat
+  #           echo install netcat
+  #           sudo apt install -y netcat
+  #           sleep 10
+  #           check_count=0
+  #           until ((check_count==20)) || nc -vz ph-ee-zeebe-ops 80; do 
+  #               echo "Waiting for zeebe-ops service"; 
+  #               sleep 5; 
+  #               check_count=$(($check_count + 1));
+  #           done;
+  #           echo ------zeebe-ops service available-----------
+  #           sleep 10
+  #           #Deploy BPMN 
+  #           kubectl port-forward service/ph-ee-zeebe-ops 5000:80 -n $NAMESPACE &
+  #           echo "sleeping to get portforwading ready"
+  #           git clone https://github.com/openMF/ph-ee-env-labs.git
+  #           cd ph-ee-env-labs/orchestration/
+  #           sed -i "/HOST=/c\HOST=http://localhost:5000/zeebe/upload" deployBpmn.sh
+  #           cat deployBpmn.sh
+  #           chmod +x deployBpmn.sh 
+  #           cd ..
+  #           timeout 180s sh orchestration/deployBpmn.sh && sleep 5 || echo 'deploy Bpmn done'
+  #           echo ---------------------------successful--------------------------
+  #           # # curl -o deployBpmn.sh https://raw.githubusercontent.com/openMF/ph-ee-env-labs/master/orchestration/deployBpmn.sh
+  #           # cd helm/bpmn-upload
+  #           # chmod +x deployBpmn.sh
+  #           # sh deployBpmn.sh
 
   helm-test:
     docker:
@@ -283,23 +283,23 @@ workflows:
           context: 
             - AWS
             - playground
-      - create-secret:
-          requires:
-            - deploy-g2psandbox-govstack-chart
-            - deploy-fineract-helm-chart
-          context: 
-            - AWS
-            - playground
-      - deploying-bpmns:
-          requires:
-            - deploy-g2psandbox-govstack-chart
-            - deploy-fineract-helm-chart
-          context: 
-            - AWS
-            - playground
+      # - create-secret:
+      #     requires:
+      #       - deploy-g2psandbox-govstack-chart
+      #       - deploy-fineract-helm-chart
+      #     context: 
+      #       - AWS
+      #       - playground
+      # - deploying-bpmns:
+      #     requires:
+      #       - deploy-g2psandbox-govstack-chart
+      #       - deploy-fineract-helm-chart
+      #     context: 
+      #       - AWS
+      #       - playground
       - helm-test:
-          requires:
-            - create-secret
+          # requires:
+            # - create-secret
             # - deploying-bpmns
           context: 
             - AWS
